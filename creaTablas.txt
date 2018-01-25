@@ -1,0 +1,276 @@
+php artisan make:migration cuentas_migration --create cuentas
+
+
+php artisan make:migration users_billing_data --create 	users_billing_data
+php artisan make:migration locals --create locals
+php artisan make:migration notifications --create notifications
+php artisan make:migration notification_types --create notification_types
+php artisan make:migration company_sales --create company_sales 
+php artisan make:migration messages --create messages
+php artisan make:migration message_details --create message_details 
+php artisan make:migration bills --create bills 
+php artisan make:migration operations_bills --create operations_bills 
+php artisan make:migration vehicles --create vehicles 
+php artisan make:migration vehicles_users --create vehicles_users
+php artisan make:migration exeptuated_vehicles --create exeptuated_vehicles
+php artisan make:migration exeptuated_vehicles_blocks --create exeptuated_vehicles_blocks 
+php artisan make:migration operations --create operations
+php artisan make:migration operations_between_wallets --create operations_between_wallets
+php artisan make:migration wallets --create wallets
+php artisan make:migration tickets --create tickets
+php artisan make:migration space_reservatios --create space_reservatios
+php artisan make:migration infringements --create infringements
+php artisan make:migration infringement_details --create infringement_details
+php artisan make:migration infringement_causes --create infringement_causes
+php artisan make:migration images --create images
+php artisan make:migration blocks --create blocks
+php artisan make:migration areas --create areas
+php artisan make:migration areas_blocks --create areas_blocks
+php artisan make:migration login --create login
+
+
+
+$table->string('user_id')
+$table->string('latitude')
+$table->string('longitude')
+$table->string('fee') (default es 0)
+$table->string('verified')
+$table->string('address')
+
+
+$table->string('user_id')
+$table->string('notification_type_id')
+$table->string('address')
+
+$table->string('name')
+$table->string('description')
+
+$table->string('user_id');
+$table->string('operation_id');
+$table->string('detail');
+
+
+$table->string('name');
+$table->string('mail');
+$table->string('date');
+$table->string('state');(0-not open/1-open/2-end/3-suspended)
+$table->string('user_id')->nullable();
+$table->string('type'); (claim/consult/message)
+
+
+$table->string('message_id');
+$table->string('detail');
+$table->string('date');
+$table->string('state'); //(0-not open/1-open/2-end/3-suspended), default es 0
+$table->foreign('message_id')->references('id')->on('message');
+
+
+$table->string('type');
+$table->string('letter');
+$table->string('branch_office');
+$table->string('number');
+$table->string('document_type');
+$table->string('document_number');
+$table->decimal('net',13,2);
+$table->decimal('iva',13,2);
+$table->decimal('total',13,2);
+$table->date('date');
+$table->string('detail');
+
+$table->string('operation_id');
+$table->string('bill_id');
+$table->foreign('operation_id')->references('id')->on('operation');
+$table->foreign('bill_id')->references('id')->on('bill');
+
+
+$table->string('plate');
+
+$table->string('vehicle_id');
+$table->string('user_id');
+$table->foreign('vehicle_id')->references('id')->on('vehicle');
+$table->foreign('user_id')->references('id')->on('user');
+
+
+$table->string('vehicle_id');
+$table->string('detail');
+$table->string('start_time');
+$table->string('end_time');
+$table->string('operation_id')->nullable();;
+$table->string('type');// (neighbors/journalist/others)
+$table->foreign('vehicle_id')->references('id')->on('vehicle');
+$table->foreign('operation_id')->references('id')->on('operation');
+
+
+$table->string('exeptuated_vehicle_id');
+$table->string('block_id');
+$table->foreign('exeptuated_vehicle_id')->references('id')->on('exeptuated_vehicle');
+$table->foreign('block_id')->references('id')->on('block');
+
+$table->string('type');//(wallet/ticket/infringement)
+$table->string('type_id');
+$table->decimal('amount',13,2);
+$table->foreign('type_id')->references('id')->on('types');
+
+
+
+$table->string('operation_id_1');
+$table->string('operation_id_2');
+$table->foreign('operation_id_1')->references('id')->on('operations');
+$table->foreign('operation_id_2')->references('id')->on('operations');
+
+
+$table->string('user_id');
+$table->string('balance');
+$table->string('chips');
+$table->string('credit')->default('0'); //(0 default)
+$table->foreign('user_id')->references('id')->on('users');
+
+
+$table->string('user_id');
+$table->string('plate');
+$table->string('time');
+$table->dateTime('start_time');
+$table->dateTime('end_time');
+$table->string('block_id');
+$table->string('latitude');
+$table->string('longitude');
+$table->string('check')->nullable(); (null/user_id que lo chequeo)
+$table->string('operation_id')->nullable();
+$table->string('token');
+$table->string('type'); (time/day)
+$table->foreign('user_id')->references('id')->on('users');
+$table->foreign('operation_id')->references('id')->on('operations');
+$table->foreign('block_id')->references('id')->on('blocks');
+
+
+$table->string('identifier');
+$table->string('company');
+$table->string('start_time');
+$table->string('end_time');
+$table->string('block_id');
+$table->string('latitude');
+$table->string('longitude');
+$table->string('operation_id')->nullable();
+$table->string('type'); //(container/load unload)
+$table->string('size'); // (nro)
+$table->foreign('block_id')->references('id')->on('blocks');
+$table->foreign('operation_id')->references('id')->on('operations');
+
+
+$table->string('plate');
+$table->string('user_id');
+$table->string('date');
+$table->string('situation'); // (before/saved/voluntary/judge/close)
+$table->string('infringement_cause_id');
+$table->string('cost');
+$table->string('voluntary_cost');
+$table->string('voluntary_end_date');
+$table->string('close_date')->nullable();
+$table->string('close_cost')->nullable();
+$table->string('operation_id')->nullable();
+$table->string('latitude');
+$table->string('longitude');
+$table->string('block_id')->nullable();
+$table->foreign('user_id')->references('id')->on('users');
+$table->foreign('operation_id')->references('id')->on('operations');
+$table->foreign('block_id')->references('id')->on('blocks');
+
+
+
+$table->string('user_id);
+$table->string('infringement_id);
+$table->string('detail);
+$table->foreign('user_id')->references('id')->on('users');
+$table->foreign('infringement_id')->references('id')->on('infringements');
+
+$table->string('name);
+$table->string('detail)->nullable;
+$table->string('cost);
+$table->decimal('voluntary_cost,13,2);
+
+
+$table->string('visible_type'); // (ex: infringement)
+$table->string('visible_id');
+$table->string('url',255);
+
+$table->string('latitude_1');
+$table->string('longitude_1');
+$table->string('latitude_2');
+$table->string('longitude_2');
+$table->string('street');
+$table->string('numeration_max');
+$table->string('numeration_min');
+
+$table->string('name');
+$table->string('details');
+$table->boolean('active');(true/false)
+
+$table->string('block_id');
+$table->string('area_id');
+$table->foreign('block_id')->references('id')->on('blocks');
+$table->foreign('area_id')->references('id')->on('areas');
+
+
+$table->string('user_id');
+$table->string('ip');
+$table->string('device_type')->nullable;;
+$table->string('platform');
+$table->string('os')->nullable;;
+$table->string('latitude')->nullable;;
+$table->string('longitude')->nullable;;
+$table->string('version');
+$table->foreign('user_id')->references('id')->on('users');
+
+*php artisan make:model UserBillingData
+*php artisan make:model Local
+*php artisan make:model Notification
+*php artisan make:model NotificationType
+*php artisan make:model CompanySale
+*php artisan make:model Message
+*php artisan make:model MessageDetail
+*php artisan make:model Bill
+*php artisan make:model OperationsBill
+*php artisan make:model Vehicle
+*php artisan make:model VehicleUser
+*php artisan make:model ExeptuatedVehicle
+*php artisan make:model ExeptuatedVehicleBlock
+*php artisan make:model Operation
+*php artisan make:model OperationBetweenWallet
+*php artisan make:model Wallet
+*php artisan make:model Ticket
+*php artisan make:model SpaceReservatio
+*php artisan make:model Infringement
+*php artisan make:model InfringementDetail
+*php artisan make:model InfringementCause
+*php artisan make:model Image
+*php artisan make:model Block
+*php artisan make:model Area
+*php artisan make:model AreaBlock
+*php artisan make:model Login
+
+*php artisan make:controller UsersBillingData --resource --model=UsersBillingData
+*php artisan make:controller Locals --resource --model=Local
+*php artisan make:controller Notifications --resource --model=Notification
+*php artisan make:controller NotificationTypes --resource --model=NotificationType
+*php artisan make:controller CompanySales --resource --model=CompanySale
+*php artisan make:controller Messages --resource --model=Message
+*php artisan make:controller MessageDetails --resource --model=MessageDetail
+*php artisan make:controller Bills --resource --model=Bill
+*php artisan make:controller OperationsBills --resource --model=OperationsBill
+*php artisan make:controller Vehicles --resource --model=Vehicle
+*php artisan make:controller VehiclesUsers --resource --model=VehicleUser
+*php artisan make:controller ExeptuatedVehicles --resource --model=ExeptuatedVehicle
+*php artisan make:controller ExeptuatedVehiclesBlocks --resource --model=ExeptuatedVehicleBlock
+*php artisan make:controller Operations --resource --model=Operation
+*php artisan make:controller OperationsBetweenWallets --resource --model=OperationBetweenWallet
+*php artisan make:controller Wallets --resource --model=Wallet
+*php artisan make:controller Tickets --resource --model=Ticket
+*php artisan make:controller SpacesReservatios --resource --model=SpaceReservatio
+*php artisan make:controller Infringements --resource --model=Infringement
+*php artisan make:controller InfringementDetails --resource --model=InfringementDetail
+*php artisan make:controller InfringementCauses --resource --model=InfringementCause
+*php artisan make:controller Images --resource --model=Image
+*php artisan make:controller Blocks --resource --model=Block
+*php artisan make:controller Areas --resource --model=Area
+*php artisan make:controller AreasBlocks --resource --model=AreaBlock
+*php artisan make:controller Login --resource --model=Login
