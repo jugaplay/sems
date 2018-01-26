@@ -4,17 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AreaBlock extends Model
+class Cost extends Model
 {
     //
     protected $fillable = [
-      'block_id',
       'area_id',
+      'time_zone_start',
+      'time_zone_end',
+      'start_date',
+      'end_date',
+      'pirority',
+      'cost',
+      'type',
+      'day_start',
+      'day_end',
     ]
-
-    public function block(){
-      return $this->belongsTo('App\Block');
-    }
 
     public function area(){
       return $this->belongsTo('App\Area');

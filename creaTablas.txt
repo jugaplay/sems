@@ -27,9 +27,11 @@ php artisan make:migration blocks --create blocks
 php artisan make:migration areas --create areas
 php artisan make:migration areas_blocks --create areas_blocks
 php artisan make:migration login --create login
+20108-01-26
+php artisan make:migration costs --create costs
 
 
-
+=================================================================================
 $table->string('user_id')
 $table->string('latitude')
 $table->string('longitude')
@@ -221,6 +223,21 @@ $table->string('longitude')->nullable;;
 $table->string('version');
 $table->foreign('user_id')->references('id')->on('users');
 
+2018-01-26
+==========
+$table->integer('area_id')->unsigned();
+$table->time('time_zone_start');
+$table->time('time_zone_end');
+$table->date('start_date');
+$table->date('end_date')->default('2999-12-31');
+$table->string('pirority')->nullable;
+$table->string('cost')->nullable;
+$table->string('type');
+$table->smallInteger('day_starts')->unsigned(); 
+$table->smallInteger('day_end')->unsigned();
+
+
+===========================================================================
 *php artisan make:model UserBillingData
 *php artisan make:model Local
 *php artisan make:model Notification
@@ -248,6 +265,11 @@ $table->foreign('user_id')->references('id')->on('users');
 *php artisan make:model AreaBlock
 *php artisan make:model Login
 
+2018-01-26
+=========
+*php artisan make:model Cost
+
+==============================================================================
 *php artisan make:controller UsersBillingData --resource --model=UsersBillingData
 *php artisan make:controller Locals --resource --model=Local
 *php artisan make:controller Notifications --resource --model=Notification
@@ -274,3 +296,8 @@ $table->foreign('user_id')->references('id')->on('users');
 *php artisan make:controller Areas --resource --model=Area
 *php artisan make:controller AreasBlocks --resource --model=AreaBlock
 *php artisan make:controller Login --resource --model=Login
+
+2018-01-26
+==========
+*php artisan make:controller Costs --resource --model=Cost
+
