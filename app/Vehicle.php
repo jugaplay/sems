@@ -9,7 +9,7 @@ class Vehicle extends Model
     //
     protected $fillable = [
       'plate',
-]
+];
 
-    
+
 }

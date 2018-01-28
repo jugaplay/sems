@@ -15,7 +15,7 @@ class Block extends Model
       'street',
       'numeration_max',
       'numeration_min',
-    ]
+    ];
 
-  
+
 }

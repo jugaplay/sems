@@ -1,0 +1,89 @@
+
+Para instalar laravel en español ==> composer require laraveles/spanish
+
+despues agregar en config/app.php en la seccion providers
+
+'providers' => [
+    // ...
+    Laraveles\Spanish\SpanishServiceProvider::class,
+];
+
+y despues actualizar con ==> php artisan vendor:publish --tag=lang
+
+
+Déspues de todos estos pasos, ya tenemos disponible nuestras traducciones en español, y solo necesitamos configurar Laravel para que use el idioma deseado.
+
+
+// Ej: español
+'locale'          => 'es',
+// Ej: inglés
+'locale'          => 'en',
+
+Se puede ser mas concreto e indicar las variaciones de un lenguaje:
+
+// Inglés americano
+'locale' => 'en_US'
+// Portugués de Portugal
+'locale' => 'pt_PT'
+
+Pero en este caso nos valdrá con un español internacional para todos.
+
+También se puede cambiar el idioma en tiempo de ejecución utilizando el método setLocale de App. Este cambio no es permanente, en la siguiente ejecución se utilizará el valor de configuración por defecto:
+
+App::setLocale('es');
+
+
+Los seeder pueden tener cualquier nombre que necesites. La recomendación es indicar un nombre que te sirva para 
+saber exactamente para qué se creó ese seeder. 
+Por ejemplo podrás usar el nombre de la tabla que se va a alimentar y el sufijo "Seeder". 
+Además como los seeders en código son clases, colocaremos la primera letra en mayúscula por convención. 
+Algo como "UserSeeder" podría ser buen nombre o "UserTableSeeder".
+
+Algunas funciones
+=================
+
+$faker->randomDigit;
+$faker->numberBetween(1,100);
+$faker->word;
+$faker->paragraph;
+$faker->lastName;
+$faker->city;
+$faker->year;
+$faker->domainName;
+$faker->creditCardNumber;
+
+
+*********************************
+El método random() obtiene un objeto aleatorio ya registrado previamente o crea uno si no se han registrado aún.
+*********************************
+'user_id' => $this->random('User')->id
+
+==========================
+
+$faker->region; // es_AR
+$faker->bankAccountNumber; // pl_PL "PL14968907563953822118075816"
+$faker->cellNumber; // nz_NZ "021 123 4567"
+
+=================================
+Para crear el modelo de datos a cargara ==> php artisan make:factory AreaTableFactory --model=Area
+
+Luego hay que armar el seeder. Este es el que va a cargar los datos en base al modelo o en foma manual.
+
+Para crearlo ==> php artisan make:seeder AreaTableSeeder
+
+y luego modificar el el seeder en la funcion run para que quede de esta manera
+
+public function run()
+    {
+        factory(App\Area::class, 20)->create(); ==> en este caso crea 20 registros con el modelo que armamos en AreaTableFactory
+    }
+
+
+
+Para ejecutar el seeder en la terminal escribir ==> php artisan db:seed
+
+para generar poner en cero la base y crear los dtos ==> php artisan migrate:refresh --seed
+
+
+
+

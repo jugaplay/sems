@@ -11,13 +11,24 @@ use Faker\Generator as Faker;
 | your application. Factories provide a convenient way to generate new
 | model instances for testing / seeding your application's database.
 |
+'name' 				=>	'Wernicke Matias',
+'email'				=>	'matiaswernickec@gmail.com',
+'phone'			  =>	'1544008341',
+'type'        =>  'X',
+'account_status' => 'A',
+'password' => bcrypt('123456'),
+
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
+
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+        'phone' =>	$faker->phoneNumber,
+        'type' =>  $faker->randomElement(['local','conductor','inspector','asistente','juez','adm','admsuper','municipal']),
+        'account_status' => 'A',
+        'password' => $faker->password,
         'remember_token' => str_random(10),
     ];
 });

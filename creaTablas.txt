@@ -301,3 +301,70 @@ $table->smallInteger('day_end')->unsigned();
 ==========
 *php artisan make:controller Costs --resource --model=Cost
 
+
+
+    protected $fillable = [
+    ]
+
+    public function user(){
+      return $this->belongsTo('App\User');
+    }  
+
+
+php artisan make:factory AreaBlockTableFactory --model=AreaBlock
+*php artisan make:factory AreaTableFactory --model=Area
+php artisan make:factory BillsTableFactory --model=Bill
+*php artisan make:factory BlockTableFactory --model=Block
+php artisan make:factory CompanySalesTableFactory --model=CompanySale
+php artisan make:factory CostsTableFactory --model=Cost
+php artisan make:factory ExeptuatedVehiclesBlocksTableFactory --model=ExeptuatedVehicleBlock
+php artisan make:factory ExeptuatedVehiclesTableFactory --model=ExeptuatedVehicle
+php artisan make:factory ImagesTableFactory --model=Image
+php artisan make:factory InfringementCausesTableFactory --model=InfringementCause
+php artisan make:factory InfringementDetailsTableFactory --model=InfringementDetail
+php artisan make:factory InfringementsTableFactory --model=Infringement
+php artisan make:factory LocalsTableFactory --model=Local
+php artisan make:factory LoginTableFactory --model=Login
+php artisan make:factory MessageDetailsTableFactory --model=MessageDetail
+php artisan make:factory MessagesTableFactory --model=Message
+php artisan make:factory NotificationTypesTableFactory --model=NotificationType
+php artisan make:factory NotificationsTableFactory --model=Notification
+php artisan make:factory OperationsBetweenWalletsTableFactory --model=OperationBetweenWallet
+php artisan make:factory OperationsBillsTableFactory --model=OperationsBill
+php artisan make:factory OperationsTableFactory --model=Operation
+php artisan make:factory SpacesReservatiosTableFactory --model=SpaceReservatio
+php artisan make:factory TicketsTableFactory --model=Ticket
+php artisan make:factory UsersBillingDataTableFactory --model=UsersBillingData
+*php artisan make:factory VehicleTableFactory --model=Vehicle
+php artisan make:factory VehiclesUsersTableFactory --model=VehicleUser
+php artisan make:factory WalletsTableFactory --model=Wallet
+
+
+
+php artisan make:seeder AreaBlockTableSeeder
+*php artisan make:seeder AreaTableSeeder
+php artisan make:seeder BillsTableSeeder
+*php artisan make:seeder BlockTableSeeder
+php artisan make:seeder CompanySalesTableSeeder
+php artisan make:seeder CostsTableSeeder
+php artisan make:seeder ExeptuatedVehiclesBlocksTableSeeder
+php artisan make:seeder ExeptuatedVehiclesTableSeeder
+php artisan make:seeder ImagesTableSeeder
+php artisan make:seeder InfringementCausesTableSeeder
+php artisan make:seeder InfringementDetailsTableSeeder
+php artisan make:seeder InfringementsTableSeeder
+php artisan make:seeder LocalsTableSeeder
+php artisan make:seeder LoginTableSeeder
+php artisan make:seeder MessageDetailsTableSeeder
+php artisan make:seeder MessagesTableSeeder
+php artisan make:seeder NotificationTypesTableSeeder
+php artisan make:seeder NotificationsTableSeeder
+php artisan make:seeder OperationsBetweenWalletsTableSeeder
+php artisan make:seeder OperationsBillsTableSeeder
+php artisan make:seeder OperationsTableSeeder
+php artisan make:seeder SpacesReservatiosTableSeeder
+php artisan make:seeder TicketsTableSeeder
+php artisan make:seeder UsersBillingDataTableSeeder
+*php artisan make:seeder VehicleTableSeeder
+php artisan make:seeder VehiclesUsersTableSeeder
+php artisan make:seeder WalletsTableSeeder

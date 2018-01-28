@@ -10,7 +10,7 @@ class AreaBlock extends Model
     protected $fillable = [
       'block_id',
       'area_id',
-    ]
+    ];
 
     public function block(){
       return $this->belongsTo('App\Block');
