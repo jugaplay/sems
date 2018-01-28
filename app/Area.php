@@ -13,4 +13,8 @@ class Area extends Model
       'active', //(true/false)
       ];
 
+      public function blocks(){
+        return $this->belongsToMany('App\Block');
+      }
+
 }

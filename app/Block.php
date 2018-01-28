@@ -16,6 +16,8 @@ class Block extends Model
       'numeration_max',
       'numeration_min',
     ];
-
+    public function areas(){
+      return $this->belongsToMany('App\Area');
+    }
 
 }
