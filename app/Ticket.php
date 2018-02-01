@@ -20,7 +20,7 @@ class Ticket extends Model
       'operation_id',
       'token',
       'type', //(time/day)
-    ]
+    ];
 
     public function user(){
       return $this->belongsTo('App\User');
@@ -35,5 +35,6 @@ class Ticket extends Model
     }
 
     public function operational(){
-          return $this->morphMany('App\Operation,'type');
+          return $this->morphMany('App\Operation','type');
+    }
 }

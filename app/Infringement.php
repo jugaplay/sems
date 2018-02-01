@@ -22,7 +22,7 @@ class Infringement extends Model
       'latitude',
       'longitude',
       'block_id',
-    ]
+    ];
 
     public function infringement_cause(){
       return $this->belongsTo('App\InfringementCause_id');

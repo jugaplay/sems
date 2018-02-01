@@ -12,7 +12,7 @@ class MessageDetail extends Model
       'detail',
       'date',
       'state',
-    ]
+    ];
 
     public function message(){
       return $this->belongsTo('App\Message');

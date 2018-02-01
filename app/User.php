@@ -19,7 +19,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'type', 
+        'type',
         'account_status',
     ];
 
@@ -31,4 +31,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function vehicles(){
+      return $this->belongsToMany('App\Vehicle',$table='vehicles_users');
+    }
+
+    public function associateVehicle($plate){
+      // Busca si existe
+      // si esta asociada con el usuarios
+      // sino la asocia
+
+
+    }
+
 }

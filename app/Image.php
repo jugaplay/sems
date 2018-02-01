@@ -11,9 +11,10 @@ class Image extends Model
       'visible_type',  //(infringement)
       'visible_id',
       'url',
-    ]
+    ];
 
     public function viewImage(){
           return $this->morphTo();
+        }
 
 }

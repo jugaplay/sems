@@ -26,9 +26,10 @@ $factory->define(App\User::class, function (Faker $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'phone' =>	$faker->phoneNumber,
-        'type' =>  $faker->randomElement(['local','conductor','inspector','asistente','juez','adm','admsuper','municipal']),
+        'type' =>  'conductor',
+        //$faker->randomElement(['local','conductor','inspector','asistente','juez','adm','admsuper','municipal']),
         'account_status' => 'A',
         'password' => $faker->password,
-        'remember_token' => str_random(10),
+        //'remember_token' => str_random(10),
     ];
 });

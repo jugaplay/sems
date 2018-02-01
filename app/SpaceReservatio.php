@@ -18,7 +18,7 @@ class SpaceReservatio extends Model
       'operation_id',
       'type', // (container/load unload)
       'size' //(nro)
-    ]
+    ];
 
     public function block(){
       return $this->belongsTo('App\Block');

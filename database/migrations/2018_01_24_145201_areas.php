@@ -16,7 +16,7 @@ class Areas extends Migration
         Schema::create('areas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('details');
+            $table->text('details');
             $table->boolean('active');//(true/false)
             $table->timestamps();
         });

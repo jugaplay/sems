@@ -51,6 +51,17 @@ $faker->city;
 $faker->year;
 $faker->domainName;
 $faker->creditCardNumber;
+$faker->sentence(4);
+$faker->unique->word(5);
+$faker->randomElement(['F','C','D']),
+$faker->latitude($min = -44, $max = -43),
+$faker->longitude($min = -66, $max = -65),
+//////////////////////////
+  $numero = $faker->unique->numberBetween(1,20);
+  if(strlen($numero)<2){$numero = '0'.$numero;}
+  $name = 'Causa Infraccion '.$numero;
+  
+
 
 
 *********************************
@@ -84,6 +95,27 @@ Para ejecutar el seeder en la terminal escribir ==> php artisan db:seed
 
 para generar poner en cero la base y crear los dtos ==> php artisan migrate:refresh --seed
 
+para ejecutar un solo seeder ==> php artisan db:seed --class=ProgramadoresLaravelTableSeeder
 
 
+
+Ejemplo de una lectrua de una a muchas
+
+ //leer un usuario en forma aleatoria
+ $user_id = rand(70,169);
+ $user_id = 147;
+ $user =App\User::where('id', $user_id)->first();
+ //echo('Usuario = '.$user);// --> Retorna un json
+ echo('Usuario ID = '.$user->id);
+ //$resultado = json_decode($user);
+ //print_r($resultado);
+ $patentes = $user->vehicles->map(function ($plate) {
+       return collect($plate->toArray())
+       ->only(['plate'])
+       ->all();});
+ echo($patentes);// --> Retorna un json
+ $resultado = json_decode($patentes);
+ //$contador = count($resultado)-1;
+ //print_r($resultado);
+ $patente = $resultado[0]->plate);
 

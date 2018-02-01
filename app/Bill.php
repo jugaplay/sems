@@ -19,6 +19,6 @@ class Bill extends Model
       'total',
       'date',
       'detail',
-    ]
+    ];
 
 }

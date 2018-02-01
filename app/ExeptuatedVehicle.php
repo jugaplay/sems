@@ -14,7 +14,7 @@ class ExeptuatedVehicle extends Model
       'end_time',
       'operation_id',
       'type',
-    ]
+    ];
 
     public function vehicle(){
       return $this->belongsTo('App\Vehicle');

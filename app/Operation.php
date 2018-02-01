@@ -11,7 +11,7 @@ class Operation extends Model
       'type', //(wallet/ticket/infringement)
       'type_id',
       'amount',
-    ]
+    ];
 
     public function operational(){
           return $this->morphTo();

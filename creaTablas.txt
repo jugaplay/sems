@@ -238,7 +238,11 @@ $table->smallInteger('day_end')->unsigned();
 
 
 ===========================================================================
-*php artisan make:model UserBillingData
+*********************************************************
+***php artisan make:model Local --migration --factory ***
+*********************************************************
+
+*php artisan make:model UsersBillingData
 *php artisan make:model Local
 *php artisan make:model Notification
 *php artisan make:model NotificationType
@@ -270,32 +274,34 @@ $table->smallInteger('day_end')->unsigned();
 *php artisan make:model Cost
 
 ==============================================================================
-*php artisan make:controller UsersBillingData --resource --model=UsersBillingData
-*php artisan make:controller Locals --resource --model=Local
-*php artisan make:controller Notifications --resource --model=Notification
-*php artisan make:controller NotificationTypes --resource --model=NotificationType
-*php artisan make:controller CompanySales --resource --model=CompanySale
-*php artisan make:controller Messages --resource --model=Message
-*php artisan make:controller MessageDetails --resource --model=MessageDetail
-*php artisan make:controller Bills --resource --model=Bill
-*php artisan make:controller OperationsBills --resource --model=OperationsBill
-*php artisan make:controller Vehicles --resource --model=Vehicle
-*php artisan make:controller VehiclesUsers --resource --model=VehicleUser
-*php artisan make:controller ExeptuatedVehicles --resource --model=ExeptuatedVehicle
-*php artisan make:controller ExeptuatedVehiclesBlocks --resource --model=ExeptuatedVehicleBlock
-*php artisan make:controller Operations --resource --model=Operation
-*php artisan make:controller OperationsBetweenWallets --resource --model=OperationBetweenWallet
-*php artisan make:controller Wallets --resource --model=Wallet
-*php artisan make:controller Tickets --resource --model=Ticket
-*php artisan make:controller SpacesReservatios --resource --model=SpaceReservatio
-*php artisan make:controller Infringements --resource --model=Infringement
-*php artisan make:controller InfringementDetails --resource --model=InfringementDetail
-*php artisan make:controller InfringementCauses --resource --model=InfringementCause
-*php artisan make:controller Images --resource --model=Image
-*php artisan make:controller Blocks --resource --model=Block
-*php artisan make:controller Areas --resource --model=Area
-*php artisan make:controller AreasBlocks --resource --model=AreaBlock
-*php artisan make:controller Login --resource --model=Login
+php artisan make:controller UserController --resource --model=User
+php artisan make:controller UserBillingDataController --resource --model=UsersBillingData
+php artisan make:controller LocalsController --resource --model=Local
+php artisan make:controller NotificationsController --resource --model=Notification
+php artisan make:controller NotificationTypesController --resource --model=NotificationType
+php artisan make:controller CompanySalesController --resource --model=CompanySale
+php artisan make:controller MessagesController --resource --model=Message
+php artisan make:controller MessageDetailsController --resource --model=MessageDetail
+php artisan make:controller BillsController --resource --model=Bill
+php artisan make:controller OperationsBillsController --resource --model=OperationsBill
+php artisan make:controller VehiclesController --resource --model=Vehicle
+php artisan make:controller VehiclesUsersController --resource --model=VehicleUser
+php artisan make:controller ExeptuatedVehiclesController --resource --model=ExeptuatedVehicle
+php artisan make:controller ExeptuatedVehiclesBlocksController --resource --model=ExeptuatedVehicleBlock
+php artisan make:controller OperationsController --resource --model=Operation
+php artisan make:controller OperationsBetweenWalletsController --resource --model=OperationBetweenWallet
+php artisan make:controller WalletsController --resource --model=Wallet
+php artisan make:controller TicketsController --resource --model=Ticket
+php artisan make:controller SpacesReservatiosController --resource --model=SpaceReservatio
+php artisan make:controller InfringementsController --resource --model=Infringement
+php artisan make:controller InfringementDetailsController --resource --model=InfringementDetail
+php artisan make:controller InfringementCausesController --resource --model=InfringementCause
+php artisan make:controller ImagesController --resource --model=Image
+php artisan make:controller BlocksController --resource --model=Block
+php artisan make:controller AreasController --resource --model=Area
+php artisan make:controller AreasBlocksController --resource --model=AreaBlock
+php artisan make:controller LoginController --resource --model=Login
+php artisan make:controller CostController --resource --model=Cost
 
 2018-01-26
 ==========
@@ -311,60 +317,65 @@ $table->smallInteger('day_end')->unsigned();
     }  
 
 
-php artisan make:factory AreaBlockTableFactory --model=AreaBlock
+*php artisan make:factory AreaBlockTableFactory --model=AreaBlock  ==> Error en el nombre
 *php artisan make:factory AreaTableFactory --model=Area
-php artisan make:factory BillsTableFactory --model=Bill
+*php artisan make:factory BillTableFactory --model=Bill
 *php artisan make:factory BlockTableFactory --model=Block
-php artisan make:factory CompanySalesTableFactory --model=CompanySale
-php artisan make:factory CostsTableFactory --model=Cost
-php artisan make:factory ExeptuatedVehiclesBlocksTableFactory --model=ExeptuatedVehicleBlock
-php artisan make:factory ExeptuatedVehiclesTableFactory --model=ExeptuatedVehicle
-php artisan make:factory ImagesTableFactory --model=Image
-php artisan make:factory InfringementCausesTableFactory --model=InfringementCause
-php artisan make:factory InfringementDetailsTableFactory --model=InfringementDetail
-php artisan make:factory InfringementsTableFactory --model=Infringement
-php artisan make:factory LocalsTableFactory --model=Local
-php artisan make:factory LoginTableFactory --model=Login
-php artisan make:factory MessageDetailsTableFactory --model=MessageDetail
-php artisan make:factory MessagesTableFactory --model=Message
-php artisan make:factory NotificationTypesTableFactory --model=NotificationType
-php artisan make:factory NotificationsTableFactory --model=Notification
-php artisan make:factory OperationsBetweenWalletsTableFactory --model=OperationBetweenWallet
-php artisan make:factory OperationsBillsTableFactory --model=OperationsBill
-php artisan make:factory OperationsTableFactory --model=Operation
-php artisan make:factory SpacesReservatiosTableFactory --model=SpaceReservatio
-php artisan make:factory TicketsTableFactory --model=Ticket
-php artisan make:factory UsersBillingDataTableFactory --model=UsersBillingData
+*php artisan make:factory CompanySaleTableFactory --model=CompanySale
+*php artisan make:factory CostTableFactory --model=Cost
+*php artisan make:factory ExeptuatedVehicleBlockTableFactory --model=ExeptuatedVehicleBlock ==> Error en el nombre
+*php artisan make:factory ExeptuatedVehicleTableFactory --model=ExeptuatedVehicle
+*php artisan make:factory ImageTableFactory --model=Image
+*php artisan make:factory InfringementCauseTableFactory --model=InfringementCause
+*php artisan make:factory InfringementDetailTableFactory --model=InfringementDetail
+*php artisan make:factory InfringementTableFactory --model=Infringement
+*php artisan make:factory LocalTableFactory --model=Local
+*php artisan make:factory LoginTableFactory --model=Login
+*php artisan make:factory MessageDetailTableFactory --model=MessageDetail
+*php artisan make:factory MessageTableFactory --model=Message
+*php artisan make:factory NotificationTypeTableFactory --model=NotificationType
+*php artisan make:factory NotificationTableFactory --model=Notification
+********php artisan make:factory OperationBetweenWalletTableFactory --model=OperationBetweenWallet ==> Error en el nombre ******** No pude solucionarlo
+*php artisan make:factory OperationBillTableFactory --model=OperationsBill
+*php artisan make:factory OperationTableFactory --model=Operation
+*php artisan make:factory SpaceReservatioTableFactory --model=SpaceReservatio
+*php artisan make:factory TicketTableFactory --model=Ticket
+*php artisan make:factory UserBillingDataTableFactory --model=UserBillingData ==> Error en el nombre
 *php artisan make:factory VehicleTableFactory --model=Vehicle
-php artisan make:factory VehiclesUsersTableFactory --model=VehicleUser
-php artisan make:factory WalletsTableFactory --model=Wallet
+*php artisan make:factory VehicleUserTableFactory --model=VehicleUser ==> Error en el nombre
+*php artisan make:factory WalletTableFactory --model=Wallet
 
 
 
-php artisan make:seeder AreaBlockTableSeeder
+*php artisan make:seeder AreaBlockTableSeeder
 *php artisan make:seeder AreaTableSeeder
-php artisan make:seeder BillsTableSeeder
+*php artisan make:seeder BillTableSeeder
 *php artisan make:seeder BlockTableSeeder
-php artisan make:seeder CompanySalesTableSeeder
-php artisan make:seeder CostsTableSeeder
-php artisan make:seeder ExeptuatedVehiclesBlocksTableSeeder
-php artisan make:seeder ExeptuatedVehiclesTableSeeder
-php artisan make:seeder ImagesTableSeeder
-php artisan make:seeder InfringementCausesTableSeeder
-php artisan make:seeder InfringementDetailsTableSeeder
-php artisan make:seeder InfringementsTableSeeder
-php artisan make:seeder LocalsTableSeeder
-php artisan make:seeder LoginTableSeeder
-php artisan make:seeder MessageDetailsTableSeeder
-php artisan make:seeder MessagesTableSeeder
-php artisan make:seeder NotificationTypesTableSeeder
-php artisan make:seeder NotificationsTableSeeder
-php artisan make:seeder OperationsBetweenWalletsTableSeeder
-php artisan make:seeder OperationsBillsTableSeeder
-php artisan make:seeder OperationsTableSeeder
-php artisan make:seeder SpacesReservatiosTableSeeder
-php artisan make:seeder TicketsTableSeeder
-php artisan make:seeder UsersBillingDataTableSeeder
+*php artisan make:seeder CompanySaleTableSeeder
+*php artisan make:seeder CostsTableSeeder
+*php artisan make:seeder ExeptuatedVehicleBlockTableSeeder
+*php artisan make:seeder ExeptuatedVehicleTableSeeder
+*php artisan make:seeder ImageTableSeeder
+*php artisan make:seeder InfringementCauseTableSeeder
+*php artisan make:seeder InfringementDetailTableSeeder
+*php artisan make:seeder InfringementTableSeeder
+*php artisan make:seeder LocalTableSeeder
+*php artisan make:seeder LoginTableSeeder
+*php artisan make:seeder MessageDetailTableSeeder
+*php artisan make:seeder MessageTableSeeder
+*php artisan make:seeder NotificationTypeTableSeeder
+*php artisan make:seeder NotificationTableSeeder
+*php artisan make:seeder OperationBetweenWalletTableSeeder
+*php artisan make:seeder OperationBillTableSeeder
+*php artisan make:seeder OperationTableSeeder
+*php artisan make:seeder SpaceReservatioTableSeeder
+*php artisan make:seeder TicketTableSeeder
+*php artisan make:seeder UserBillingDataTableSeeder
 *php artisan make:seeder VehicleTableSeeder
-php artisan make:seeder VehiclesUsersTableSeeder
-php artisan make:seeder WalletsTableSeeder
+*php artisan make:seeder VehicleUserTableSeeder
+*php artisan make:seeder WalletTableSeeder
+
+
+factory(App\Area::class, 10)->create();
+
+

@@ -13,7 +13,7 @@ class ExeptuatedVehiclesBlocks extends Migration
      */
     public function up()
     {
-        Schema::create('exeptuated_vehicles_blocks', function (Blueprint $table) {
+        Schema::create('exeptuated_vehicle_blocks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('exeptuated_vehicle_id')->unsigned();
             $table->integer('block_id')->unsigned();

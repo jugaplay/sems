@@ -12,7 +12,7 @@ class Wallet extends Model
       'balance',
       'chips',
       'credit',
-  ]
+  ];
 
     public function user(){
       return $this->belongsTo('App\User');

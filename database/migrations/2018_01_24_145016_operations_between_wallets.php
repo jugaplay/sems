@@ -13,7 +13,7 @@ class OperationsBetweenWallets extends Migration
      */
     public function up()
     {
-        Schema::create('operations_between_wallets', function (Blueprint $table) {
+        Schema::create('operation_between_wallets', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('operation_id_1')->unsigned();
             $table->integer('operation_id_2')->unsigned();

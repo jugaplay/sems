@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Faker\Generator as Faker;
 //use App\Users;
 use Illuminate\Support\Facades\DB;
 
@@ -14,15 +15,18 @@ class UserSeeder extends Seeder
     public function run()
     {
         //
-        factory(App\User::class, 29)->create();
 
         DB::table('users')->insert([
-          'name' 				=>	'Wernicke Matias',
-          'email'				=>	'matiaswernickec@gmail.com',
+          'name' 				=>	'Administrador General',
+          'email'				=>	'administradorgeneral@gmail.com',
           'phone'			  =>	'1544008341',
           'type'        =>  'admsuper',
           'account_status' => 'A',
           'password' => bcrypt('123456'),
+          'created_at' => date('Y-m-d'),
+          'updated_at' => date('Y-m-d'),
           ]);
+
+        //factory(App\User::class, 100)->create();
     }
 }

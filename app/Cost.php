@@ -18,7 +18,7 @@ class Cost extends Model
       'type',
       'day_start',
       'day_end',
-    ]
+    ];
 
     public function area(){
       return $this->belongsTo('App\Area');

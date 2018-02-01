@@ -18,7 +18,7 @@ class InfringementCauses extends Migration
             $table->string('name');
             $table->string('detail')->nullable;
             $table->decimal('cost',13,2);
-            $table->decimal('voluntary_cost,13,2');
+            $table->decimal('voluntary_cost',13,2);
             $table->timestamps();
         });
     }

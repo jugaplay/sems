@@ -21,7 +21,7 @@ class Costs extends Migration
             $table->date('start_date');
             $table->date('end_date')->default('2999-12-31');
             $table->string('pirority')->nullable;
-            $table->string('cost')->nullable;
+            $table->decimal('cost',13,2)->nullable;
             $table->string('type');
             $table->smallInteger('day_starts')->unsigned();
             $table->smallInteger('day_end')->unsigned();

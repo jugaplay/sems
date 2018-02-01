@@ -11,7 +11,7 @@ class InfringementDetail extends Model
       'user_id',
       'infringement_id',
       'detail',
-    ]
+    ];
 
     public function infringement(){
       return $this->belongsTo('App\Infringement');

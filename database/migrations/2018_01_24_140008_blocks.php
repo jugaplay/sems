@@ -19,6 +19,10 @@ class Blocks extends Migration
             $table->string('longitude_1');
             $table->string('latitude_2');
             $table->string('longitude_2');
+            $table->string('latitude_3');
+            $table->string('longitude_3');
+            $table->string('latitude_4');
+            $table->string('longitude_4');
             $table->string('street');
             $table->integer('numeration_max');
             $table->integer('numeration_min');

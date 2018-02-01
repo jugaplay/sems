@@ -3,7 +3,8 @@
 use Faker\Generator as Faker;
 
 $factory->define(App\Vehicle::class, function (Faker $faker) {
-    $patente = $faker->unique->word(7);
+    $letra = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3);
+    $patente = $letra.$faker->unique->numberBetween(100,999);
     return [
         'plate' => $patente,
     ];

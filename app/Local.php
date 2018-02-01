@@ -14,7 +14,7 @@ class Local extends Model
       'fee',
       'verified',
       'address',
-    ]
+    ];
 
     public function user(){
       return $this->belongsTo('App\User');

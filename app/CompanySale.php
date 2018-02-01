@@ -11,8 +11,7 @@ class CompanySale extends Model
       'user_id',
       'operation_id',
       'detail',
-
-    ]
+    ];
 
     public function user(){
       return $this->belongsTo('App\User');

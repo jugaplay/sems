@@ -11,7 +11,7 @@ class Notification extends Model
       'user_id',
       'notification_type_id',
       'address',
-    ]
+    ];
 
     public function user(){
       return $this->belongsTo('App\User');

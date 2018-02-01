@@ -16,7 +16,7 @@ class Login extends Model
       'latitude',
       'longitude',
       'version',
-    ]
+    ];
 
     public function user(){
       return $this->belongsTo('App\User');

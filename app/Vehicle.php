@@ -10,6 +10,9 @@ class Vehicle extends Model
     protected $fillable = [
       'plate',
 ];
+    public function users(){
+      return $this->belongsToMany('App\User');
+    }
 
 
 }
