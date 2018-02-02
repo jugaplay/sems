@@ -241,6 +241,11 @@ $table->smallInteger('day_end')->unsigned();
 *********************************************************
 ***php artisan make:model Local --migration --factory ***
 *********************************************************
+php artisan make:model ExeptuatedCauses --migration --factory
+php artisan make:controller ExeptuatedCausesController --resource --model=ExeptuatedCauses
+php artisan make:seeder ExeptuatedCausesTableSeeder
+
+
 
 *php artisan make:model UsersBillingData
 *php artisan make:model Local
@@ -379,3 +384,14 @@ php artisan make:controller CostController --resource --model=Cost
 factory(App\Area::class, 10)->create();
 
 
+Tabla nueva 2018-02-02
+======================
+
+php artisan make:model ExeptuatedCauses --migration --factory
+php artisan make:controller ExeptuatedCausesController --resource --model=ExeptuatedCauses
+php artisan make:seeder ExeptuatedCausesTableSeeder
+
+
+php artisan make:model UsersBillingData --migration --factory
+php artisan make:controller UserBillingDataController --resource --model=UsersBillingData
+php artisan make:seeder UserBillingDataTableSeeder

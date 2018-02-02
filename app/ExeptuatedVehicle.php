@@ -13,7 +13,7 @@ class ExeptuatedVehicle extends Model
       'start_time',
       'end_time',
       'operation_id',
-      'type',
+      'exeptuated_cause_id',
     ];
 
     public function vehicle(){
@@ -22,6 +22,10 @@ class ExeptuatedVehicle extends Model
 
     public function operation(){
       return $this->belongsTo('App\Operation');
+    }
+
+    public function causes(){
+      return $this->belongsTo('App\ExeptuatedCauses');
     }
 
 }

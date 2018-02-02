@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Wallet;
+use App\Vehicle;
+use App\VehicleUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -68,7 +70,7 @@ class UserController extends Controller
           'type' => $request->input('type'),
           'account_status' => $request->input('account_status'),
           'password' => bcrypt($request->input('password')),
-        //'user_id' => Auth::user()->id
+        //'--
         ]);
         $id_user = $user->id; // Retorna el id del insert ejecutado
         echo "Usuarios creado =>".$id_user. "\n" ;
@@ -130,4 +132,44 @@ class UserController extends Controller
     {
         //
     }
-}
+
+    public function userVehicles()
+    {
+        //
+        return view('users.vehicles');
+    }
+
+    public function associateVehicle(Request $request){
+      //echo "Patente = ".$request->input('plate'). "<br>" ;
+      $user_id = Auth::user()->id;
+      //echo "Usuario = ".$user_id. "<br>" ;
+
+      // Busca si existe
+        $VehicleExist = Vehicle::where('plate', $request->input('plate'))->first();
+        echo 'Vehiculos => '.$VehicleExist."<br>";
+        echo "Cantidad encontrada = ".count($VehicleExist)."<br>";
+
+        if (!$VehicleExist) {
+          echo "Vehiculo no existe. Grabarlo y asociarlo "."<br>";
+          // Crea el vehiculo
+          $vehicle=Vehicle::create([
+            'plate' => $request->input('plate'),
+          ]);
+          if($vehicle){
+            // Asocia el vehiculo creado al usuario
+            $vehicle->users()->attach(Auth::user()->id);
+          }else{
+            echo("Error en crear vehiculo");
+          }
+
+        }else{
+          echo "Vehiculo YA existe verificar que este asociado=> ".$VehicleExist."<br>";
+          $assosiated=$VehicleExist->users()->where('user_id', $user_id)->first();
+          if (!$assosiated) {
+            Auth::user()->vehicles()->attach($VehicleExist->id);
+          }
+        }
+        //
+
+          }
+} // function associateVehicle

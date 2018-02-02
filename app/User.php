@@ -33,15 +33,8 @@ class User extends Authenticatable
     ];
 
     public function vehicles(){
-      return $this->belongsToMany('App\Vehicle',$table='vehicles_users');
+      return $this->belongsToMany('App\Vehicle',$table='vehicle_users')->withTimestamps();
     }
 
-    public function associateVehicle($plate){
-      // Busca si existe
-      // si esta asociada con el usuarios
-      // sino la asocia
-
-
-    }
 
 }

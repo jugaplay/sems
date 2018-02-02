@@ -20,9 +20,10 @@ class ExeptuatedVehicles extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->integer('operation_id')->nullable()->unsigned();
-            $table->string('type');// (neighbors/journalist/others)
+            $table->integer('exeptuated_cause_id')->nullable()->unsigned();
             $table->foreign('vehicle_id')->references('id')->on('vehicles');
             $table->foreign('operation_id')->references('id')->on('operations');
+            $table->foreign('exeptuated_cause_id')->references('id')->on('exeptuated_causes');
             $table->timestamps();
         });
     }

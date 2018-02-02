@@ -23,8 +23,6 @@ class UserSeeder extends Seeder
           'type'        =>  'admsuper',
           'account_status' => 'A',
           'password' => bcrypt('123456'),
-          'created_at' => date('Y-m-d'),
-          'updated_at' => date('Y-m-d'),
           ]);
 
         //factory(App\User::class, 100)->create();
