@@ -17,6 +17,7 @@ class Areas extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('details');
+            $table->text('points');
             $table->boolean('active');//(true/false)
             $table->timestamps();
         });

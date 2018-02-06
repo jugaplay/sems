@@ -5,15 +5,15 @@ php artisan make:migration users_billing_data --create 	users_billing_data
 php artisan make:migration locals --create locals
 php artisan make:migration notifications --create notifications
 php artisan make:migration notification_types --create notification_types
-php artisan make:migration company_sales --create company_sales 
+php artisan make:migration company_sales --create company_sales
 php artisan make:migration messages --create messages
-php artisan make:migration message_details --create message_details 
-php artisan make:migration bills --create bills 
-php artisan make:migration operations_bills --create operations_bills 
-php artisan make:migration vehicles --create vehicles 
+php artisan make:migration message_details --create message_details
+php artisan make:migration bills --create bills
+php artisan make:migration operations_bills --create operations_bills
+php artisan make:migration vehicles --create vehicles
 php artisan make:migration vehicles_users --create vehicles_users
 php artisan make:migration exeptuated_vehicles --create exeptuated_vehicles
-php artisan make:migration exeptuated_vehicles_blocks --create exeptuated_vehicles_blocks 
+php artisan make:migration exeptuated_vehicles_blocks --create exeptuated_vehicles_blocks
 php artisan make:migration operations --create operations
 php artisan make:migration operations_between_wallets --create operations_between_wallets
 php artisan make:migration wallets --create wallets
@@ -33,7 +33,7 @@ php artisan make:migration costs --create costs
 
 =================================================================================
 $table->string('user_id')
-$table->string('latitude')
+$table->string('latlng')
 $table->string('longitude')
 $table->string('fee') (default es 0)
 $table->string('verified')
@@ -134,7 +134,7 @@ $table->string('time');
 $table->dateTime('start_time');
 $table->dateTime('end_time');
 $table->string('block_id');
-$table->string('latitude');
+$table->string('latlnge');
 $table->string('longitude');
 $table->string('check')->nullable(); (null/user_id que lo chequeo)
 $table->string('operation_id')->nullable();
@@ -150,7 +150,7 @@ $table->string('company');
 $table->string('start_time');
 $table->string('end_time');
 $table->string('block_id');
-$table->string('latitude');
+$table->string('latlnge');
 $table->string('longitude');
 $table->string('operation_id')->nullable();
 $table->string('type'); //(container/load unload)
@@ -170,7 +170,7 @@ $table->string('voluntary_end_date');
 $table->string('close_date')->nullable();
 $table->string('close_cost')->nullable();
 $table->string('operation_id')->nullable();
-$table->string('latitude');
+$table->string('latlnge');
 $table->string('longitude');
 $table->string('block_id')->nullable();
 $table->foreign('user_id')->references('id')->on('users');
@@ -195,9 +195,9 @@ $table->string('visible_type'); // (ex: infringement)
 $table->string('visible_id');
 $table->string('url',255);
 
-$table->string('latitude_1');
+$table->string('latlnge_1');
 $table->string('longitude_1');
-$table->string('latitude_2');
+$table->string('latlnge_2');
 $table->string('longitude_2');
 $table->string('street');
 $table->string('numeration_max');
@@ -218,7 +218,7 @@ $table->string('ip');
 $table->string('device_type')->nullable;;
 $table->string('platform');
 $table->string('os')->nullable;;
-$table->string('latitude')->nullable;;
+$table->string('latlnge')->nullable;;
 $table->string('longitude')->nullable;;
 $table->string('version');
 $table->foreign('user_id')->references('id')->on('users');
@@ -233,7 +233,7 @@ $table->date('end_date')->default('2999-12-31');
 $table->string('pirority')->nullable;
 $table->string('cost')->nullable;
 $table->string('type');
-$table->smallInteger('day_starts')->unsigned(); 
+$table->smallInteger('day_starts')->unsigned();
 $table->smallInteger('day_end')->unsigned();
 
 
@@ -319,7 +319,7 @@ php artisan make:controller CostController --resource --model=Cost
 
     public function user(){
       return $this->belongsTo('App\User');
-    }  
+    }
 
 
 *php artisan make:factory AreaBlockTableFactory --model=AreaBlock  ==> Error en el nombre

@@ -15,17 +15,11 @@ class Blocks extends Migration
     {
         Schema::create('blocks', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('latitude_1');
-            $table->string('longitude_1');
-            $table->string('latitude_2');
-            $table->string('longitude_2');
-            $table->string('latitude_3');
-            $table->string('longitude_3');
-            $table->string('latitude_4');
-            $table->string('longitude_4');
+            $table->text('latLng'); // se incluyen los 4 puntos como json
             $table->string('street');
             $table->integer('numeration_max');
             $table->integer('numeration_min');
+            $table->integer('spaces');
             $table->timestamps();
         });
     }

@@ -21,8 +21,7 @@ class Tickets extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->integer('block_id')->unsigned();
-            $table->string('latitude');
-            $table->string('longitude');
+            $table->string('latlng');
             $table->integer('check')->nullable(); //(null/user_id que lo chequeo)
             $table->integer('operation_id')->nullable()->unsigned();
             $table->string('token');

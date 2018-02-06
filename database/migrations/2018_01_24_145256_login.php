@@ -20,8 +20,7 @@ class Login extends Migration
             $table->string('device_type')->nullable;;
             $table->string('platform');
             $table->string('os')->nullable;;
-            $table->string('latitude')->nullable;;
-            $table->string('longitude')->nullable;;
+            $table->string('latlng')->nullable;;
             $table->string('version');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

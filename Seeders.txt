@@ -1,5 +1,5 @@
 
-Para instalar laravel en español ==> composer require laraveles/spanish
+Para instalar laravel en espaï¿½ol ==> composer require laraveles/spanish
 
 despues agregar en config/app.php en la seccion providers
 
@@ -11,33 +11,33 @@ despues agregar en config/app.php en la seccion providers
 y despues actualizar con ==> php artisan vendor:publish --tag=lang
 
 
-Déspues de todos estos pasos, ya tenemos disponible nuestras traducciones en español, y solo necesitamos configurar Laravel para que use el idioma deseado.
+Dï¿½spues de todos estos pasos, ya tenemos disponible nuestras traducciones en espaï¿½ol, y solo necesitamos configurar Laravel para que use el idioma deseado.
 
 
-// Ej: español
+// Ej: espaï¿½ol
 'locale'          => 'es',
-// Ej: inglés
+// Ej: inglï¿½s
 'locale'          => 'en',
 
 Se puede ser mas concreto e indicar las variaciones de un lenguaje:
 
-// Inglés americano
+// Inglï¿½s americano
 'locale' => 'en_US'
-// Portugués de Portugal
+// Portuguï¿½s de Portugal
 'locale' => 'pt_PT'
 
-Pero en este caso nos valdrá con un español internacional para todos.
+Pero en este caso nos valdrï¿½ con un espaï¿½ol internacional para todos.
 
-También se puede cambiar el idioma en tiempo de ejecución utilizando el método setLocale de App. Este cambio no es permanente, en la siguiente ejecución se utilizará el valor de configuración por defecto:
+Tambiï¿½n se puede cambiar el idioma en tiempo de ejecuciï¿½n utilizando el mï¿½todo setLocale de App. Este cambio no es permanente, en la siguiente ejecuciï¿½n se utilizarï¿½ el valor de configuraciï¿½n por defecto:
 
 App::setLocale('es');
 
 
-Los seeder pueden tener cualquier nombre que necesites. La recomendación es indicar un nombre que te sirva para 
-saber exactamente para qué se creó ese seeder. 
-Por ejemplo podrás usar el nombre de la tabla que se va a alimentar y el sufijo "Seeder". 
-Además como los seeders en código son clases, colocaremos la primera letra en mayúscula por convención. 
-Algo como "UserSeeder" podría ser buen nombre o "UserTableSeeder".
+Los seeder pueden tener cualquier nombre que necesites. La recomendaciï¿½n es indicar un nombre que te sirva para
+saber exactamente para quï¿½ se creï¿½ ese seeder.
+Por ejemplo podrï¿½s usar el nombre de la tabla que se va a alimentar y el sufijo "Seeder".
+Ademï¿½s como los seeders en cï¿½digo son clases, colocaremos la primera letra en mayï¿½scula por convenciï¿½n.
+Algo como "UserSeeder" podrï¿½a ser buen nombre o "UserTableSeeder".
 
 Algunas funciones
 =================
@@ -54,18 +54,18 @@ $faker->creditCardNumber;
 $faker->sentence(4);
 $faker->unique->word(5);
 $faker->randomElement(['F','C','D']),
-$faker->latitude($min = -44, $max = -43),
+$faker->latlong($min = -44, $max = -43),
 $faker->longitude($min = -66, $max = -65),
 //////////////////////////
   $numero = $faker->unique->numberBetween(1,20);
   if(strlen($numero)<2){$numero = '0'.$numero;}
   $name = 'Causa Infraccion '.$numero;
-  
+
 
 
 
 *********************************
-El método random() obtiene un objeto aleatorio ya registrado previamente o crea uno si no se han registrado aún.
+El mï¿½todo random() obtiene un objeto aleatorio ya registrado previamente o crea uno si no se han registrado aï¿½n.
 *********************************
 'user_id' => $this->random('User')->id
 
@@ -118,4 +118,3 @@ Ejemplo de una lectrua de una a muchas
  //$contador = count($resultado)-1;
  //print_r($resultado);
  $patente = $resultado[0]->plate);
-

@@ -20,8 +20,7 @@ class SpaceReservatios extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->integer('block_id')->unsigned();
-            $table->string('latitude');
-            $table->string('longitude');
+            $table->string('latlng');
             $table->integer('operation_id')->nullable()->unsigned();
             $table->string('type'); //(container/load unload)
             $table->integer('size'); // (nro)

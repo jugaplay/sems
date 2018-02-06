@@ -14,8 +14,7 @@ class Ticket extends Model
       'start_time',
       'end_time',
       'block_id',
-      'latitude',
-      'longitude',
+      'latlng',
       'check', //(null/user_id que lo chequeo)
       'operation_id',
       'token',

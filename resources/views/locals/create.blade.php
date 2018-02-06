@@ -20,8 +20,7 @@ Tipo de Documento  <select name="document_type" id="document_type" class="form-c
 Nro Doc. <input type="text" name="document_number" id="document_number "value=""><br>
 fee <input type="text" name="fee" id="fee "value=""><br>
 
-latitude <input type="text" name="latitude" id="latitude "value=""><br>
-longitude <input type="text" name="longitude" id="longitude "value=""><br>
+latlng <input type="text" name="latlng" id="latlng "value=""><br>
 password <input type="password" name="password" id="password "value=""><br>
 
 <input type="hidden" name="type" id="type" value="local">
