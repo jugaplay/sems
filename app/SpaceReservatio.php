@@ -13,8 +13,7 @@ class SpaceReservatio extends Model
       'start_time',
       'end_time',
       'block_id',
-      'latitude',
-      'longitude',
+      'latlng',
       'operation_id',
       'type', // (container/load unload)
       'size' //(nro)

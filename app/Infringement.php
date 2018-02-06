@@ -19,8 +19,7 @@ class Infringement extends Model
       'close_date',
       'close_cost',
       'operation_id',
-      'latitude',
-      'longitude',
+      'latlng',
       'block_id',
     ];
 

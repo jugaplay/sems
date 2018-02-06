@@ -17,6 +17,7 @@ class ExeptuatedVehicles extends Migration
             $table->increments('id');
             $table->integer('vehicle_id')->unsigned();
             $table->string('detail');
+            $table->text('latlng');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->integer('operation_id')->nullable()->unsigned();

@@ -26,8 +26,7 @@ class Infringements extends Migration
             $table->string('close_date')->nullable();
             $table->decimal('close_cost',13,2)->nullable();
             $table->integer('operation_id')->nullable()->unsigned();
-            $table->string('latitude');
-            $table->string('longitude');
+            $table->string('latlng');
             $table->integer('block_id')->nullable()->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('operation_id')->references('id')->on('operations');

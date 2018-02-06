@@ -13,8 +13,7 @@ class Login extends Model
       'device_type',
       'platform',
       'os',
-      'latitude',
-      'longitude',
+      'latlng',
       'version',
     ];
 

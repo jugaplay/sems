@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Block;
+use App\Area;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,35 +41,20 @@ class BlocksController extends Controller
      */
     public function store(Request $request)
     {
-      $arrCordenadas = json_decode($request->input('Coordenadas'));
-      /*echo $request->input('name'). "\n";
-      echo $arrCordenadas[0][0]. "\n" ;
-      foreach ($arrCordenadas as $key => $value) {
-        # code...
-        echo($value[0].",".$value[1]);
-      }
-      */
 
       if(Auth::check()){
         $block=Block::create([
-          'latitude_1' => $arrCordenadas[0][0],
-          'longitude_1' => $arrCordenadas[0][1],
-          'latitude_2' => $arrCordenadas[1][0],
-          'longitude_2' => $arrCordenadas[1][1],
-          'latitude_3' => $arrCordenadas[2][0],
-          'longitude_3' => $arrCordenadas[2][1],
-          'latitude_4' => $arrCordenadas[3][0],
-          'longitude_4' => $arrCordenadas[3][1],
+          'latlng' => $request->input('latlng'),
           'street' => $request->input('street'),
-          'numeration_max' => $request->input('numeration_min'),
-          'numeration_min' => $request->input('numeration_max'),
+          'numeration_min' => $request->input('numeration_min'),
+          'numeration_max' => $request->input('numeration_max'),
+          'spaces' => $request->input('spaces'),
           //'user_id' => Auth::user()->id
       ]);
-      $id_block = $block->id; 
-      };
-
-        //
+      $id_block = $block->id;
       }
+      echo "Alta efectuada";
+    }
 
     /**
      * Display the specified resource.
@@ -89,6 +76,11 @@ class BlocksController extends Controller
     public function edit(Block $block)
     {
         //
+        //$users = User::all();
+        //return view('projects.edit',['project'=>$project,'users'=>$users]);
+        ///photos/{photo}/edit
+        return view('blocks.edit',['block'=>$block]);
+
     }
 
     /**
@@ -101,7 +93,58 @@ class BlocksController extends Controller
     public function update(Request $request, Block $block)
     {
         //
-    }
+        //dump($block);
+        if(Auth::check()){
+
+          $blockUpdate = Block::where('id', $block->id)
+                      ->update([
+                        'latlng' => $request->input('latlng'),
+                        'street' => $request->input('street'),
+                        'numeration_min' => $request->input('numeration_min'),
+                        'numeration_max' => $request->input('numeration_max'),
+                        'spaces' => $request->input('spaces'),
+                      ]);
+
+        $pointLocation = new pointLocation(); // Instancamos la clase
+        $pointCordenadas = json_decode($request->input('latlng'));
+        $pointSearched = array();
+        //Armar el punto
+        foreach ($pointCordenadas as $key => $value) {
+            $pointSearched[] = $value[0]." ".$value[1];
+        }
+        //dump($block->areas());
+        $block = Block::where('id', $block->id)->first();
+        //dd($block);
+
+        // Verifcar si sigue dentro de las areas_blocks
+        foreach ($block->areas as $area) { // es lo mismo que ==> $areas = $block->areas()->get();
+            //dd($area);
+            echo "Area =>".$area->id.'  '.$area->name.'   '.$area->latlng."</br>";
+            $arrCordenadas = json_decode($area->latlng);
+            $polygon = array();
+            // Armar el poligono
+            foreach ($arrCordenadas as $key => $value) {
+                $polygon[] = $value[0]." ".$value[1];
+            }
+            $polygon[] = $arrCordenadas[0][0]." ".$arrCordenadas[0][1]; // La ultima tiene que ser igual a la primera
+            $total = 0;
+            // Fijarse si los puntos estan en el area
+            foreach($pointSearched as $key => $point){
+              if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
+            }
+            if ($total == 4) { echo "Pertenece y ya esta asociada </br>";
+              # code...
+            }else {
+              echo "No pertenece y esta asociada. Se elimina </br>";
+            //  $block->areas()->detach($area->id); // Elimina la relacion entre el blocke y el areas
+            }
+        } // Fin de control si sigue en areas
+        $areasId = $block->areas()->pluck('area_id')->toArray();
+        $areas = Area::whereNotIn('id', $areasId)->get();
+        dd($areas);
+
+        }// fin Auth
+    } // Fin funcion update
 
     /**
      * Remove the specified resource from storage.

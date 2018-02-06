@@ -67,7 +67,7 @@ class ExeptuatedVehiclesController extends Controller
           'detail'              => $request->input('detail'),
           'start_time'          => $request->input('start_time'),
           'end_time'            => $request->input('end_time'),
-          //'operation_id'        => $request->input('operation_id'),
+          'latlng'              => $request->input('latlng'),
           'exeptuated_cause_id' => $request->input('exeptuated_cause_id'),
         ]);
         $id_exception = $exeptuatedVehicle->id;
@@ -76,7 +76,7 @@ class ExeptuatedVehiclesController extends Controller
         *** Grabar la operacion  ***
         ***************************/
         $operation = operation::create([
-           'type'    => 'exeptuatedVehicle', //(wallet/ticket/infringement)
+           'type'    => 'ExeptuatedVehicle', //(wallet/ticket/infringement)
            'type_id' => $id_exception,
            'amount'  => $request->input('amount'),
          ]);

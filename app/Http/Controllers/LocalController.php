@@ -95,8 +95,7 @@ class LocalController extends Controller
 
        $userLocal=Local::create([
           'user_id'    => $id_user,
-          'latitude'   => $request->input('latitude'),
-          'longitude'  => $request->input('longitude'),
+          'latlng'   => $request->input('latlng'),
           'fee'        => $request->input('fee'),       //(default es 0)
           'verified'   => 1,
           'address'    => $request->input('address'),

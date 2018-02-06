@@ -10,6 +10,7 @@ class ExeptuatedVehicle extends Model
     protected $fillable = [
       'vehicle_id',
       'detail',
+      'latlng',
       'start_time',
       'end_time',
       'operation_id',

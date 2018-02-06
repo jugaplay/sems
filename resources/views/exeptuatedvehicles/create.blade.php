@@ -13,6 +13,7 @@ Causa
 Desde <input type="text" name="start_time"  id="start_time" value=""><br>
 Hasta <input type="text" name="end_time"  id="end_time" value=""><br>
 details <textarea name="detail" id="details" rows="8" cols="80"></textarea> <br>
-Imporyte <input type="text" name="amount"  id="amount" value=""><br>
+latlng <textarea name="latlng" id="latlng" rows="8" cols="80"></textarea> <br>
+amount <input type="text" name="amount"  id="amount" value=""><br>
   <input type="submit" name="enviar" value="Enviar">
 </form>

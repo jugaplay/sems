@@ -29,6 +29,7 @@ Route::resource('locals','LocalController');
 Route::resource('blocks','BlocksController');
 Route::resource('areas','AreasController');
 Route::resource('exeptuatedvehicles','ExeptuatedVehiclesController');
+Route::resource('spacereservatios','SpacesReservatiosController');
 
 
 
