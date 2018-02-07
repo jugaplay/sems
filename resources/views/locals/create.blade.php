@@ -27,19 +27,3 @@ password <input type="password" name="password" id="password "value=""><br>
 <input type="hidden" name="account_status" id="account_status" value="N">
 <input type="submit" name="enviar" value="Enviar">
 </form>
- <!--
- 'name',
- 'email',
- 'password',
- 'phone',
- 'type' (local/driver/inspector/assistant/judge/admin/super user/city hall),
- 'account_status',
-
-bussines_name
-tax_treatment
-address
-city
-state
-document_type
-document_number
--->

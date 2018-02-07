@@ -70,17 +70,16 @@ class LocalController extends Controller
           'type' => $request->input('type'),
           'account_status' => $request->input('account_status'),
           'password' => bcrypt($request->input('password')),
-        //'user_id' => Auth::user()->id
         ]);
         $id_user = $user->id; // Retorna el id del insert ejecutado
-        // Generar una wallets
+        // Generar una billetera
         $userLocla=Wallet::create([
             'user_id' => $id_user,
             'balance' => 0,
             'chips'   => 0,
             'credit'  => 0,
             ]);
-            echo "Billetera creada =>".$id_user. "\n" ;
+       // Genra datos empresa
        $userLocal=UsersBillingData::create([
             'user_id'         => $id_user,
             'bussines_name'   => $request->input('bussines_name'),
@@ -92,7 +91,7 @@ class LocalController extends Controller
             'document_number' => $request->input('document_number'),
              ]);
              echo "UsersBillingData creada =>".$id_user. "\n" ;
-
+       // Genera datos local
        $userLocal=Local::create([
           'user_id'    => $id_user,
           'latlng'   => $request->input('latlng'),
@@ -100,7 +99,6 @@ class LocalController extends Controller
           'verified'   => 1,
           'address'    => $request->input('address'),
         ]);
-          echo "Local creada =>".$id_user. "\n" ;
 
         }
       }
@@ -123,9 +121,14 @@ class LocalController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($local_id=null)
     {
-        //
+        $user = User::where('id', $local_id)->first();
+        $local=Local::where('user_id', $local_id)->first();
+        $usersBillingData=UsersBillingData::where('user_id', $local_id)->first();
+        $wallet=Wallet::where('user_id', $local_id)->first();
+        return view('locals.edit',['user'=>$user,'local'=>$local,'usersBillingData'=>$usersBillingData,'wallet'=>$wallet]);
+
     }
 
     /**
@@ -138,7 +141,33 @@ class LocalController extends Controller
     public function update(Request $request, User $user)
     {
         //
-    }
+        //dd($request->input('user_id'));
+        $userUpdate = User::where('id', $request->input('user_id'))
+                    ->update([
+                      'name' => $request->input('bussines_name'),
+                      'email' => $request->input('email'),
+                      'phone' => $request->input('phone'),
+                      'type' => $request->input('type'),
+                      'password' => bcrypt($request->input('password')),
+                    ]);
+        $sersBillingDataUpdate = UsersBillingData::where('user_id', $request->input('user_id'))
+                    ->update([
+                      'bussines_name'   => $request->input('bussines_name'),
+                      'tax_treatment'   => $request->input('tax_treatment'),
+                      'address'         => $request->input('address_billing'),
+                      'city'            => $request->input('city'),
+                      'state'           => $request->input('state'),
+                      'document_type'   => $request->input('document_type'),
+                      'document_number' => $request->input('document_number'),
+                    ]);
+        $localUpdate = Local::where('id', $request->input('user_id'))
+                    ->update([
+                      'latlng'   => $request->input('latlng'),
+                      'fee'        => $request->input('fee'),       //(default es 0)
+                      'verified'   => 1,
+                      'address'    => $request->input('address'),
+                    ]);
+    } // Fin funcion update
 
     /**
      * Remove the specified resource from storage.
@@ -149,5 +178,21 @@ class LocalController extends Controller
     public function destroy(User $user)
     {
         //
+        $findLocal = Local::find( $user->id);
+        if($findLocal->delete()){
+                //redirect
+                return redirect()->route('locals.index')
+                ->with('success' , 'Local deleted successfully');
+            }
+    }
+
+    public function delete($local_id=null)
+    {
+        //
+        $user = User::where('id', $local_id)->first();
+        $usersBillingData=UsersBillingData::where('user_id', $local_id)->first();
+        $wallet=Wallet::where('user_id', $local_id)->first();
+        return view('locals.delete',['user'=>$user,'usersBillingData'=>$usersBillingData,'wallet'=>$wallet]);//->with($findProject);
+
     }
 }
