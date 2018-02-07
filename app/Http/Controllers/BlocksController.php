@@ -53,7 +53,23 @@ class BlocksController extends Controller
       ]);
       $id_block = $block->id;
       }
-      echo "Alta efectuada";
+      /*******************************************
+      *** Controlar si pertenece a alguna area ***
+      *******************************************/
+      $pointLocation = new pointLocation(); // Instancamos la clase
+      $pointSearched = $pointLocation->makePoint(json_decode($request->input('latlng')));
+
+      $areas = Area::all();
+      foreach($areas as $key => $area){
+      // Armar el poligono
+          $polygon = $pointLocation->makePolygon(json_decode($area->latlng));
+          $total = 0;
+          foreach($pointSearched as $key => $point){
+              if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
+          }
+          if ($total == 4) {$area->blocks()->attach($block->id);}
+      }
+
     }
 
     /**
@@ -76,6 +92,7 @@ class BlocksController extends Controller
     public function edit(Block $block)
     {
         //
+        dd($block);
         //$users = User::all();
         //return view('projects.edit',['project'=>$project,'users'=>$users]);
         ///photos/{photo}/edit
@@ -93,7 +110,6 @@ class BlocksController extends Controller
     public function update(Request $request, Block $block)
     {
         //
-        //dump($block);
         if(Auth::check()){
 
           $blockUpdate = Block::where('id', $block->id)
@@ -109,39 +125,41 @@ class BlocksController extends Controller
         $pointCordenadas = json_decode($request->input('latlng'));
         $pointSearched = array();
         //Armar el punto
-        foreach ($pointCordenadas as $key => $value) {
-            $pointSearched[] = $value[0]." ".$value[1];
-        }
-        //dump($block->areas());
-        $block = Block::where('id', $block->id)->first();
-        //dd($block);
+        $pointSearched = $pointLocation->makePoint($pointCordenadas);
 
-        // Verifcar si sigue dentro de las areas_blocks
+        $block = Block::where('id', $block->id)->first();
+
+        /************************************************************************************
+        *** Controlar si sigue dentro del areas a las cuales esta asociada (areas_blocks) ***
+        ************************************************************************************/
         foreach ($block->areas as $area) { // es lo mismo que ==> $areas = $block->areas()->get();
-            //dd($area);
-            echo "Area =>".$area->id.'  '.$area->name.'   '.$area->latlng."</br>";
             $arrCordenadas = json_decode($area->latlng);
             $polygon = array();
             // Armar el poligono
-            foreach ($arrCordenadas as $key => $value) {
-                $polygon[] = $value[0]." ".$value[1];
-            }
-            $polygon[] = $arrCordenadas[0][0]." ".$arrCordenadas[0][1]; // La ultima tiene que ser igual a la primera
-            $total = 0;
+            $polygon = $pointLocation->makePolygon($arrCordenadas);
             // Fijarse si los puntos estan en el area
+            $total = 0;
             foreach($pointSearched as $key => $point){
               if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
             }
-            if ($total == 4) { echo "Pertenece y ya esta asociada </br>";
-              # code...
-            }else {
-              echo "No pertenece y esta asociada. Se elimina </br>";
-            //  $block->areas()->detach($area->id); // Elimina la relacion entre el blocke y el areas
-            }
+            if ($total <> 4){$block->areas()->detach($area->id);} // Elimina la relacion entre el blocke y el areas
+
         } // Fin de control si sigue en areas
+        /************************************
+        *** Controlar las areas faltantes ***
+        ************************************/
         $areasId = $block->areas()->pluck('area_id')->toArray();
         $areas = Area::whereNotIn('id', $areasId)->get();
-        dd($areas);
+        foreach($areas as $key => $area){
+        // Armar el poligono
+            $polygon = $pointLocation->makePolygon(json_decode($area->latlng));
+            $total = 0;
+            foreach($pointSearched as $key => $point){
+                if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
+            }
+            if ($total == 4) {$area->blocks()->attach($block->id);}
+        }
+
 
         }// fin Auth
     } // Fin funcion update
@@ -155,5 +173,17 @@ class BlocksController extends Controller
     public function destroy(Block $block)
     {
         //
+        $areasId = $block->areas()->pluck('area_id')->toArray();
+        $block->areas()->detach($areasId); // Elimina todos los ID
+    }
+
+    public function delete($block_id=null)
+    {
+        //
+        //$findProject = Project::find($project_id);
+        $findBlock = Block::where('id', $block_id)->first();
+        //dump($findProject);
+        return view('blocks.delete',['findBlock'=>$findBlock]);//->with($findProject);
+
     }
 }

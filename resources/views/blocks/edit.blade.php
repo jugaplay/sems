@@ -1,3 +1,4 @@
+<h1>Entro al edit de blocks</h1>
 <form method="post" action="{{ route('blocks.update',[$block->id]) }}" >
     {{csrf_field()}}
     <input type="hidden" name="_method" value="PUT">

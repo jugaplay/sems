@@ -78,5 +78,25 @@ class pointLocation {
         return array("x" => $coordinates[0], "y" => $coordinates[1]);
     }
 
+    // Matias 20180207
+    function makePolygon($latLngPolygon){
+      // Generar el poygono de la zona. Se debe pasar un array
+      $polygon = array();
+      foreach ($latLngPolygon as $key => $value) {
+          $polygon[] = $value[0]." ".$value[1];
+      }
+      $polygon[] = $latLngPolygon[0][0]." ".$latLngPolygon[0][1]; // La ultima tiene que ser igual a la primera
+      return $polygon;
+    }
+
+    function makePoint($latLngPoint){
+      // Generar los puntos a buscar. Se debe pasar un array
+      $pointSearched = array();
+      foreach ($latLngPoint as $key => $value) {
+          $pointSearched[] = $value[0]." ".$value[1];
+      }
+      return $pointSearched;
+    }
+
 }
 ?>

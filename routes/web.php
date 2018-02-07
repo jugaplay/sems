@@ -23,10 +23,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/users/vehicles','UserController@userVehicles')->name('user.vehicles.index');
 Route::post('/users/vehicles','UserController@associateVehicle')->name('user.vehicles.save');
 // corre esta funcion (userVehicles) con este control (UserController)
-
 Route::resource('users','UserController');
+
+Route::get('locals/delete/{local_id?}', 'LocalController@delete');
 Route::resource('locals','LocalController');
+
+Route::get('blocks/delete/{block_id?}', 'BlocksController@delete');
 Route::resource('blocks','BlocksController');
+
 Route::resource('areas','AreasController');
 Route::resource('exeptuatedvehicles','ExeptuatedVehiclesController');
 Route::resource('spacereservatios','SpacesReservatiosController');
