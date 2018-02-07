@@ -1,0 +1,32 @@
+@guest
+  @include('sidebar.guest')
+@else
+  @switch(Auth::user()->type)
+      @case("admsuper")
+          @include('sidebar.admsuper')
+          @break
+      @case("adm")
+          @include('sidebar.adm')
+          @break
+      @case("city")
+          @include('sidebar.city')
+          @break
+      @case("judge")
+          @include('sidebar.judge')
+          @break
+      @case("driver")
+          @include('sidebar.driver')
+          @break
+      @case("local")
+          @include('sidebar.local')
+          @break
+      @case("assistant")
+          @include('sidebar.assistant')
+          @break
+      @case("inspector")
+          @include('sidebar.inspector')
+          @break
+      @default
+          @include('sidebar.guest')
+  @endswitch
+@endguest

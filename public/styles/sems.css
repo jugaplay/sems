@@ -1,0 +1,42 @@
+/* MENU */
+/*  - Billetera */
+.credit{
+  font-weight: bold;
+  background: #51565d;
+}
+.credit.less{
+  color: #f59c9c;
+}
+.credit.plus{
+  color: #9cf5a4;
+}
+/* - Nick/Usuario */
+.sidebar-block .nick{
+  max-width: 75%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+/* MENU */
+/*  - Billetera */
+.headline.credit.less{
+  background: transparent;
+  color: #ef7d7d;
+}
+.headline.credit.plus{
+  background: transparent;
+  color: #8bc34a;
+}
+/* GENERAL */
+/* input */
+.input-group.cost{
+  background: #48cfad47;
+}
+.input-group.cost.no-credit{
+  background: #cf484847;
+}
+/* Forms */
+.panel-body.big-bootbox{
+  max-height: 60vh;
+  overflow: auto;
+}

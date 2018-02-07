@@ -1,0 +1,32 @@
+@guest
+  @include('nav.guest')
+@else
+  @switch(Auth::user()->type)
+      @case("admsuper")
+          @include('nav.admsuper')
+          @break
+      @case("adm")
+          @include('nav.adm')
+          @break
+      @case("city")
+          @include('nav.city')
+          @break
+      @case("judge")
+          @include('nav.judge')
+          @break
+      @case("driver")
+          @include('nav.driver')
+          @break
+      @case("local")
+          @include('nav.local')
+          @break
+      @case("assistant")
+          @include('nav.assistant')
+          @break
+      @case("inspector")
+          @include('nav.inspector')
+          @break
+      @default
+          @include('nav.guest')
+  @endswitch
+@endguest
