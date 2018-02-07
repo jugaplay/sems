@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html class="no-js">
-<head>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<html lang="{{ app()->getLocale() }}" class="no-js">
+  <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=yes">
+
+  <title>{{ config('app.name', 'Laravel') }}</title>
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>{{ config('app.name', 'Laravel') }}</title>
-
 
   <!-- favicon.ico and apple-touch-icon.png -->
   <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
   <link rel="manifest" href="/images/favicons/manifest.json">
   <meta name="msapplication-TileColor" content="#2d89ef">
-  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="msapplication-TileImage" content="images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
   <link href="/styles/fonts.css" rel="stylesheet" type="text/css">
@@ -36,87 +36,27 @@
   <link rel="stylesheet" href="/styles/wrapkit.css">
 
   <link rel="stylesheet" href="/styles/pages.css">
-
-  <link rel="stylesheet" href="/styles/sems.css">
 </head>
-<body>
+<body class="bg-grd-blue">
+  <!--[if lt IE 9]>
+  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="/http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
 
-    <main class="wrapkit-wrapper" id="wrapper">
-
-    <!-- ============================================
-    HEADER SECTION
-    =============================================== -->
-    <!-- navigation -->
-    @include('nav.index')
-
-
-
-    <!-- ============================================
-    SIDEBAR SECTION
-    =============================================== -->
-    @include('sidebar.index')
-
-
-
-
-    <!-- ============================================
-    MAIN CONTENT SECTION
-    =============================================== -->
-    @yield('content')
-    <!-- /MAIN -->
-
-
-
-    <!-- ============================================
-    FOOTER SECTION
-    =============================================== -->
-    <footer class="footer-wrapper" role="contentinfo">
-      <div class="footer">
-        <div class="pull-right text-muted"><small>v1.0</small></div>
-        <div>SEMS  &copy; 2018</div>
-      </div>
-    </footer><!-- /.FOOTER -->
-
-  </main><!-- /#MAIN -->
+  @yield('content')
 
 
   <!-- VENDORS : jQuery & Bootstrap -->
   <script src="/scripts/vendor.js"></script>
   <!-- END VENDORS -->
-
   <!-- DEPENDENCIES : Required plugins -->
   <script src="/scripts/dependencies.js"></script>
   <!-- END DEPENDENCIES -->
-
-  <!-- WRAPKIT -->
-  <script src="/scripts/wrapkit.js"></script>
-  <!-- END WRAPKIT -->
-
-  <!-- WRAPKIT SETUPS -->
-  <script src="/scripts/wrapkit-setup.js"></script>
-  <!-- end WRAPKIT SETUPS -->
-
   <!-- PLUGIN SETUPS: vendors & dependencies setups -->
   <script src="/scripts/plugin-setups.js"></script>
   <!-- END PLUGIN SETUPS -->
 
-  <!-- COMPONENTS -->
-  <script src="/scripts/bootbox.js"></script>
-  <!-- END COMPONENTS -->
 
 
-  </script>
-
-  <!-- Google Analytics: change UA-71722129-1 to be your site's ID.
-  <script>
-    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-    e.src='../../../../../www.google-analytics.com/analytics.js';
-    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-    ga('create','UA-71722129-1');ga('send','pageview');
-  </script>  -->
 </body>
 
-<!-- Mirrored from stilearning.com/items/preview/wrapkit/1.2/page-timeline.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 18 Dec 2017 13:33:35 GMT -->
 </html>
