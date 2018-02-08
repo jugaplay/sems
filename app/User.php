@@ -36,5 +36,17 @@ class User extends Authenticatable
       return $this->belongsToMany('App\Vehicle',$table='vehicle_users')->withTimestamps();
     }
 
+    public function wallet(){
+      return $this->belongsTo('App\Wallet');
+    }
+
+    public function local(){
+      return $this->belongsTo('App\Local');
+    }
+
+    public function userBillingData(){
+      return $this->belongsTo('App\UsersBillingData');
+    }
+
 
 }

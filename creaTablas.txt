@@ -18,7 +18,7 @@ php artisan make:migration operations --create operations
 php artisan make:migration operations_between_wallets --create operations_between_wallets
 php artisan make:migration wallets --create wallets
 php artisan make:migration tickets --create tickets
-php artisan make:migration space_reservatios --create space_reservatios
+php artisan make:migration space_reservations --create space_reservations
 php artisan make:migration infringements --create infringements
 php artisan make:migration infringement_details --create infringement_details
 php artisan make:migration infringement_causes --create infringement_causes
@@ -264,7 +264,7 @@ php artisan make:seeder ExeptuatedCausesTableSeeder
 *php artisan make:model OperationBetweenWallet
 *php artisan make:model Wallet
 *php artisan make:model Ticket
-*php artisan make:model SpaceReservatio
+*php artisan make:model SpaceReservation
 *php artisan make:model Infringement
 *php artisan make:model InfringementDetail
 *php artisan make:model InfringementCause
@@ -297,7 +297,7 @@ php artisan make:controller OperationsController --resource --model=Operation
 php artisan make:controller OperationsBetweenWalletsController --resource --model=OperationBetweenWallet
 php artisan make:controller WalletsController --resource --model=Wallet
 php artisan make:controller TicketsController --resource --model=Ticket
-php artisan make:controller SpacesReservatiosController --resource --model=SpaceReservatio
+php artisan make:controller SpacesReservationsController --resource --model=SpaceReservation
 php artisan make:controller InfringementsController --resource --model=Infringement
 php artisan make:controller InfringementDetailsController --resource --model=InfringementDetail
 php artisan make:controller InfringementCausesController --resource --model=InfringementCause
@@ -343,7 +343,7 @@ php artisan make:controller CostController --resource --model=Cost
 ********php artisan make:factory OperationBetweenWalletTableFactory --model=OperationBetweenWallet ==> Error en el nombre ******** No pude solucionarlo
 *php artisan make:factory OperationBillTableFactory --model=OperationsBill
 *php artisan make:factory OperationTableFactory --model=Operation
-*php artisan make:factory SpaceReservatioTableFactory --model=SpaceReservatio
+*php artisan make:factory SpaceReservationTableFactory --model=SpaceReservation
 *php artisan make:factory TicketTableFactory --model=Ticket
 *php artisan make:factory UserBillingDataTableFactory --model=UserBillingData ==> Error en el nombre
 *php artisan make:factory VehicleTableFactory --model=Vehicle
@@ -373,7 +373,7 @@ php artisan make:controller CostController --resource --model=Cost
 *php artisan make:seeder OperationBetweenWalletTableSeeder
 *php artisan make:seeder OperationBillTableSeeder
 *php artisan make:seeder OperationTableSeeder
-*php artisan make:seeder SpaceReservatioTableSeeder
+*php artisan make:seeder SpaceReservationTableSeeder
 *php artisan make:seeder TicketTableSeeder
 *php artisan make:seeder UserBillingDataTableSeeder
 *php artisan make:seeder VehicleTableSeeder

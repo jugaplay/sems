@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class SpaceReservatios extends Migration
+class SpaceReservations extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class SpaceReservatios extends Migration
      */
     public function up()
     {
-        Schema::create('space_reservatios', function (Blueprint $table) {
+        Schema::create('space_reservations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('identifier');
             $table->string('company');
@@ -37,6 +37,6 @@ class SpaceReservatios extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('space_reservatios');
+        Schema::dropIfExists('space_reservations');
     }
 }

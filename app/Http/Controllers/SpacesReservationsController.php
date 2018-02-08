@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\SpaceReservatio;
+use App\SpaceReservation;
 use App\Block;
 use App\Operation;
 use App\Bill;
@@ -12,7 +12,7 @@ use App\CompanySale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SpacesReservatiosController extends Controller
+class SpacesReservationsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class SpacesReservatiosController extends Controller
     public function index()
     {
         //
-        return view('spacereservatios.index');
+        return view('spacereservations.index');
     }
 
     /**
@@ -34,7 +34,7 @@ class SpacesReservatiosController extends Controller
     {
         //
         $blocks = Block::all();
-        return view('spacereservatios.create',['blocks'=>$blocks]);
+        return view('spacereservations.create',['blocks'=>$blocks]);
     }
 
     /**
@@ -49,9 +49,9 @@ class SpacesReservatiosController extends Controller
         echo "Grabar"."<br>";
         echo "Calle ".$request->block;
     /****************************************
-    *** Grabar la tabla space_reservatios ***
+    *** Grabar la tabla space_reservations ***
     ****************************************/
-    $spacesreservatio = SpaceReservatio::create([
+    $spacesreservatio = SpaceReservation::create([
         'identifier'    => $request->identifier,
         'company'       => $request->company,
         'start_time'    => $request->start_time,
@@ -68,13 +68,13 @@ class SpacesReservatiosController extends Controller
     *** Grabar la operacion  ***
     ***************************/
     $operation = operation::create([
-       'type'    => 'SpaceReservatio', //(wallet/ticket/infringement)
+       'type'    => 'SpaceReservation', //(wallet/ticket/infringement)
        'type_id' => $spacesreservatio->id,
        'amount'  => $request->input('amount'),
      ]);
      $id_operation = $operation->id;
-     # Actualizar la tabla space_reservatios con el ID de la operacion.
-     SpaceReservatio::where('id', $spacesreservatio->id)
+     # Actualizar la tabla space_reservations con el ID de la operacion.
+     SpaceReservation::where('id', $spacesreservatio->id)
         ->update(['operation_id' => $operation->id]);
 
         /***************************
@@ -124,10 +124,10 @@ class SpacesReservatiosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\SpaceReservatio  $spaceReservatio
+     * @param  \App\SpaceReservation  $spaceReservatio
      * @return \Illuminate\Http\Response
      */
-    public function show(SpaceReservatio $spaceReservatio)
+    public function show(SpaceReservation $spaceReservatio)
     {
         //
     }
@@ -135,10 +135,10 @@ class SpacesReservatiosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SpaceReservatio  $spaceReservatio
+     * @param  \App\SpaceReservation  $spaceReservatio
      * @return \Illuminate\Http\Response
      */
-    public function edit(SpaceReservatio $spaceReservatio)
+    public function edit(SpaceReservation $spaceReservatio)
     {
         //
     }
@@ -147,10 +147,10 @@ class SpacesReservatiosController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SpaceReservatio  $spaceReservatio
+     * @param  \App\SpaceReservation  $spaceReservatio
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SpaceReservatio $spaceReservatio)
+    public function update(Request $request, SpaceReservation $spaceReservatio)
     {
         //
     }
@@ -158,10 +158,10 @@ class SpacesReservatiosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SpaceReservatio  $spaceReservatio
+     * @param  \App\SpaceReservation  $spaceReservatio
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SpaceReservatio $spaceReservatio)
+    public function destroy(SpaceReservation $spaceReservatio)
     {
         //
     }

@@ -1,5 +1,5 @@
-<h1>create de SpaceReservatios</h1>
-<form method="post" action="{{ route('spacereservatios.store') }}" >
+<h1>create de SpaceReservations</h1>
+<form method="post" action="{{ route('spacereservations.store') }}" >
     {{csrf_field()}}
 identifier <input type="text" name="identifier" id="identifier" value=""><br>
 company <input type="text" name="company" id="company" value=""><br>
