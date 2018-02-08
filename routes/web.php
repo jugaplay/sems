@@ -29,6 +29,7 @@ Route::get('locals/delete/{local_id?}', 'LocalController@delete');
 Route::resource('locals','LocalController');
 
 Route::get('blocks/delete/{block_id?}', 'BlocksController@delete');
+Route::get('blocks/all','BlocksController@showAll')->name('blocks.showall');
 Route::resource('blocks','BlocksController');
 
 Route::resource('areas','AreasController');

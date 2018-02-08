@@ -53,7 +53,7 @@
                 <!-- /.panel-body -->
 
                 <div class="panel-body hide" id="addFormContainer">
-                    <form id="formAddDatatables1" action="#" method="POST">
+                    <form id="formAddDatatables1" action="{{ route('blocks.store') }}"  method="POST">
                         <div class="form-group">
                             <p class="lead">Agregar nueva calle</p>
                             <div class="row">
@@ -65,13 +65,13 @@
                                 <!-- /.cols -->
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <input name="createMail" id="createMaxNum" type="number" class="form-control input-sm" placeholder="Número máximo" autocomplete="off" required="">
+                                        <input name="createMaxNum" id="createMaxNum" type="number" class="form-control input-sm" placeholder="Número máximo" autocomplete="off" required="">
                                     </div>
                                 </div>
                                 <!-- /.cols -->
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <input name="createPhone" id="createMinNum" type="number" class="form-control input-sm" placeholder="Número mínimo" autocomplete="off" required="">
+                                        <input name="createMinNum" id="createMinNum" type="number" class="form-control input-sm" placeholder="Número mínimo" autocomplete="off" required="">
                                     </div>
                                 </div>
                                 <!-- /.cols -->
@@ -102,8 +102,9 @@
                         <!-- /.form-group -->
 
                         <div class="form-grouphide">
+                            {{csrf_field()}}
                             <button id="hideAddDatatables1" class="btn btn-default btn-sm">Cancelar</button>
-                            <button type="submit" class="btn btn-success btn-sm">Crear</button>
+                            <button type="submit" class="btn btn-success btn-sm"  data-loading-text="<i class='fa fa-spinner fa-spin '></i> Creando">Crear</button>
                         </div>
                         <!-- /.form-group -->
                     </form>
@@ -163,8 +164,9 @@
                         <!-- /.form-group -->
 
                         <div class="form-group">
+                            {{csrf_field()}}
                             <button id="hideEditDatatables1" class="btn btn-default btn-sm">Cancelar</button>
-                            <button type="submit" class="btn btn-primary btn-sm">Guardar cambios</button>
+                            <button type="submit" class="btn btn-primary btn-sm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Editando">Guardar cambios</button>
                         </div>
                         <!-- /.form-group -->
                     </form>

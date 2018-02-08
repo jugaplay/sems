@@ -102,6 +102,8 @@
 
   <!-- COMPONENTS -->
   <script src="/scripts/bootbox.js"></script>
+
+  <script src="/scripts/toastr.js"></script>
   <!-- END COMPONENTS -->
   @stack('scripts')
 
