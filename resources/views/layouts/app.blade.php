@@ -103,7 +103,7 @@
   <!-- COMPONENTS -->
   <script src="/scripts/bootbox.js"></script>
   <!-- END COMPONENTS -->
-
+  @stack('scripts')
 
   </script>
 

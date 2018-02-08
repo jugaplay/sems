@@ -15,7 +15,7 @@
     'oLanguage': {
       'sInfoFiltered': '<span class="label label-info"><i class="fa fa-filter"></i> filtrado de _MAX_ registros</span>',
     },
-    'sAjaxSource': '../_includes/data-adm-streets-source.json', // Aca van los datos y los carga con Ajax?!
+    'sAjaxSource': '_includes/data-adm-streets-source.json', // Aca van los datos y los carga con Ajax?!
     'fnInitComplete': function(settings) {
       var aoData = settings.aoData;
 

@@ -3,7 +3,7 @@
   <div class="sidebar-block" style="">
     <div class="media">
       <div class="media-left">
-        <a href="page-profile.html">
+        <a href="{{ route('home') }}">
           <img class="media-object img-circle" src="images/dummy/uifaces13.jpg" alt="photo profile">
         </a>
       </div>
@@ -47,7 +47,7 @@
         </a>
       </li>
       <li class="nav-item" role="presentation">
-        <a href="streets.html">
+        <a href="{{ route('blocks.index') }}">
           <span class="nav-icon"><i class="fa fa-map-signs"></i></span>
           <span class="nav-text">Calles</span>
         </a>
