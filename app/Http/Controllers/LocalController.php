@@ -124,11 +124,23 @@ class LocalController extends Controller
     public function edit($local_id=null)
     {
         $user = User::where('id', $local_id)->first();
+        //dd($user);
+
         $local=Local::where('user_id', $local_id)->first();
         $usersBillingData=UsersBillingData::where('user_id', $local_id)->first();
         $wallet=Wallet::where('user_id', $local_id)->first();
+        /*****************************************
+        Cuando quieros usar estas funciones no me trae nada.
+        Estan creadas en App\User.
+        Probe ponerlas en App\Local pero tampoco
+        $local= $user->local();
+        $usersBillingData=$user->userBillingData();
+        $wallet=$user->wallet();
+        //dump($local);
+        //dump($usersBillingData);
+        //dump($wallet);
+        *******************************************/
         return view('locals.edit',['user'=>$user,'local'=>$local,'usersBillingData'=>$usersBillingData,'wallet'=>$wallet]);
-
     }
 
     /**

@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
                                'operations',
                                'operation_between_wallets',
                                'operation_bills',
-                               'space_reservatios',
+                               'space_reservations',
                                'tickets',
                                'users',
                                'users_billing_datas',

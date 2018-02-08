@@ -33,7 +33,7 @@ Route::resource('blocks','BlocksController');
 
 Route::resource('areas','AreasController');
 Route::resource('exeptuatedvehicles','ExeptuatedVehiclesController');
-Route::resource('spacereservatios','SpacesReservatiosController');
+Route::resource('spacereservations','SpacesReservationsController');
 
 
 
