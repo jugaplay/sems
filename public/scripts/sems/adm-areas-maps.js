@@ -79,7 +79,7 @@ function pulseMarkerOnMap(lat,lon){
 			}
 		zone.push([lat,lon]);
 }
-function cleanMap(){
+function cleanMap(which){
 	zone=[];
 	map.eachLayer(function(layer){
 		map.removeLayer(layer);
@@ -91,18 +91,14 @@ function cleanMap(){
  loadPreviousReferenceData(which);
 }
 function loadPreviousReferenceData(which){
-	if(which=='edit'){// Si esta editando no marca el que esta editando!
-		var streets=$('#datatables1 > tbody > tr:not(.active)');
-	}else{
-		var streets=$('#datatables1 > tbody > tr');
-	}
-	$(streets).each(function() {
-			var latlngs = JSON.parse($( this ).attr( 'data-streetmap' ));
-			var name = $( this ).children( 'td:eq(1)' ).text();
-			var polygon = L.polygon(latlngs,{color: 'green'})
-				.bindPopup("<b>"+name+"</b><br/>Area de nombre: "+name+".")
-				.addTo(map);
-		});
+	var active=$('#datatables1 > tbody > tr.active').children( 'td:eq(0)' ).text();
+	$('#datatables1').DataTable().rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+			var data = this.data();
+			var latlngs = JSON.parse(data[5]);// Lugar en data donde esta el GPS en las areas
+			if(!(which=='edit' && data[0]==active)){// data[0] es el id en area
+				var polygon = L.polygon(latlngs,{color: 'green'}).addTo(map);
+			}
+	} );
 }
 // Validar que sean 4 puntos los que se marcaron para la calle!
 function saveStreetLocation(which){

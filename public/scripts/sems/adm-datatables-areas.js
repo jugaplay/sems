@@ -198,49 +198,47 @@
 
     // do server action to save change here ( ajax )
     alert("Guardar datos "+JSON.stringify(datas));
-    /*
-    "name",
-    "email",
-    "addres",
-    "phone",
-    "account_status",
-    "verified",
-    "4",
-    "latitude",
-    "longitude",
-    "fee",
-    "bussines_name"
-    "tax_treatment"
-    "billing_address"
-    "city"
-    "state"
-    "document_type"
-    "document_number"
-      */
     // ...
     // just simple rule after ajax is done (demo)
     $.each( datas, function( i, data ){
       console.log( data.name + ' = ' + data.value );
     });
+    var $button = $("#formAddDatatables1 [type=submit]");
+    $button.button('loading')
+    var jqxhr = $.ajax({
+                    method: "POST",
+                    url: "areas",
+                    data: datas
+                  })
+                  .done(function(xhr) {
+                    toastr.success( 'Area <b>' + xhr.name + '</b> agregada exitosamente!' );
+                    var addData = datatables1.fnAddDataAndDisplay([
+                      xhr.id,
+                      datas[0].value,
+                      datas[1].value,
+                      datas[3].value,
+                      xhr.active_price,
+                      datas[2].value
+                      ]),
+                    newRow = addData.nTr,
+                      newID = datatables1.fnGetData().length; // just sample id (on real case: get it from server callback)
+                    datatables1.$( 'tr.active' ).removeClass( 'active' );
+                    $( newRow ).attr( 'data-streetmap', datas[2].value)
+                    .addClass( 'active' );
+                    // activate actions edit & delete
+                    $( '.datatables1-actions' ).removeClass( 'disabled' );
+                    // reset form
+                    $( '#formAddDatatables1' )[0].reset();
+                  })
+                  .fail(function(xhr) {
+                    if(xhr.status==419){toastr.error('Error: Refresque la pagina y vuelva a intentar');}
+                    else if (xhr.status>=500) { toastr.error('Error: Interno del servidor');}
+                    else{ toastr.error('Error: '+JSON.parse(xhr.responseText).error); }
+                  })
+                  .always(function(){
+                    $button.button('reset');
+                  });
 
-    // add new row to datatables using datatables plugin fnAddDataAndDisplay([ 1,2,3,... ]) ( see scripts/demo/datatables-plugins.js )
-    // or you can just use fnAddData([ 1,2,3,... ]) - without any datatables plugin
-    var addData = datatables1.fnAddDataAndDisplay([
-      '5 (Nid)',
-      datas[0].value,
-      datas[1].value,
-      datas[3].value,
-      "5 actv"
-      ]),
-    newRow = addData.nTr,
-      newID = datatables1.fnGetData().length; // just sample id (on real case: get it from server callback)
-    datatables1.$( 'tr.active' ).removeClass( 'active' );
-    $( newRow ).attr( 'data-streetmap', datas[2].value)
-    .addClass( 'active' );
-    // activate actions edit & delete
-    $( '.datatables1-actions' ).removeClass( 'disabled' );
-    // reset form
-    $( '#formAddDatatables1' )[0].reset();
     alert("Usuario creado correctamente");
   })
   // edit rule

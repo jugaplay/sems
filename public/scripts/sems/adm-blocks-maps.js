@@ -76,15 +76,14 @@ function pulseMarkerOnMap(lat,lon){
 }
 function loadPreviousReferenceData(which){
 		//Marco en el mapa los puntos previos
-	 if(which=='edit'){// Si esta editando no marca el que esta editando!
-		 var streets=$('#datatables1 > tbody > tr:not(.active)');
-	 }else{
-		 var streets=$('#datatables1 > tbody > tr');
-	 }
-	 $(streets).each(function() {
-			 var latlngs = JSON.parse($( this ).attr( 'data-streetmap' ));
-			 var polygon = L.polygon(latlngs,{color: 'green'}).addTo(map);
-		 });
+		var active=$('#datatables1 > tbody > tr.active').attr( 'data-streetid' );
+		$('#datatables1').DataTable().rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+		    var data = this.data();
+				var latlngs = JSON.parse(data[4]);// Lugar en data donde esta el GPS en los mapas
+				if(!(which=='edit'&& data[5]==active)){// data[5] es el id en blocks
+					var polygon = L.polygon(latlngs,{color: 'green'}).addTo(map);
+				}
+		} );
 }
 function cleanMap(which){
 	zone=[];
