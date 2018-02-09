@@ -41,7 +41,7 @@
         </a>
       </li>
       <li class="nav-item" role="presentation">
-        <a href="areas.html">
+        <a href="{{ route('areas.index') }}">
           <span class="nav-icon"><i class="fa fa-map"></i></span>
           <span class="nav-text">Zonas</span>
         </a>

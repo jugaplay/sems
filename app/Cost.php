@@ -13,7 +13,7 @@ class Cost extends Model
       'time_zone_end',
       'start_date',
       'end_date',
-      'pirority',
+      'priority',
       'cost',
       'type',
       'day_start',

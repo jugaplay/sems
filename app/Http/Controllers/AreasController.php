@@ -114,7 +114,17 @@ class AreasController extends Controller
     {
         //
     }
-
+    public function showAll(){
+      $areas = Area::all();
+      $arrOfAreas=array();
+      foreach ($areas as $area) {// ->where('start_date', '<', date('Y-m-d'))
+        $preciosActivos=$area->costs->where('end_date', '>', date('Y-m-d'))->where('start_date', '<=', date('Y-m-d'))->count();
+        array_push($arrOfAreas,[$area['id'],$area['name'],(1 == $area['active']),$area['details'],$preciosActivos,$area['latlng']]);
+      }
+      return response()->json([
+          'aaData' => $arrOfAreas
+      ]);
+    }
     /**
      * Show the form for editing the specified resource.
      *

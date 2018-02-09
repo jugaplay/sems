@@ -215,7 +215,7 @@
                     </a>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="areas.html" style="color: inherit;">
+                    <a href="{{ route('areas.index') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">

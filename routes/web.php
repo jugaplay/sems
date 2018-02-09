@@ -32,6 +32,7 @@ Route::get('blocks/delete/{block_id?}', 'BlocksController@delete');
 Route::get('blocks/all','BlocksController@showAll')->name('blocks.showall');
 Route::resource('blocks','BlocksController');
 
+Route::get('areas/all','AreasController@showAll')->name('areas.showall');
 Route::resource('areas','AreasController');
 Route::resource('exeptuatedvehicles','ExeptuatedVehiclesController');
 Route::resource('spacereservations','SpacesReservationsController');

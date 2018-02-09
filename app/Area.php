@@ -18,5 +18,8 @@ class Area extends Model
       public function blocks(){
         return $this->belongsToMany('App\Block',$table='areas_blocks')->withTimestamps();
       }
+      public function costs(){
+        return $this->hasMany('App\Cost');
+      }
 
 }

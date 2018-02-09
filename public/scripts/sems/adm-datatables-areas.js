@@ -9,13 +9,12 @@
       'search': ''
     }
   });
-
   var datatables1 = $( '#datatables1' ).dataTable({
     'sDom': 'rt<"table-footer"<"pull-left"i>p>',
     'oLanguage': {
       'sInfoFiltered': '<span class="label label-info"><i class="fa fa-filter"></i> filtrado de _MAX_ registros</span>',
     },
-    'sAjaxSource': '../_includes/data-adm-areas-source.json', // Aca van los datos y los carga con Ajax?!
+    'sAjaxSource': 'areas/all', // Aca van los datos y los carga con Ajax?!
     'fnInitComplete': function(settings) {
       var aoData = settings.aoData;
 
