@@ -22,6 +22,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Rutas para dar de alta patentes dentro de usuarios
 Route::get('/users/vehicles','UserController@userVehicles')->name('user.vehicles.index');
 Route::post('/users/vehicles','UserController@associateVehicle')->name('user.vehicles.save');
+
+Route::get('/users/vehiclesOff','UserController@userVehiclesOff')->name('user.vehiclesOff.index');
+Route::post('/users/vehiclesOff','UserController@disassociateVehicle')->name('user.vehiclesOff.save');
+
 // corre esta funcion (userVehicles) con este control (UserController)
 Route::resource('users','UserController');
 

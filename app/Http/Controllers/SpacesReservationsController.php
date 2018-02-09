@@ -51,17 +51,15 @@ class SpacesReservationsController extends Controller
     /****************************************
     *** Grabar la tabla space_reservations ***
     ****************************************/
-    $spacesreservatio = SpaceReservation::create([
-        'identifier'    => $request->identifier,
-        'company'       => $request->company,
-        'start_time'    => $request->start_time,
-        'end_time'      => $request->end_time,
-        'block_id'      => $request->block,
-        'latlng'      => $request->latlng,
-        'longitude'     => $request->longitude,
-        //'operation_id'  => $request->identifier,
-        'type'          => $request->type, // (container/load unload)
-        'size'          => $request->size,//(nro)
+    $spacesreservation = SpaceReservation::create([
+        'identifier'    => $request->input('identifier'),
+        'company'       => $request->input('company'),
+        'start_time'    => $request->input('start_time'),
+        'end_time'      => $request->input('end_time'),
+        'block_id'      => $request->input('block'),
+        'latlng'        => $request->input('latlng'),
+        'type'          => $request->input('type'), // (container/load unload)
+        'size'          => $request->input('size'),//(nro)
     ]);
     // $spacesreservatio->id;
     /***************************
@@ -69,12 +67,12 @@ class SpacesReservationsController extends Controller
     ***************************/
     $operation = operation::create([
        'type'    => 'SpaceReservation', //(wallet/ticket/infringement)
-       'type_id' => $spacesreservatio->id,
+       'type_id' => $spacesreservation->id,
        'amount'  => $request->input('amount'),
      ]);
      $id_operation = $operation->id;
      # Actualizar la tabla space_reservations con el ID de la operacion.
-     SpaceReservation::where('id', $spacesreservatio->id)
+     SpaceReservation::where('id', $spacesreservation->id)
         ->update(['operation_id' => $operation->id]);
 
         /***************************
@@ -127,7 +125,7 @@ class SpacesReservationsController extends Controller
      * @param  \App\SpaceReservation  $spaceReservatio
      * @return \Illuminate\Http\Response
      */
-    public function show(SpaceReservation $spaceReservatio)
+    public function show(SpaceReservation $spaceReservation)
     {
         //
     }
@@ -138,9 +136,14 @@ class SpacesReservationsController extends Controller
      * @param  \App\SpaceReservation  $spaceReservatio
      * @return \Illuminate\Http\Response
      */
-    public function edit(SpaceReservation $spaceReservatio)
+    public function edit(SpaceReservation $spacereservation)
     {
         //
+        //dd($spacereservation);
+        $blocks = Block::all();
+        return view('spacereservations.edit',['spacereservation'=>$spacereservation,'blocks'=>$blocks]);
+
+
     }
 
     /**
@@ -150,9 +153,20 @@ class SpacesReservationsController extends Controller
      * @param  \App\SpaceReservation  $spaceReservatio
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SpaceReservation $spaceReservatio)
+    public function update(Request $request, SpaceReservation $spacereservation)
     {
-        //
+        SpaceReservation::where('id', $spacereservation->id)
+           ->update([
+             'identifier'    => $request->input('identifier'),
+             'company'       => $request->input('company'),
+             'start_time'    => $request->input('start_time'),
+             'end_time'      => $request->input('end_time'),
+             'block_id'      => $request->input('block'),
+             'latlng'        => $request->input('latlng'),
+             'type'          => $request->input('type'), // (container/load unload)
+             'size'          => $request->input('size'),//(nro)
+           ]);
+
     }
 
     /**
