@@ -60,11 +60,11 @@
               <div class="panel-body hide" id="addFormContainer">
                   <form id="formAddDatatables1" action="#" method="POST">
                       <div class="form-group">
-                          <p class="lead">Agregar nueva area</p>
+                          <p class="lead">Agregar nueva zona</p>
                           <div class="row">
                               <div class="col-md-2">
                                   <div class="form-group">
-                                      <input name="createName" id="createName" class="form-control input-sm" placeholder="Nombre de la calle" autocomplete="off" required="">
+                                      <input name="createName" id="createName" class="form-control input-sm" placeholder="Nombre de la zona" autocomplete="off" required="">
                                   </div>
                               </div>
                               <!-- /.cols -->
@@ -97,7 +97,7 @@
                               <!-- /.cols -->
                               <div class="col-md-6">
                                   <div class="form-group">
-                                      <input name="editDetail" id="createDetail" class="form-control input-sm" placeholder="Detalle" autocomplete="off">
+                                      <input name="createDetail" id="createDetail" class="form-control input-sm" placeholder="Detalle" autocomplete="off">
                                   </div>
                               </div>
                               <!-- /.cols -->
@@ -107,8 +107,9 @@
                       <!-- /.form-group -->
 
                       <div class="form-grouphide">
+                          {{csrf_field()}}
                           <button id="hideAddDatatables1" class="btn btn-default btn-sm">Cancelar</button>
-                          <button type="submit" class="btn btn-success btn-sm">Crear</button>
+                          <button type="submit" class="btn btn-success btn-sm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Creando">Crear</button>
                       </div>
                       <!-- /.form-group -->
                   </form>
@@ -121,11 +122,11 @@
                       <input type="hidden" name="datatables1ID" id="datatables1ID">
                       <input type="hidden" name="editAreaId" id="editAreaId">
                       <div class="form-group">
-                          <p class="lead">Editar calle seleccionada</p>
+                          <p class="lead">Editar zona seleccionada</p>
                           <div class="row">
                               <div class="col-md-2">
                                   <div class="form-group">
-                                      <input name="editName" id="editName" class="form-control input-sm" placeholder="Nombre de la calle" autocomplete="off" required="">
+                                      <input name="editName" id="editName" class="form-control input-sm" placeholder="Nombre de la zona" autocomplete="off" required="">
                                   </div>
                               </div>
                               <!-- /.cols -->
@@ -168,8 +169,9 @@
                       <!-- /.form-group -->
 
                       <div class="form-group">
+                          {{csrf_field()}}
                           <button id="hideEditDatatables1" class="btn btn-default btn-sm">Cancelar</button>
-                          <button type="submit" class="btn btn-primary btn-sm">Guardar cambios</button>
+                          <button type="submit" class="btn btn-primary btn-sm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Guardando">Guardar cambios</button>
                       </div>
                       <!-- /.form-group -->
                   </form>

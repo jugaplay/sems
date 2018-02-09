@@ -232,7 +232,9 @@
                     $( '#formAddDatatables1' )[0].reset();
                   })
                   .fail(function(xhr) {
-                    toastr.error('Error: '+JSON.parse(xhr.responseText).error);
+                    if(xhr.status==419){toastr.error('Error: Refresque la pagina y vuelva a intentar');}
+                    else if (xhr.status>=500) { toastr.error('Error: Interno del servidor');}
+                    else{ toastr.error('Error: '+JSON.parse(xhr.responseText).error); }
                   })
                   .always(function(){
                     $button.button('reset');
@@ -281,7 +283,9 @@
                     $( '#editFormContainer' ).addClass( 'hide' );
                   })
                   .fail(function(xhr) {
-                    toastr.error('Error: '+JSON.parse(xhr.responseText).error);
+                    if(xhr.status==419){toastr.error('Error: Refresque la pagina y vuelva a intentar');}
+                    else if (xhr.status>=500) { toastr.error('Error: Interno del servidor');}
+                    else{ toastr.error('Error: '+JSON.parse(xhr.responseText).error); }
                   })
                   .always(function(){
                     $button.button('reset');
