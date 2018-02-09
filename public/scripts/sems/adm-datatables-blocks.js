@@ -15,7 +15,7 @@
     'oLanguage': {
       'sInfoFiltered': '<span class="label label-info"><i class="fa fa-filter"></i> filtrado de _MAX_ registros</span>',
     },
-    'sAjaxSource': '../_includes/data-adm-streets-source.json', // Aca van los datos y los carga con Ajax?!
+    'sAjaxSource': 'blocks/all', // Aca van los datos y los carga con Ajax?!
     'fnInitComplete': function(settings) {
       var aoData = settings.aoData;
 
@@ -197,53 +197,44 @@
 
     var $this = $( this ),
     datas = $this.serializeArray(); // or use $this.serialize()
-
     // do server action to save change here ( ajax )
-    alert("Guardar datos "+JSON.stringify(datas));
-    /*
-    "name",
-    "email",
-    "addres",
-    "phone",
-    "account_status",
-    "verified",
-    "4",
-    "latitude",
-    "longitude",
-    "fee",
-    "bussines_name"
-    "tax_treatment"
-    "billing_address"
-    "city"
-    "state"
-    "document_type"
-    "document_number"
-      */
-    // ...
+    var $button = $("#formAddDatatables1 [type=submit]");
+    $button.button('loading')
+    var jqxhr = $.ajax({
+                    method: "POST",
+                    url: "blocks",
+                    data: datas
+                  })
+                  .done(function(xhr) {
+                    //alert( 'S'+JSON.stringify(xhr) );
+                    toastr.success( 'Calle <b>' + xhr.street + '</b> agregada exitosamente!' );
+                    /*$.each( datas, function( i, data ){
+                      console.log( data.name + ' = ' + data.value );
+                    });*/
+                    var addData = datatables1.fnAddDataAndDisplay([
+                      datas[0].value,
+                      datas[1].value,
+                      datas[2].value,
+                      datas[3].value
+                      ]),
+                    newRow = addData.nTr,
+                    newID = datatables1.fnGetData().length; // just sample id (on real case: get it from server callback)
+                    datatables1.$( 'tr.active' ).removeClass( 'active' );
+                    $( newRow ).attr( 'data-streetid', xhr.id);// Agrega el Id que devuelve
+                    $( newRow ).attr( 'data-streetmap', datas[4].value)
+                    .addClass( 'active' );
+                    // activate actions edit & delete
+                    $( '.datatables1-actions' ).removeClass( 'disabled' );
+                    // reset form
+                    $( '#formAddDatatables1' )[0].reset();
+                  })
+                  .fail(function(xhr) {
+                    toastr.error('Error: '+JSON.parse(xhr.responseText).error);
+                  })
+                  .always(function(){
+                    $button.button('reset');
+                  });
     // just simple rule after ajax is done (demo)
-    $.each( datas, function( i, data ){
-      console.log( data.name + ' = ' + data.value );
-    });
-
-    // add new row to datatables using datatables plugin fnAddDataAndDisplay([ 1,2,3,... ]) ( see scripts/demo/datatables-plugins.js )
-    // or you can just use fnAddData([ 1,2,3,... ]) - without any datatables plugin
-    var addData = datatables1.fnAddDataAndDisplay([
-      datas[0].value,
-      datas[1].value,
-      datas[2].value,
-      datas[3].value
-      ]),
-    newRow = addData.nTr,
-      newID = datatables1.fnGetData().length; // just sample id (on real case: get it from server callback)
-    datatables1.$( 'tr.active' ).removeClass( 'active' );
-    $( newRow ).attr( 'data-streetid', '1');// Agrega el Id que devuelve
-    $( newRow ).attr( 'data-streetmap', datas[4].value)
-    .addClass( 'active' );
-    // activate actions edit & delete
-    $( '.datatables1-actions' ).removeClass( 'disabled' );
-    // reset form
-    $( '#formAddDatatables1' )[0].reset();
-    alert("Usuario creado correctamente");
   })
   // edit rule
   .on( 'click', '#edit-datatables1, #hideEditDatatables1', function(e){
@@ -259,29 +250,42 @@
     datas = $this.serializeArray(); // or use $this.serialize()
 
     // do server action to save change here ( ajax )
-    alert("Editar datos "+JSON.stringify(datas));
+    var $button = $("#formEditDatatables1 [type=submit]");
+    $button.button('loading')
+    var jqxhr = $.ajax({
+                    method: "PUT",
+                    url: "blocks/"+datas[1].value,//blocks/id
+                    data: datas
+                  })
+                  .done(function(xhr) {
+                    //alert( 'S'+JSON.stringify(xhr) );
+                    toastr.success( 'Calle <b>' + xhr.street + '</b> agregada exitosamente!' );
+                    /*$.each( datas, function( i, data ){
+                      console.log( data.name + ' = ' + data.value );
+                    });*/
+                    // change data selected row datatables
+                    // get data from selected row
+                    var dataSelected = datatables1.$( 'tr.active' ),
+                    node = getSelectedNode( datatables1 ),
+                    dataUpdate = [ datas[2].value, datas[3].value, datas[4].value, datas[5].value];
+                    dataSelected.data( 'id', datas[0].value );
+                    dataSelected.data( 'streetid', datas[1].value);
+                    dataSelected.data( 'streetmap', datas[6].value);
+                    datatables1.fnUpdate( dataUpdate, node );
+                    // keep display on changed row
+                    datatables1.fnDisplayRow( node );
+                    // hide form edit
+                    $( '#editFormContainer' ).addClass( 'hide' );
+                  })
+                  .fail(function(xhr) {
+                    toastr.error('Error: '+JSON.parse(xhr.responseText).error);
+                  })
+                  .always(function(){
+                    $button.button('reset');
+                  });
     // ...
     // just simple rule after ajax is done to demo
-    $.each( datas, function( i, data ){
-      console.log( data.name + ' = ' + data.value );
-    });
 
-    // change data selected row datatables
-    // get data from selected row
-    var dataSelected = datatables1.$( 'tr.active' ),
-    node = getSelectedNode( datatables1 ),
-    dataUpdate = [ datas[2].value, datas[3].value, datas[4].value, datas[5].value];
-
-    dataSelected.data( 'id', datas[0].value );
-    dataSelected.data( 'streetid', datas[1].value);
-    dataSelected.data( 'streetmap', datas[6].value);
-    datatables1.fnUpdate( dataUpdate, node );
-
-    // keep display on changed row
-    datatables1.fnDisplayRow( node );
-
-    // hide form edit
-    $( '#editFormContainer' ).addClass( 'hide' );
   });
 
   // simple fn to get a single node of selected row

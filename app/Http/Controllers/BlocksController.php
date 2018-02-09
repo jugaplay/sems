@@ -41,35 +41,45 @@ class BlocksController extends Controller
      */
     public function store(Request $request)
     {
-
+      //return response()->json($request);
       if(Auth::check()){
-        $block=Block::create([
-          'latlng' => $request->input('latlng'),
-          'street' => $request->input('street'),
-          'numeration_min' => $request->input('numeration_min'),
-          'numeration_max' => $request->input('numeration_max'),
-          'spaces' => $request->input('spaces'),
-          //'user_id' => Auth::user()->id
-      ]);
-      $id_block = $block->id;
-      }
-      /*******************************************
-      *** Controlar si pertenece a alguna area ***
-      *******************************************/
-      $pointLocation = new pointLocation(); // Instancamos la clase
-      $pointSearched = $pointLocation->makePoint(json_decode($request->input('latlng')));
-
-      $areas = Area::all();
-      foreach($areas as $key => $area){
-      // Armar el poligono
-          $polygon = $pointLocation->makePolygon(json_decode($area->latlng));
-          $total = 0;
-          foreach($pointSearched as $key => $point){
-              if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
+        if(Auth::user()->type=="admsuper" && Auth::user()->account_status!="B" ){
+          $block=Block::create([
+              'latlng' => $request->input('createZone'),
+              'street' => $request->input('createName'),
+              'numeration_min' => $request->input('createMinNum'),
+              'numeration_max' => $request->input('createMaxNum'),
+              'spaces' => $request->input('createSize'),
+          ]);
+          if($block->save()){
+            $id_block = $block->id;
+          }else{
+            return response()->json(["error"=>"Error creando la cuadra en la base de datos"],422);
           }
-          if ($total == 4) {$area->blocks()->attach($block->id);}
-      }
 
+          /*******************************************
+          *** Controlar si pertenece a alguna area ***
+          *******************************************/
+          $pointLocation = new pointLocation(); // Instancamos la clase
+          $pointSearched = $pointLocation->makePoint(json_decode($request->input('createZone')));
+          $areas = Area::all();
+          foreach($areas as $key => $area){
+          // Armar el poligono
+              $polygon = $pointLocation->makePolygon(json_decode($area->latlng));
+              $total = 0;
+              foreach($pointSearched as $key => $point){
+                  if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
+              }
+              if ($total == 4) {$area->blocks()->attach($block->id);}
+          }
+          return response()->json($block);
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para crear cuadras"],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      }
     }
 
     /**
@@ -82,7 +92,16 @@ class BlocksController extends Controller
     {
         //
     }
-
+    public function showAll(){
+      $blocks = Block::all();
+      $arrOfBlock=array();
+      foreach ($blocks as $block) {
+        array_push($arrOfBlock,[$block['street'],$block['numeration_max'],$block['numeration_min'],$block['spaces'],$block['latlng'],$block['id']]);
+      }
+      return response()->json([
+          'aaData' => $arrOfBlock
+      ]);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -111,57 +130,65 @@ class BlocksController extends Controller
     {
         //
         if(Auth::check()){
+          if(Auth::user()->type=="admsuper" && Auth::user()->account_status!="B" ){
+            $blockUpdate = Block::where('id', $block->id)
+                        ->update([
+                          'latlng' => $request->input('editZone'),
+                          'street' => $request->input('editName'),
+                          'numeration_min' => $request->input('editMinNum'),
+                          'numeration_max' => $request->input('editMaxNum'),
+                          'spaces' => $request->input('editSize'),
+                        ]);
+                        if($block->save()){
+                          $id_block = $block->id;
+                        }else{
+                          return response()->json(["error"=>"Error editando la cuadra en la base de datos"],422);
+                        }
+            $pointLocation = new pointLocation(); // Instancamos la clase
+            $pointCordenadas = json_decode($request->input('editZone'));
+            $pointSearched = array();
+            //Armar el punto
+            $pointSearched = $pointLocation->makePoint($pointCordenadas);
+            $block = Block::where('id', $block->id)->first();
 
-          $blockUpdate = Block::where('id', $block->id)
-                      ->update([
-                        'latlng' => $request->input('latlng'),
-                        'street' => $request->input('street'),
-                        'numeration_min' => $request->input('numeration_min'),
-                        'numeration_max' => $request->input('numeration_max'),
-                        'spaces' => $request->input('spaces'),
-                      ]);
-
-        $pointLocation = new pointLocation(); // Instancamos la clase
-        $pointCordenadas = json_decode($request->input('latlng'));
-        $pointSearched = array();
-        //Armar el punto
-        $pointSearched = $pointLocation->makePoint($pointCordenadas);
-
-        $block = Block::where('id', $block->id)->first();
-
-        /************************************************************************************
-        *** Controlar si sigue dentro del areas a las cuales esta asociada (areas_blocks) ***
-        ************************************************************************************/
-        foreach ($block->areas as $area) { // es lo mismo que ==> $areas = $block->areas()->get();
-            $arrCordenadas = json_decode($area->latlng);
-            $polygon = array();
+            /************************************************************************************
+            *** Controlar si sigue dentro del areas a las cuales esta asociada (areas_blocks) ***
+            ************************************************************************************/
+            foreach ($block->areas as $area) { // es lo mismo que ==> $areas = $block->areas()->get();
+                $arrCordenadas = json_decode($area->latlng);
+                $polygon = array();
+                // Armar el poligono
+                $polygon = $pointLocation->makePolygon($arrCordenadas);
+                // Fijarse si los puntos estan en el area
+                $total = 0;
+                foreach($pointSearched as $key => $point){
+                  if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
+                }
+                if ($total <> 4){$block->areas()->detach($area->id);} // Elimina la relacion entre el blocke y el areas
+            } // Fin de control si sigue en areas
+            /************************************
+            *** Controlar las areas faltantes ***
+            ************************************/
+            $areasId = $block->areas()->pluck('area_id')->toArray();
+            $areas = Area::whereNotIn('id', $areasId)->get();
+            foreach($areas as $key => $area){
             // Armar el poligono
-            $polygon = $pointLocation->makePolygon($arrCordenadas);
-            // Fijarse si los puntos estan en el area
-            $total = 0;
-            foreach($pointSearched as $key => $point){
-              if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
+                $polygon = $pointLocation->makePolygon(json_decode($area->latlng));
+                $total = 0;
+                foreach($pointSearched as $key => $point){
+                    if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
+                }
+                if ($total == 4) {$area->blocks()->attach($block->id);}
             }
-            if ($total <> 4){$block->areas()->detach($area->id);} // Elimina la relacion entre el blocke y el areas
-
-        } // Fin de control si sigue en areas
-        /************************************
-        *** Controlar las areas faltantes ***
-        ************************************/
-        $areasId = $block->areas()->pluck('area_id')->toArray();
-        $areas = Area::whereNotIn('id', $areasId)->get();
-        foreach($areas as $key => $area){
-        // Armar el poligono
-            $polygon = $pointLocation->makePolygon(json_decode($area->latlng));
-            $total = 0;
-            foreach($pointSearched as $key => $point){
-                if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
-            }
-            if ($total == 4) {$area->blocks()->attach($block->id);}
+            return response()->json($block);
+          }else{
+            // No tiene permiso para esta accion
+            return response()->json(["error"=>"Sin permiso para editar cuadras"],403);
+          }
+        }else{// Tiene que hacer el login primero
+          return response()->json(["error"=>"Tiene que estar logueado"],401);
         }
 
-
-        }// fin Auth
     } // Fin funcion update
 
     /**

@@ -1,0 +1,36 @@
+{
+  "aaData": [
+    [
+      "Martin Perez",
+      "Juan.Perez@gmail.com",
+      "11 61749820",
+      "city",
+      "N",
+      "4"
+    ],
+    [
+      "Jorge Perez",
+      "Juan.Perez@gmail.com",
+      "11 61749820",
+      "assistant",
+      "B",
+      "3"
+    ],
+    [
+      "Pedro Perez",
+      "Pedro.Perez@gmail.com",
+      "11 61749820",
+      "inspector",
+      "C",
+      "2"
+    ],
+    [
+      "Juan Perez",
+      "Juan.Perez@gmail.com",
+      "11 61749820",
+      "driver",
+      "C",
+      "1"
+    ]
+  ]
+}

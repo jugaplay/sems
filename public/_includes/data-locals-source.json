@@ -1,0 +1,42 @@
+{
+  "aaData": [
+    [
+      "Quiosco 24",
+      "Quiosco.24@gmail.com",
+      "Mariano Moreno 650",
+      "11 61749820",
+      "N",
+      "true",
+      "4",
+      "-43.29996645998798",
+      "-65.1050341129303",
+      "0.2",
+      "bussines_name",
+      "Inscripto",
+      "billingAddress",
+      "city",
+      "state",
+      "CUIT",
+      "18795895"
+    ],
+    [
+      "Siempre 24",
+      "Siempre.24@gmail.com",
+      "Juan Moreno 650",
+      "11 61749820",
+      "N",
+      "false",
+      "5",
+      "-43.29996645998798",
+      "-65.1050341129303",
+      "0.2",
+      "bussines_name",
+      "Inscripto",
+      "billingAddress",
+      "city",
+      "state",
+      "DNI",
+      "13526895"
+    ]
+  ]
+}

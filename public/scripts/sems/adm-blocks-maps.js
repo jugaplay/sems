@@ -1,7 +1,7 @@
 var map;
 var popup = L.popup();
 var zone=[];
-function markStreetZoneInMap(which){
+function markBlockZoneInMap(which){
 	// which can be create or edit
 	//editLatitud editLongitud
 	bootbox.dialog({

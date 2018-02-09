@@ -28,7 +28,7 @@
           <i class="fa fa-ellipsis-v"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-right" role="menu" style="opacity: 0; display: none; transform: scaleX(1) scaleY(1) translateY(0px); transform-origin: 50% 50% 0px;">
-          <li role="presentation" class="" style="opacity: 1; display: list-item; transform: translateY(0px);"><a role="menuitem" tabindex="-1" href="main.html"><span class="pull-right"><i class="fa fa-user text-muted"></i></span>Inicio</a></li>
+          <li role="presentation" class="" style="opacity: 1; display: list-item; transform: translateY(0px);"><a role="menuitem" tabindex="-1" href="{{ route('home') }}"><span class="pull-right"><i class="fa fa-user text-muted"></i></span>Inicio</a></li>
           <li class="divider" style="opacity: 1; display: list-item; transform: translateY(0px);"></li>
           <li role="presentation" class="" style="opacity: 1; display: list-item; transform: translateY(0px);"><a role="menuitem" tabindex="-1" href="ayuda.html"><span class="pull-right"><i class="fa fa-question-circle text-muted"></i></span>Ayuda</a></li>
           <li class="divider" style="opacity: 1; display: list-item; transform: translateY(0px);"></li>
