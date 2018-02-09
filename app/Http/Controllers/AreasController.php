@@ -123,7 +123,8 @@ class AreasController extends Controller
      */
     public function edit(Area $area)
     {
-        //
+        //dd($area);
+        return view('areas.edit',['area'=>$area]);
     }
 
     /**
@@ -136,7 +137,52 @@ class AreasController extends Controller
     public function update(Request $request, Area $area)
     {
         //
-    }
+        if(Auth::check()){
+          $area=Area::where('id', $area->id)
+          ->update([
+            'name'    => $request->input('name'),
+            'details' => $request->input('details'),
+            'latlng' => $request->input('latlng'),
+          ]);
+        /***************************************************
+        *** Buscar los bloques que esten dentro del area ***
+        ***************************************************/
+        $pointLocation = new pointLocation(); // Instancamos la clase
+
+        $arrCordenadas = json_decode($request->input('latlng'));
+        // Armar el polygono con los puntos pasados en el imput ***
+        $polygon = array();
+        foreach ($arrCordenadas as $key => $value) {
+            $polygon[] = $value[0]." ".$value[1];
+        }
+
+        $polygon[] = $arrCordenadas[0][0]." ".$arrCordenadas[0][1]; // La ultima tiene que ser igual a la primera
+
+        // Leer todas las cuadras (block)
+        $blocks = Block::all();
+        //dump($blocks);
+        $news = array();
+        foreach ($blocks as $key => $block) {
+            // Armar cada punto con los datos del block
+            $pointCordenadas = json_decode($block->latlng);
+            //dump($pointCordenadas);
+
+            $pointSearched = array();
+            foreach ($pointCordenadas as $key => $value) {
+                $pointSearched[] = $value[0]." ".$value[1];
+            }
+            //dump($pointSearched);
+            $total = 0;
+            foreach($pointSearched as $key => $point){
+              if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
+            }
+            
+            if($total == 4){$news[] = $block->id);}
+
+        } // fin del foreach
+      }
+
+    } // fin update
 
     /**
      * Remove the specified resource from storage.
