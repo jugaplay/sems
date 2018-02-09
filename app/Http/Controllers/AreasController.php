@@ -85,19 +85,7 @@ class AreasController extends Controller
               if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
             }
 
-            if($total == 4)
-              {
-                // Grabar la relacion entre areas y $blocks
-                /*
-                $area=AreaBlock::create([
-                  'block_id' => $block->id,
-                  'area_id'  => $area->id,
-                  ]);
-                  */
-                  //Auth::user()->vehicles()->attach($VehicleExist->id);
-                  $area->blocks()->attach($block->id);
-
-              }
+            if($total == 4){$area->blocks()->attach($block->id);}
 
         }
       };
@@ -148,12 +136,13 @@ class AreasController extends Controller
     {
         //
         if(Auth::check()){
-          $area=Area::where('id', $area->id)
+          $areaUpdate=Area::where('id', $area->id)
           ->update([
             'name'    => $request->input('name'),
             'details' => $request->input('details'),
             'latlng' => $request->input('latlng'),
           ]);
+          $area=Area::where('id', $area->id)->first();
         /***************************************************
         *** Buscar los bloques que esten dentro del area ***
         ***************************************************/
@@ -171,6 +160,7 @@ class AreasController extends Controller
         // Leer todas las cuadras (block)
         $blocks = Block::all();
         //dump($blocks);
+
         $news = array();
         foreach ($blocks as $key => $block) {
             // Armar cada punto con los datos del block
@@ -186,10 +176,11 @@ class AreasController extends Controller
             foreach($pointSearched as $key => $point){
               if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
             }
-            
-            if($total == 4){$news[] = $block->id);}
 
+            if($total == 4){$news[] = $block->id;}
         } // fin del foreach
+        $area->blocks()->sync($news);
+
       }
 
     } // fin update
