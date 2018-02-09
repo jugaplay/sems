@@ -215,12 +215,15 @@
                       datas[0].value,
                       datas[1].value,
                       datas[2].value,
-                      datas[3].value
+                      datas[3].value,
+                      datas[4].value,
+                      xhr.id
                       ]),
                     newRow = addData.nTr,
                     newID = datatables1.fnGetData().length; // just sample id (on real case: get it from server callback)
                     datatables1.$( 'tr.active' ).removeClass( 'active' );
                     $( newRow ).attr( 'data-streetid', xhr.id);// Agrega el Id que devuelve
+                    //datas[4].value=String(datas[4].value);
                     $( newRow ).attr( 'data-streetmap', datas[4].value)
                     .addClass( 'active' );
                     // activate actions edit & delete
@@ -267,7 +270,7 @@
                     // get data from selected row
                     var dataSelected = datatables1.$( 'tr.active' ),
                     node = getSelectedNode( datatables1 ),
-                    dataUpdate = [ datas[2].value, datas[3].value, datas[4].value, datas[5].value];
+                    dataUpdate = [ datas[2].value, datas[3].value, datas[4].value, datas[5].value, datas[6].value,datas[1].value];
                     dataSelected.data( 'id', datas[0].value );
                     dataSelected.data( 'streetid', datas[1].value);
                     dataSelected.data( 'streetmap', datas[6].value);
