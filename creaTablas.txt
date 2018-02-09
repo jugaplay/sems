@@ -230,7 +230,7 @@ $table->time('time_zone_start');
 $table->time('time_zone_end');
 $table->date('start_date');
 $table->date('end_date')->default('2999-12-31');
-$table->string('pirority')->nullable;
+$table->string('priority')->nullable;
 $table->string('cost')->nullable;
 $table->string('type');
 $table->smallInteger('day_starts')->unsigned();

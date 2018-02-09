@@ -12,7 +12,7 @@ function markBlockZoneInMap(which){
             label: 'Limpiar Mapa',
             className: 'btn-danger',
 						callback: function() {
-							cleanMap();
+							cleanMap(which);
 							return false;
 						}
         },
@@ -33,7 +33,6 @@ function markBlockZoneInMap(which){
 	}
 	}).on('shown.bs.modal', function (e) {
         // do something...
-
 					window.marker=null;
 					map = new L.Map('map');
 					popup = new L.Popup();
@@ -49,27 +48,16 @@ function markBlockZoneInMap(which){
 			//--------------------------------
 					map.on('click', onMapClick);
 		 //evento de pulsar boton
-		 			 //Marco en el mapa los puntos previos
-		 			if($("#"+which+"Zone").val()!=""){
+					 if($("#"+which+"Zone").val()!=""){
 						var preZone=JSON.parse($("#"+which+"Zone").val());
 						for(var i in preZone){
 							pulseMarkerOnMap(preZone[i][0],preZone[i][1]);
 						}
 						var actual = new L.LatLng(preZone[0][0], preZone[0][1]);
-	 					map.setView(actual, 15);
+						map.setView(actual, 15);
 					}
-					if(which=='edit'){// Si esta editando no marca el que esta editando!
-						var streets=$('#datatables1 > tbody > tr:not(.active)');
-					}else{
-						var streets=$('#datatables1 > tbody > tr');
-					}
-					$(streets).each(function() {
-							var latlngs = JSON.parse($( this ).attr( 'data-streetmap' ));
-							var polygon = L.polygon(latlngs,{color: 'green'}).addTo(map);
-					  });
+		 			loadPreviousReferenceData(which);
     });
-
-
 }
 // En el mapa marcar las calles ya marcadas!!
 function onMapClick(e) {pulseMarkerOnMap(e.latlng.lat,e.latlng.lng);}
@@ -86,7 +74,19 @@ function pulseMarkerOnMap(lat,lon){
 			}
 		zone.push([lat,lon]);
 }
-function cleanMap(){
+function loadPreviousReferenceData(which){
+		//Marco en el mapa los puntos previos
+	 if(which=='edit'){// Si esta editando no marca el que esta editando!
+		 var streets=$('#datatables1 > tbody > tr:not(.active)');
+	 }else{
+		 var streets=$('#datatables1 > tbody > tr');
+	 }
+	 $(streets).each(function() {
+			 var latlngs = JSON.parse($( this ).attr( 'data-streetmap' ));
+			 var polygon = L.polygon(latlngs,{color: 'green'}).addTo(map);
+		 });
+}
+function cleanMap(which){
 	zone=[];
 	map.eachLayer(function(layer){
 		map.removeLayer(layer);
@@ -95,7 +95,7 @@ function cleanMap(){
  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
  maxZoom: 22
  }).addTo(map);
-
+	loadPreviousReferenceData(which);
 }
 // Validar que sean 4 puntos los que se marcaron para la calle!
 function saveStreetLocation(which){
