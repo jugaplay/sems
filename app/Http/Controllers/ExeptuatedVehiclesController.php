@@ -71,7 +71,7 @@ class ExeptuatedVehiclesController extends Controller
           'exeptuated_cause_id' => $request->input('exeptuated_cause_id'),
         ]);
         $id_exception = $exeptuatedVehicle->id;
-        echo('Vehiculo exceptuado = '.$id_exception);
+        //echo('Vehiculo exceptuado = '.$id_exception);
         /***************************
         *** Grabar la operacion  ***
         ***************************/
@@ -143,9 +143,14 @@ class ExeptuatedVehiclesController extends Controller
      * @param  \App\ExeptuatedVehicle  $exeptuatedVehicle
      * @return \Illuminate\Http\Response
      */
-    public function edit(ExeptuatedVehicle $exeptuatedVehicle)
+    public function edit(ExeptuatedVehicle $exeptuatedvehicle)
     {
         //
+        $causes = ExeptuatedCauses::all();
+        $vehicule = $exeptuatedvehicle->vehicle();
+        //dump($vehicule);
+        // dd($vehicule);
+        return view('exeptuatedvehicles.edit',['exeptuatedvehicle'=>$exeptuatedvehicle,'causes'=>$causes]);
     }
 
     /**
@@ -155,9 +160,31 @@ class ExeptuatedVehiclesController extends Controller
      * @param  \App\ExeptuatedVehicle  $exeptuatedVehicle
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ExeptuatedVehicle $exeptuatedVehicle)
+    public function update(Request $request, ExeptuatedVehicle $exeptuatedvehicle)
     {
-        //
+        //echo "plate  =  ".$request->input('plate');
+        //echo "  ID   = ".$exeptuatedvehicle->id;
+          //Verificar si el vehiculo existe en la base.
+        $VehicleExist = Vehicle::where('plate', $request->input('plate'))->first();
+        if (!$VehicleExist) {
+          # grabar el vehiculo en la tabla
+          $vehicle=Vehicle::create([
+            'plate' => $request->input('plate'),
+          ]);
+          $id_vehiculo = $vehicle->id;
+        }else {
+          $id_vehiculo = $VehicleExist->id;
+        }
+       // actualizar el id en exeptuated_vehicles
+        ExeptuatedVehicle::where('id', $exeptuatedvehicle->id)
+          ->update(['vehicle_id'        => $id_vehiculo,
+                  'detail'              => $request->input('detail'),
+                  'start_time'          => $request->input('start_time'),
+                  'end_time'            => $request->input('end_time'),
+                  'latlng'              => $request->input('latlng'),
+                  'exeptuated_cause_id' => $request->input('exeptuated_cause_id'),
+                ]);
+
     }
 
     /**

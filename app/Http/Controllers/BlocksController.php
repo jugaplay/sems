@@ -111,7 +111,7 @@ class BlocksController extends Controller
     public function edit(Block $block)
     {
         //
-        dd($block);
+        //dd($block);
         //$users = User::all();
         //return view('projects.edit',['project'=>$project,'users'=>$users]);
         ///photos/{photo}/edit

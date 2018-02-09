@@ -18,7 +18,7 @@ class ExeptuatedVehicle extends Model
     ];
 
     public function vehicle(){
-      return $this->belongsTo('App\Vehicle');
+      return $this->belongsTo('App\Vehicle'); // Inversa del hasOne
     }
 
     public function operation(){
