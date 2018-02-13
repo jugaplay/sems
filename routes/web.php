@@ -40,6 +40,8 @@ Route::resource('blocks','BlocksController');
 Route::get('areas/all','AreasController@showAll')->name('areas.showall');
 Route::resource('areas','AreasController');
 
+Route::resource('costs','CostsController');
+
 Route::resource('exeptuatedvehicles','ExeptuatedVehiclesController');
 Route::resource('spacereservations','SpacesReservationsController');
 

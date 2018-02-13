@@ -120,6 +120,15 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         //
+        if(Auth::check()){
+          $user=User::where('id', $user->id)
+          ->update([
+            'name'    => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            //'password' => bcrypt($request->input('password')),
+          ]);
+        }
     }
 
     /**

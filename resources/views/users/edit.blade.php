@@ -5,7 +5,6 @@
 name <input type="text" name="name" id="name" value="{{$user->name}}"><br>
 email <input type="text" name="email" id="email "value="{{$user->email}}"><br>
 phone <input type="text" name="phone" id="phone "value="{{$user->phone}}"><br>
-password <input type="password" name="password" id="password "value=""><br>
 
 <input type="submit" name="enviar" value="Enviar">
 </form>
