@@ -1,4 +1,4 @@
-<h1>Entre al Ticket de locales</h1>
+<h1>Entre a la venta de Ticket de locales</h1>
 {{currentUser()->name}}
 <br><br>
 <form method="post" action="{{ route('locals.ticket.save') }}" >

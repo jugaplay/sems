@@ -3,7 +3,7 @@
 -- Server version:               5.7.17-log - MySQL Community Server (GPL)
 -- Server OS:                    Win32
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2018-02-15 20:54:53
+-- Date/time:                    2018-02-16 20:34:55
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -88,9 +88,9 @@ CREATE TABLE IF NOT EXISTS `bills` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table sems.bills: ~11 rows (approximately)
+-- Dumping data for table sems.bills: ~16 rows (approximately)
 /*!40000 ALTER TABLE `bills` DISABLE KEYS */;
 INSERT INTO `bills` (`id`, `type`, `letter`, `branch_office`, `number`, `document_type`, `document_number`, `net`, `iva`, `total`, `date`, `detail`, `created_at`, `updated_at`) VALUES
 	(1, 'F', 'B', '0001', '1', '99', '0', 793.39, 166.61, 960.00, '2018-02-02', 'Se reserva el estacionamiento para esta patente en el radio del área F1', '2018-02-02 17:45:14', '2018-02-02 17:45:14'),
@@ -103,7 +103,12 @@ INSERT INTO `bills` (`id`, `type`, `letter`, `branch_office`, `number`, `documen
 	(8, 'F', 'B', '0001', '8', '99', '0', 19.83, 4.17, 24.00, '2018-02-15', 'Ticket por 2 Horas de estacionamiento desde las 2018-02-15 19:18:39 hasta las 2018-02-16 09:18:00 de la patente KKG679', '2018-02-15 19:18:41', '2018-02-15 19:18:41'),
 	(9, 'F', 'B', '0001', '9', '99', '0', 123.97, 26.03, 150.00, '2018-02-15', 'Ticket por  Horas de estacionamiento desde las 2018-02-15 20:14:25 hasta las 2018-02-15 23:59:59 de la patente IQW938', '2018-02-15 20:14:25', '2018-02-15 20:14:25'),
 	(10, 'F', 'B', '0001', '10', '99', '0', 19.83, 4.17, 24.00, '2018-02-15', 'Ticket por 2 Horas de estacionamiento desde las 2018-02-15 20:52:15 hasta las 2018-02-16 09:59:00 de la patente AB157BC', '2018-02-15 20:52:16', '2018-02-15 20:52:16'),
-	(11, 'F', 'B', '0001', '11', '99', '0', 123.97, 26.03, 150.00, '2018-02-15', 'Ticket por Estadia el dia 2018-02-15 20:53:42 de la patente AB789AC', '2018-02-15 20:53:42', '2018-02-15 20:53:42');
+	(11, 'F', 'B', '0001', '11', '99', '0', 123.97, 26.03, 150.00, '2018-02-15', 'Ticket por Estadia el dia 2018-02-15 20:53:42 de la patente AB789AC', '2018-02-15 20:53:42', '2018-02-15 20:53:42'),
+	(12, 'F', 'B', '0001', '12', '99', '0', 9.92, 2.08, 12.00, '2018-02-16', 'Ticket por 1 Horas de estacionamiento desde las 2018-02-16 11:17:39 hasta las 2018-02-16 12:17:00 de la patente CVS752', '2018-02-16 11:17:41', '2018-02-16 11:17:41'),
+	(13, 'F', 'B', '0001', '13', '99', '0', 82.64, 17.36, 100.00, '2018-02-16', 'Ticket por Estadia el dia 2018-02-16 11:18:11 de la patente KKG679', '2018-02-16 11:18:11', '2018-02-16 11:18:11'),
+	(14, 'F', 'B', '0001', '14', '99', '0', 19.83, 4.17, 24.00, '2018-02-16', 'Ticket por 2 Horas de estacionamiento desde las 2018-02-16 17:05:17 hasta las 2018-02-16 19:05:00 de la patente AA759AB', '2018-02-16 17:05:19', '2018-02-16 17:05:19'),
+	(15, 'F', 'B', '0001', '15', '99', '0', 247.93, 52.07, 300.00, '2018-02-16', 'Compra de credito', '2018-02-16 17:17:59', '2018-02-16 17:17:59'),
+	(16, 'F', 'B', '0001', '16', '99', '0', 1239.67, 260.33, 1500.00, '2018-02-16', 'Vive en la zona', '2018-02-16 20:30:36', '2018-02-16 20:30:36');
 /*!40000 ALTER TABLE `bills` ENABLE KEYS */;
 
 
@@ -124,10 +129,10 @@ CREATE TABLE IF NOT EXISTS `blocks` (
 -- Dumping data for table sems.blocks: ~14 rows (approximately)
 /*!40000 ALTER TABLE `blocks` DISABLE KEYS */;
 INSERT INTO `blocks` (`id`, `latlng`, `street`, `numeration_max`, `numeration_min`, `spaces`, `created_at`, `updated_at`) VALUES
-	(1, '[[-43.32088091931779,-65.04904568195343],[-43.320813597080004,-65.0490054488182],[-43.32117655087021,-65.04815116524695],[-43.32123411592268,-65.04820480942726]]', 'Alejandro Maiz 0-100.', 100, 0, 10, '2018-02-05 13:31:30', '2018-02-07 09:28:26'),
-	(2, '[[-43.299458927540364,-65.10663002729416],[-43.29950968097577,-65.10673731565475],[-43.29880108110197,-65.10769486427306],[-43.29874837499627,-65.10761171579361]]', 'Alejandro Maiz 100-199', 100, 199, 10, '2018-02-05 13:32:50', '2018-02-05 13:32:50'),
-	(3, '[[-43.299515537138674,-65.1065656542778],[-43.29944135903362,-65.10661661624908],[-43.298738614601326,-65.10565638542175],[-43.29880108110197,-65.10555177927017]]', 'Rivadavia 700-600', 600, 700, 10, '2018-02-05 13:33:35', '2018-02-05 13:33:35'),
-	(4, '[[-43.31802795213104,-65.04509210586548],[-43.31797721415612,-65.04521012306212],[-43.31704831143514,-65.04433035850525],[-43.317102953164756,-65.0441962480545]]', 'Centenario 0-100', 0, 100, 10, '2018-02-05 13:37:04', '2018-02-05 13:37:04'),
+	(1, '[[-43.32088091931779,-65.04904568195343],[-43.320813597080004,-65.0490054488182],[-43.32117655087021,-65.04815116524695],[-43.32123411592268,-65.04820480942726]]', 'Alejandro Maiz', 100, 0, 10, '2018-02-05 13:31:30', '2018-02-07 09:28:26'),
+	(2, '[[-43.299458927540364,-65.10663002729416],[-43.29950968097577,-65.10673731565475],[-43.29880108110197,-65.10769486427306],[-43.29874837499627,-65.10761171579361]]', 'Alejandro Maiz', 100, 199, 10, '2018-02-05 13:32:50', '2018-02-05 13:32:50'),
+	(3, '[[-43.299515537138674,-65.1065656542778],[-43.29944135903362,-65.10661661624908],[-43.298738614601326,-65.10565638542175],[-43.29880108110197,-65.10555177927017]]', 'Rivadavia', 600, 700, 10, '2018-02-05 13:33:35', '2018-02-05 13:33:35'),
+	(4, '[[-43.31802795213104,-65.04509210586548],[-43.31797721415612,-65.04521012306212],[-43.31704831143514,-65.04433035850525],[-43.317102953164756,-65.0441962480545]]', 'Centenario', 0, 100, 10, '2018-02-05 13:37:04', '2018-02-05 13:37:04'),
 	(5, '[[-43.311084261608016,-65.0408810377121],[-43.31104913130838,-65.04098832607269],[-43.3101162192551,-65.0404679775238],[-43.3101630603691,-65.04035532474518]]', 'Rivadavia Playa', 100, 0, 10, '2018-02-07 11:09:50', '2018-02-07 11:09:50'),
 	(6, '[[-43.311084261608016,-65.0408810377121],[-43.31104913130838,-65.04098832607269],[-43.3101162192551,-65.0404679775238],[-43.3101630603691,-65.04035532474518]]', 'Rivadavia Playa', 100, 0, 10, '2018-02-07 11:15:34', '2018-02-07 11:15:34'),
 	(7, '[[-43.32986484630427,-65.05188028441022],[-43.329872659537095,-65.05175154310876],[-43.33055130919782,-65.05199115034145],[-43.330613814325936,-65.05218426229366]]', 'Guillermo Rawzon', 0, 100, 10, '2018-02-09 14:42:48', '2018-02-09 14:42:48'),
@@ -155,9 +160,9 @@ CREATE TABLE IF NOT EXISTS `company_sales` (
   KEY `company_sales_operation_id_foreign` (`operation_id`),
   CONSTRAINT `company_sales_operation_id_foreign` FOREIGN KEY (`operation_id`) REFERENCES `operations` (`id`),
   CONSTRAINT `company_sales_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table sems.company_sales: ~12 rows (approximately)
+-- Dumping data for table sems.company_sales: ~17 rows (approximately)
 /*!40000 ALTER TABLE `company_sales` DISABLE KEYS */;
 INSERT INTO `company_sales` (`id`, `user_id`, `operation_id`, `detail`, `created_at`, `updated_at`) VALUES
 	(1, 1, 1, 'Se reserva el estacionamiento para esta patente en el radio del área F1', '2018-02-02 17:45:14', '2018-02-02 17:45:14'),
@@ -171,7 +176,12 @@ INSERT INTO `company_sales` (`id`, `user_id`, `operation_id`, `detail`, `created
 	(9, 5, 9, 'Ticket 2018-02-15 19:18:39 - 2018-02-16 09:18:00', '2018-02-15 19:18:41', '2018-02-15 19:18:41'),
 	(10, 5, 10, 'Ticket 2018-02-15 20:14:25 - 2018-02-15 23:59:59', '2018-02-15 20:14:25', '2018-02-15 20:14:25'),
 	(11, 5, 11, 'Ticket por 2 Horas de estacionamiento desde las 2018-02-15 20:52:15 hasta las 2018-02-16 09:59:00 de la patente AB157BC', '2018-02-15 20:52:16', '2018-02-15 20:52:16'),
-	(12, 5, 12, 'Ticket por Estadia el dia 2018-02-15 20:53:42 de la patente AB789AC', '2018-02-15 20:53:42', '2018-02-15 20:53:42');
+	(12, 5, 12, 'Ticket por Estadia el dia 2018-02-15 20:53:42 de la patente AB789AC', '2018-02-15 20:53:42', '2018-02-15 20:53:42'),
+	(13, 5, 13, 'Ticket por 1 Horas de estacionamiento desde las 2018-02-16 11:17:39 hasta las 2018-02-16 12:17:00 de la patente CVS752', '2018-02-16 11:17:41', '2018-02-16 11:17:41'),
+	(14, 5, 14, 'Ticket por Estadia el dia 2018-02-16 11:18:11 de la patente KKG679', '2018-02-16 11:18:11', '2018-02-16 11:18:11'),
+	(15, 5, 15, 'Ticket por 2 Horas de estacionamiento desde las 2018-02-16 17:05:17 hasta las 2018-02-16 19:05:00 de la patente AA759AB', '2018-02-16 17:05:19', '2018-02-16 17:05:19'),
+	(16, 5, 16, 'Venta de credito', '2018-02-16 17:17:59', '2018-02-16 17:17:59'),
+	(17, 5, 18, 'Vive en la zona', '2018-02-16 20:30:36', '2018-02-16 20:30:36');
 /*!40000 ALTER TABLE `company_sales` ENABLE KEYS */;
 
 
@@ -248,14 +258,15 @@ CREATE TABLE IF NOT EXISTS `exeptuated_vehicles` (
   CONSTRAINT `exeptuated_vehicles_exeptuated_cause_id_foreign` FOREIGN KEY (`exeptuated_cause_id`) REFERENCES `exeptuated_causes` (`id`),
   CONSTRAINT `exeptuated_vehicles_operation_id_foreign` FOREIGN KEY (`operation_id`) REFERENCES `operations` (`id`),
   CONSTRAINT `exeptuated_vehicles_vehicle_id_foreign` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table sems.exeptuated_vehicles: ~3 rows (approximately)
+-- Dumping data for table sems.exeptuated_vehicles: ~4 rows (approximately)
 /*!40000 ALTER TABLE `exeptuated_vehicles` DISABLE KEYS */;
 INSERT INTO `exeptuated_vehicles` (`id`, `vehicle_id`, `detail`, `latlng`, `start_time`, `end_time`, `operation_id`, `exeptuated_cause_id`, `created_at`, `updated_at`) VALUES
 	(4, 8, 'Se reserva el estacionamiento para esta patente en el radio del área F1', '[-43.31531145942684, -65.04395484924316]', '2018-01-01 00:00:00', '2018-12-31 00:00:00', 2, 1, '2018-02-02 17:49:35', '2018-02-09 13:12:56'),
 	(5, 2, 'Dueño del sistema', '[[-43.33529201478637,-65.06446838378905],[-43.31006547467422,-65.05640029907227],[-43.30656789993335,-65.06223678588867],[-43.299822008876504,-65.05605697631836],[-43.30244549990158,-65.04919052124023],[-43.30019680023959,-65.04507064819335],[-43.3073173971775,-65.03150939941406],[-43.34365692013494,-65.04695892333984]]', '2018-01-01 00:00:00', '2018-12-31 00:00:00', 3, 4, '2018-02-05 07:57:42', '2018-02-05 07:57:43'),
-	(6, 4, 'por ser periodista.\r\nSolo un punto', '[-43.31531145942684, -65.04395484924316]', '2018-01-01 00:00:00', '2022-12-31 00:00:00', 5, 3, '2018-02-05 13:46:51', '2018-02-05 13:46:51');
+	(6, 4, 'por ser periodista.\r\nSolo un punto', '[-43.31531145942684, -65.04395484924316]', '2018-01-01 00:00:00', '2022-12-31 00:00:00', 5, 3, '2018-02-05 13:46:51', '2018-02-05 13:46:51'),
+	(7, 11, 'Vive en la zona', '[[-43.31070563397527,-65.05178689956665],[-43.31126771950957,-65.04955530166626],[-43.313234977942884,-65.05075693130493],[-43.31264168448694,-65.05275249481201]]', '2018-01-01 00:00:00', '2020-12-31 00:00:00', 18, 2, '2018-02-16 20:30:35', '2018-02-16 20:30:35');
 /*!40000 ALTER TABLE `exeptuated_vehicles` ENABLE KEYS */;
 
 
@@ -264,18 +275,18 @@ DROP TABLE IF EXISTS `exeptuated_vehicle_blocks`;
 CREATE TABLE IF NOT EXISTS `exeptuated_vehicle_blocks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `exeptuated_vehicle_id` int(10) unsigned NOT NULL,
-  `block_id` int(10) unsigned NOT NULL,
+  `latlng` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `exeptuated_vehicle_blocks_exeptuated_vehicle_id_foreign` (`exeptuated_vehicle_id`),
-  KEY `exeptuated_vehicle_blocks_block_id_foreign` (`block_id`),
-  CONSTRAINT `exeptuated_vehicle_blocks_block_id_foreign` FOREIGN KEY (`block_id`) REFERENCES `blocks` (`id`),
   CONSTRAINT `exeptuated_vehicle_blocks_exeptuated_vehicle_id_foreign` FOREIGN KEY (`exeptuated_vehicle_id`) REFERENCES `exeptuated_vehicles` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table sems.exeptuated_vehicle_blocks: ~0 rows (approximately)
+-- Dumping data for table sems.exeptuated_vehicle_blocks: ~1 rows (approximately)
 /*!40000 ALTER TABLE `exeptuated_vehicle_blocks` DISABLE KEYS */;
+INSERT INTO `exeptuated_vehicle_blocks` (`id`, `exeptuated_vehicle_id`, `latlng`, `created_at`, `updated_at`) VALUES
+	(1, 7, '[[-43.31070563397527,-65.05178689956665],[-43.31126771950957,-65.04955530166626],[-43.313234977942884,-65.05075693130493],[-43.31264168448694,-65.05275249481201]]', '2018-02-16 20:30:36', '2018-02-16 20:30:36');
 /*!40000 ALTER TABLE `exeptuated_vehicle_blocks` ENABLE KEYS */;
 
 
@@ -558,9 +569,9 @@ CREATE TABLE IF NOT EXISTS `operations` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table sems.operations: ~12 rows (approximately)
+-- Dumping data for table sems.operations: ~18 rows (approximately)
 /*!40000 ALTER TABLE `operations` DISABLE KEYS */;
 INSERT INTO `operations` (`id`, `type`, `type_id`, `amount`, `created_at`, `updated_at`) VALUES
 	(1, 'exeptuatedVehicle', 3, 960.00, '2018-02-02 17:45:13', '2018-02-02 17:45:13'),
@@ -571,10 +582,16 @@ INSERT INTO `operations` (`id`, `type`, `type_id`, `amount`, `created_at`, `upda
 	(6, 'SpaceReservation', 1, 1500.00, '2018-02-07 18:06:07', '2018-02-07 18:06:07'),
 	(7, 'SpaceReservation', 2, 900.00, '2018-02-09 17:26:16', '2018-02-09 17:26:16'),
 	(8, 'SpaceReservation', 3, 1000.00, '2018-02-09 17:36:09', '2018-02-09 17:36:09'),
-	(9, 'ticket', 1, 24.00, '2018-02-15 19:18:41', '2018-02-15 19:18:41'),
-	(10, 'ticket', 2, 150.00, '2018-02-15 20:14:25', '2018-02-15 20:14:25'),
-	(11, 'ticket', 3, 24.00, '2018-02-15 20:52:16', '2018-02-15 20:52:16'),
-	(12, 'ticket', 4, 150.00, '2018-02-15 20:53:42', '2018-02-15 20:53:42');
+	(9, 'ticket', 1, -24.00, '2018-02-15 19:18:41', '2018-02-15 19:18:41'),
+	(10, 'ticket', 2, -150.00, '2018-02-15 20:14:25', '2018-02-15 20:14:25'),
+	(11, 'ticket', 3, -24.00, '2018-02-15 20:52:16', '2018-02-15 20:52:16'),
+	(12, 'ticket', 4, -150.00, '2018-02-15 20:53:42', '2018-02-15 20:53:42'),
+	(13, 'ticket', 5, -12.00, '2018-02-16 11:17:41', '2018-02-16 11:17:41'),
+	(14, 'ticket', 6, -100.00, '2018-02-16 11:18:11', '2018-02-16 11:18:11'),
+	(15, 'Ticket', 7, -24.00, '2018-02-16 17:05:19', '2018-02-16 17:05:19'),
+	(16, 'wallet', 3, 300.00, '2018-02-16 17:17:59', '2018-02-16 17:17:59'),
+	(17, 'wallet', 5, -300.00, '2018-02-16 17:17:59', '2018-02-16 17:17:59'),
+	(18, 'exeptuatedVehicleblock', 7, 1500.00, '2018-02-16 20:30:35', '2018-02-16 20:30:35');
 /*!40000 ALTER TABLE `operations` ENABLE KEYS */;
 
 
@@ -591,10 +608,12 @@ CREATE TABLE IF NOT EXISTS `operation_between_wallets` (
   KEY `operation_between_wallets_operation_id_2_foreign` (`operation_id_2`),
   CONSTRAINT `operation_between_wallets_operation_id_1_foreign` FOREIGN KEY (`operation_id_1`) REFERENCES `operations` (`id`),
   CONSTRAINT `operation_between_wallets_operation_id_2_foreign` FOREIGN KEY (`operation_id_2`) REFERENCES `operations` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table sems.operation_between_wallets: ~0 rows (approximately)
+-- Dumping data for table sems.operation_between_wallets: ~1 rows (approximately)
 /*!40000 ALTER TABLE `operation_between_wallets` DISABLE KEYS */;
+INSERT INTO `operation_between_wallets` (`id`, `operation_id_1`, `operation_id_2`, `created_at`, `updated_at`) VALUES
+	(1, 16, 17, '2018-02-16 17:17:59', '2018-02-16 17:17:59');
 /*!40000 ALTER TABLE `operation_between_wallets` ENABLE KEYS */;
 
 
@@ -611,9 +630,9 @@ CREATE TABLE IF NOT EXISTS `operation_bills` (
   KEY `operation_bills_bill_id_foreign` (`bill_id`),
   CONSTRAINT `operation_bills_bill_id_foreign` FOREIGN KEY (`bill_id`) REFERENCES `bills` (`id`),
   CONSTRAINT `operation_bills_operation_id_foreign` FOREIGN KEY (`operation_id`) REFERENCES `operations` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table sems.operation_bills: ~11 rows (approximately)
+-- Dumping data for table sems.operation_bills: ~16 rows (approximately)
 /*!40000 ALTER TABLE `operation_bills` DISABLE KEYS */;
 INSERT INTO `operation_bills` (`id`, `operation_id`, `bill_id`, `created_at`, `updated_at`) VALUES
 	(1, 1, 1, '2018-02-02 17:45:14', '2018-02-02 17:45:14'),
@@ -626,7 +645,12 @@ INSERT INTO `operation_bills` (`id`, `operation_id`, `bill_id`, `created_at`, `u
 	(9, 9, 8, '2018-02-15 19:18:41', '2018-02-15 19:18:41'),
 	(10, 10, 9, '2018-02-15 20:14:26', '2018-02-15 20:14:26'),
 	(11, 11, 10, '2018-02-15 20:52:16', '2018-02-15 20:52:16'),
-	(12, 12, 11, '2018-02-15 20:53:42', '2018-02-15 20:53:42');
+	(12, 12, 11, '2018-02-15 20:53:42', '2018-02-15 20:53:42'),
+	(13, 13, 12, '2018-02-16 11:17:41', '2018-02-16 11:17:41'),
+	(14, 14, 13, '2018-02-16 11:18:12', '2018-02-16 11:18:12'),
+	(15, 15, 14, '2018-02-16 17:05:19', '2018-02-16 17:05:19'),
+	(16, 16, 15, '2018-02-16 17:17:59', '2018-02-16 17:17:59'),
+	(17, 18, 16, '2018-02-16 20:30:36', '2018-02-16 20:30:36');
 /*!40000 ALTER TABLE `operation_bills` ENABLE KEYS */;
 
 
@@ -699,15 +723,18 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   CONSTRAINT `tickets_block_id_foreign` FOREIGN KEY (`block_id`) REFERENCES `blocks` (`id`),
   CONSTRAINT `tickets_operation_id_foreign` FOREIGN KEY (`operation_id`) REFERENCES `operations` (`id`),
   CONSTRAINT `tickets_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table sems.tickets: ~4 rows (approximately)
+-- Dumping data for table sems.tickets: ~7 rows (approximately)
 /*!40000 ALTER TABLE `tickets` DISABLE KEYS */;
 INSERT INTO `tickets` (`id`, `user_id`, `plate`, `time`, `start_time`, `end_time`, `block_id`, `latlng`, `check`, `operation_id`, `token`, `type`, `created_at`, `updated_at`) VALUES
 	(1, 5, 'KKG679', '2', '2018-02-15 19:18:39', '2018-02-16 09:18:00', 14, '[[-43.29995084366814,-65.10605335235596]]', NULL, 9, 'Ke201G1570', 'time', '2018-02-15 19:18:41', '2018-02-15 19:18:41'),
 	(2, 5, 'IQW938', '0', '2018-02-15 20:14:25', '2018-02-15 23:59:59', 14, '[[-43.29995084366814,-65.10605335235596]]', NULL, 10, '082ady1152', 'day', '2018-02-15 20:14:25', '2018-02-15 20:14:25'),
 	(3, 5, 'AB157BC', '2', '2018-02-15 20:52:15', '2018-02-16 09:59:00', 14, '[[-43.29995084366814,-65.10605335235596]]', NULL, 11, 'B01851tm2C', 'time', '2018-02-15 20:52:16', '2018-02-15 20:52:16'),
-	(4, 5, 'AB789AC', '0', '2018-02-15 20:53:42', '2018-02-15 23:59:59', 14, '[[-43.29995084366814,-65.10605335235596]]', NULL, 12, 'A578029d1a', 'day', '2018-02-15 20:53:42', '2018-02-15 20:53:42');
+	(4, 5, 'AB789AC', '0', '2018-02-15 20:53:42', '2018-02-15 23:59:59', 14, '[[-43.29995084366814,-65.10605335235596]]', NULL, 12, 'A578029d1a', 'day', '2018-02-15 20:53:42', '2018-02-15 20:53:42'),
+	(5, 5, 'CVS752', '1', '2018-02-16 11:17:39', '2018-02-16 12:17:00', 14, '[[-43.29995084366814,-65.10605335235596]]', NULL, 13, 'Vm1612t01S', 'time', '2018-02-16 11:17:41', '2018-02-16 11:17:41'),
+	(6, 5, 'KKG679', '0', '2018-02-16 11:18:11', '2018-02-16 23:59:59', 14, '[[-43.29995084366814,-65.10605335235596]]', NULL, 14, '2111K89ay1', 'day', '2018-02-16 11:18:11', '2018-02-16 11:18:11'),
+	(7, 5, 'AA759AB', '2', '2018-02-16 17:05:17', '2018-02-16 19:05:00', 14, '[[-43.29995084366814,-65.10605335235596]]', NULL, 15, '58i2tB12m0', 'time', '2018-02-16 17:05:19', '2018-02-16 17:05:19');
 /*!40000 ALTER TABLE `tickets` ENABLE KEYS */;
 
 
@@ -735,9 +762,9 @@ INSERT INTO `users` (`id`, `name`, `password`, `email`, `phone`, `type`, `accoun
 	(2, 'Ezequiel', '$2y$10$VkkmTLdp1csID.kmIyU6/eAfhe8vED/Ic8.fdW.PL/vEB2t2gpBjy', 'wernicke.ezequiel@gmail.com', '12345678', 'judge', 'N', NULL, '2018-02-02 09:13:01', '2018-02-02 09:13:01'),
 	(3, 'matias Wernicke', '$2y$10$SEl191L12bmzHwCSRrH29uVh/p4BGFT3OgZMDvsmAU5QZ1cVjbmVW', 'matiaswernickec@gmail.com', '12345678', 'driver', 'N', '3E863Fuj8V5VwoM8ZUPvrqEiKLssbftQ9fOFNjFlcaZQQWJy0W1902tg5pCQ', '2018-02-02 09:13:38', '2018-02-12 12:06:11'),
 	(5, 'Local 1 S.A.', '$2y$10$kiqs7ZXoGJHAe/opud2/dO4iKisPPYIdSJEaKn93OG4myHB0Hktb6', 'local@gmail.com', '12321312312', 'local', 'N', 'VlcKAjn4AqbJQfu6BdcsdVc677AtoA68QPB16QoSYEBqXXRE6oWwKx5RKzfY', '2018-02-02 09:46:07', '2018-02-09 17:01:55'),
-	(6, 'Conductor 2', '$2y$10$w0CcB5uzyXFkMr5z7ZxkWOSEMHpzPxRUGAKtra1hSPsAONCTCDdnC', 'conductor2@gmail.com', '12321312312', 'driver', 'N', NULL, '2018-02-02 11:50:02', '2018-02-02 11:50:02'),
-	(7, 'Conductor 3', '$2y$10$No5D.BCI9BlAdgu9/B9gYue0tFhSvgzG96t8rCln7lxpnNFUhqDaG', 'conductor3@gmail.com', '12321312312', 'driver', 'N', NULL, '2018-02-02 11:50:30', '2018-02-02 11:50:30'),
-	(8, 'Conductor 4', '$2y$10$4wOdvn739SrKnH8gBdhAAu3.CI2Wb15vrmW14f6bYZj8UtrUvVrZm', 'conductor2@gmail.com4', '12321312312', 'driver', 'N', NULL, '2018-02-02 11:50:57', '2018-02-02 11:50:57'),
+	(6, 'Pedro Salinas', '$2y$10$w0CcB5uzyXFkMr5z7ZxkWOSEMHpzPxRUGAKtra1hSPsAONCTCDdnC', 'conductor2@gmail.com', '12321312312', 'driver', 'N', NULL, '2018-02-02 11:50:02', '2018-02-02 11:50:02'),
+	(7, 'Mariano Perez', '$2y$10$No5D.BCI9BlAdgu9/B9gYue0tFhSvgzG96t8rCln7lxpnNFUhqDaG', 'conductor3@gmail.com', '12321312312', 'driver', 'N', NULL, '2018-02-02 11:50:30', '2018-02-02 11:50:30'),
+	(8, 'Alejandro Garcia', '$2y$10$4wOdvn739SrKnH8gBdhAAu3.CI2Wb15vrmW14f6bYZj8UtrUvVrZm', 'conductor2@gmail.com4', '12321312312', 'driver', 'N', NULL, '2018-02-02 11:50:57', '2018-02-02 11:50:57'),
 	(9, 'Rivadavia 24HS', '$2y$10$SCFhX07eN0TZlttRdLkaUuDr9Ttlmb.0cDPmqNVH9KLBdTuoANoSq', 'local2@gmail.com', '12345678', 'local', 'N', '6kgBzpT9eugBe3cqCHgOLhPBySHAtsGHckPqd7zMCXe5lN36yx7NqfDTT34V', '2018-02-15 08:54:31', '2018-02-15 08:54:31');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
@@ -777,9 +804,9 @@ CREATE TABLE IF NOT EXISTS `vehicles` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table sems.vehicles: ~8 rows (approximately)
+-- Dumping data for table sems.vehicles: ~11 rows (approximately)
 /*!40000 ALTER TABLE `vehicles` DISABLE KEYS */;
 INSERT INTO `vehicles` (`id`, `plate`, `created_at`, `updated_at`) VALUES
 	(1, 'IQW938', '2018-02-02 09:52:21', '2018-02-02 09:52:21'),
@@ -789,7 +816,10 @@ INSERT INTO `vehicles` (`id`, `plate`, `created_at`, `updated_at`) VALUES
 	(5, 'AA789BC', '2018-02-02 13:50:10', '2018-02-02 13:50:10'),
 	(6, 'AA789BB', '2018-02-02 13:55:52', '2018-02-02 13:55:52'),
 	(7, 'AZ12345', '2018-02-02 17:05:05', '2018-02-02 17:05:05'),
-	(8, 'AA123ZZ', '2018-02-09 13:12:56', '2018-02-09 13:12:56');
+	(8, 'AA123ZZ', '2018-02-09 13:12:56', '2018-02-09 13:12:56'),
+	(9, 'CVS752', '2018-02-16 11:17:41', '2018-02-16 11:17:41'),
+	(10, 'AA759AB', '2018-02-16 17:05:19', '2018-02-16 17:05:19'),
+	(11, 'AA974AB', '2018-02-16 20:30:35', '2018-02-16 20:30:35');
 /*!40000 ALTER TABLE `vehicles` ENABLE KEYS */;
 
 
@@ -837,8 +867,8 @@ CREATE TABLE IF NOT EXISTS `wallets` (
 -- Dumping data for table sems.wallets: ~6 rows (approximately)
 /*!40000 ALTER TABLE `wallets` DISABLE KEYS */;
 INSERT INTO `wallets` (`id`, `user_id`, `balance`, `chips`, `credit`, `created_at`, `updated_at`) VALUES
-	(1, 3, 0.00, '0', '0', '2018-02-02 09:13:38', '2018-02-02 09:13:38'),
-	(3, 5, -198.00, '5', '50', '2018-02-02 09:46:07', '2018-02-15 20:53:42'),
+	(1, 3, 300.00, '0', '0', '2018-02-02 09:13:38', '2018-02-16 17:17:59'),
+	(3, 5, 4676.00, '5', '50', '2018-02-02 09:46:07', '2018-02-16 17:17:59'),
 	(4, 6, 0.00, '0', '0', '2018-02-02 11:50:02', '2018-02-02 11:50:02'),
 	(5, 7, 700.00, '7', '70', '2018-02-02 11:50:30', '2018-02-02 11:50:30'),
 	(6, 8, 800.00, '8', '80', '2018-02-02 11:50:57', '2018-02-02 11:50:57'),

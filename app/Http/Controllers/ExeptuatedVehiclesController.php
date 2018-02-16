@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Bill;
+use App\CompanySale;
 use App\ExeptuatedVehicle;
-use App\User;
-use App\Vehicle;
 use App\ExeptuatedCauses;
 use App\Operation;
-use App\Bill;
 use App\OperationsBill;
-use App\CompanySale;
+use App\User;
+use App\Vehicle;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

@@ -18,4 +18,5 @@ class Vehicle extends Model
       return $this->hasOne('App\ExeptuatedVehicle');
     }
 
+
 }

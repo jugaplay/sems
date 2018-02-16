@@ -7,15 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class ExeptuatedVehicleBlock extends Model
 {
     //
-    protected $table = 'exeptuated_vehicles_blocks';
+    //protected $table = 'exeptuated_vehicles_blocks';
     protected $fillable = [
       'exeptuated_vehicle_id',
-      'block_id',
+      'latlng',
     ];
-
-    public function block(){
-      return $this->belongsTo('App\Block');
-    }
 
     public function exeptuated_vehicle(){
       return $this->belongsTo('App\ExeptuatedVehicle');

@@ -33,6 +33,9 @@ Route::resource('users','UserController');
 Route::get('/locals/ticket','LocalController@localTicket')->name('locals.ticket.index');
 Route::post('/locals/ticket','LocalController@localTicketCreate')->name('locals.ticket.save');
 
+Route::get('/locals/credit','LocalController@localCredit')->name('locals.credit.index');
+Route::post('/locals/credit','LocalController@localCreditAdd')->name('locals.credit.save');
+
 Route::get('locals/delete/{local_id?}', 'LocalController@delete');
 Route::resource('locals','LocalController');
 
@@ -47,9 +50,7 @@ Route::resource('areas','AreasController');
 Route::resource('costs','CostsController');
 
 Route::resource('exeptuatedvehicles','ExeptuatedVehiclesController');
+
+Route::resource('exeptuatedvehiclesblock','ExeptuatedVehiclesBlocksController');
+
 Route::resource('spacereservations','SpacesReservationsController');
-
-
-
-//Route::get('/cuentas','CuentasController@cuentas')->name('cuentas');
-//Route::get('projects/delete/{company_id?}', 'ProjectsControler@delete'); // Le paso la variable a leer

@@ -16,9 +16,8 @@ class ExeptuatedVehiclesBlocks extends Migration
         Schema::create('exeptuated_vehicle_blocks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('exeptuated_vehicle_id')->unsigned();
-            $table->integer('block_id')->unsigned();
+            $table->text('latlng');
             $table->foreign('exeptuated_vehicle_id')->references('id')->on('exeptuated_vehicles');
-            $table->foreign('block_id')->references('id')->on('blocks');
             $table->timestamps();
         });
     }
