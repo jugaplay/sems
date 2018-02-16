@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -28,6 +29,9 @@ Route::post('/users/vehiclesOff','UserController@disassociateVehicle')->name('us
 
 // corre esta funcion (userVehicles) con este control (UserController)
 Route::resource('users','UserController');
+
+Route::get('/locals/ticket','LocalController@localTicket')->name('locals.ticket.index');
+Route::post('/locals/ticket','LocalController@localTicketCreate')->name('locals.ticket.save');
 
 Route::get('locals/delete/{local_id?}', 'LocalController@delete');
 Route::resource('locals','LocalController');

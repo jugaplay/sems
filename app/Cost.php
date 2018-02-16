@@ -21,7 +21,7 @@ class Cost extends Model
     ];
 
     public function area(){
-      return $this->belongsTo('App\Area');
+      return $this->hasOne('App\Area');
     }
 
 }

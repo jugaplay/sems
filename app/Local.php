@@ -13,6 +13,7 @@ class Local extends Model
       'longitude',
       'fee',
       'verified',
+      'block_id',
       'address',
     ];
 

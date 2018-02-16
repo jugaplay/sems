@@ -21,6 +21,9 @@ class Locals extends Migration
             $table->decimal('fee',13,2)->default('0');
             $table->string('verified');
             $table->string('address');
+            $table->integer('block_id')->unsigned();
+            $table->foreign('block_id')->references('id')->on('blocks');
+
             $table->timestamps();
         });
     }

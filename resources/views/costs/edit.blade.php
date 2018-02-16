@@ -17,8 +17,8 @@ end_date <input type="text" name="end_date" id="end_date" value="{{$cost->end_da
 priority <input type="text" name="priority" id="priority" value="{{$cost->priority}}"><br>
 type
 <select name="type">
-      <option value="hora"  @if($cost->type == 'hora') selected @endif>Hora</option>
-      <option value="estadia"  @if($cost->type == 'estadia') selected @endif>Estadía</option>
+      <option value="time"  @if($cost->type == 'hora') selected @endif>Hora</option>
+      <option value="day"  @if($cost->type == 'estadia') selected @endif>Estadía</option>
 </select><br>
 cost <input type="text" name="cost" id="cost" value="{{$cost->cost}}"><br>
 
