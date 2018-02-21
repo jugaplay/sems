@@ -35,7 +35,7 @@
         </a>
       </li>
 <li class="nav-item" role="presentation">
-        <a href="special_vehicles.html">
+        <a href="{{ route('exeptuatedvehicles.index') }}">
           <span class="nav-icon"><i class="fa fa-car"></i></span>
           <span class="nav-text">Exceptuados</span>
         </a>
@@ -53,7 +53,7 @@
         </a>
       </li>
       <li class="nav-item" role="presentation">
-        <a href="{{ route('spacereservations.index') }}"> 
+        <a href="{{ route('spacereservations.index') }}">
           <span class="nav-icon"><i class="fa fa-map-pin"></i></span>
           <span class="nav-text">Espacios</span>
         </a>

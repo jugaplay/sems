@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\Bill;
 use App\Block;
 use App\CompanySale;
-use App\ExeptuatedVehicle;
 use App\Operation;
 use App\OperationBetweenWallet;
 use App\OperationsBill;
@@ -26,12 +25,12 @@ class generalFunctions extends Controller
   ***********************************************/
   function returnBlockFromLatLng($latLng){
     $pointLocation = new pointLocation(); // Instancamos la clase
-    $pointSearched = $pointLocation->makePoints([$latLng]);
+    $pointsSearched = $pointLocation->makePoints([$latLng]);// Revisa en un conjunto de puntos, por eso lo paso como arreglo.
     $blocks = Block::all();
     foreach($blocks as $block){
     // Armar el poligono
          $polygon = $pointLocation->makePolygon(json_decode($block->latlng));
-         foreach($pointSearched as $point){
+         foreach($pointsSearched as $point){ // Mas haya de que sea un solo punto queda asi para verificarlo
              if($pointLocation->pointInPolygon($point, $polygon) > 0){
                return $block;
              }
@@ -222,20 +221,6 @@ class generalFunctions extends Controller
     return $ticket->id;
   }
 
-  /******************************************
-  *** Grabar la tabla exeptuated_vehicles ***
-  ******************************************/
-  function exeptuatedVehiclesSave($vehicleId,$detail,$start_time,$end_time,$latlng,$exeptuatedCauseId){
-    $exeptuatedVehicle = ExeptuatedVehicle::create([
-        'vehicle_id'          => $vehicleId,
-        'detail'              => $detail,
-        'start_time'          => $start_time,
-        'end_time'            => $end_time,
-        'latlng'              => $latlng,
-        'exeptuated_cause_id' => $exeptuatedCauseId,
-      ]);
-   return $exeptuatedVehicle->id;
-  }
 
 
 
