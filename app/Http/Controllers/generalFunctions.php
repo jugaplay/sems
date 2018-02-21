@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Bill;
+use App\Block;
 use App\CompanySale;
 use App\ExeptuatedVehicle;
 use App\Operation;
@@ -18,7 +19,24 @@ use Illuminate\Support\Facades\Auth;
 
 class generalFunctions extends Controller
 {
-
+  /***********************************************
+  *** Funciones relacionadas con los Blocks ***
+  ***********************************************/
+  function returnBlockFromLatLng($latLng){
+    $pointLocation = new pointLocation(); // Instancamos la clase
+    $pointSearched = $pointLocation->makePoint([$latLng]);
+    $blocks = Block::all();
+    foreach($blocks as $block){
+    // Armar el poligono
+         $polygon = $pointLocation->makePolygon(json_decode($block->latlng));
+         foreach($pointSearched as $point){
+             if($pointLocation->pointInPolygon($point, $polygon) > 0){
+               return $block;
+             }
+         }
+       }
+       return NULL;
+  }
   /***********************************************
   *** Funciones relacionadas con los vehiculos ***
   ***********************************************/

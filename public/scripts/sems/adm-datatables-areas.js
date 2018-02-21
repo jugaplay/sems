@@ -197,7 +197,7 @@
     datas = $this.serializeArray(); // or use $this.serialize()
 
     // do server action to save change here ( ajax )
-    alert("Guardar datos "+JSON.stringify(datas));
+    //alert("Guardar datos "+JSON.stringify(datas));
     // ...
     // just simple rule after ajax is done (demo)
     $.each( datas, function( i, data ){
@@ -220,8 +220,7 @@
                       xhr.active_price,
                       datas[2].value
                       ]),
-                    newRow = addData.nTr,
-                      newID = datatables1.fnGetData().length; // just sample id (on real case: get it from server callback)
+                    newRow = addData.nTr;
                     datatables1.$( 'tr.active' ).removeClass( 'active' );
                     $( newRow ).attr( 'data-streetmap', datas[2].value)
                     .addClass( 'active' );
@@ -238,8 +237,6 @@
                   .always(function(){
                     $button.button('reset');
                   });
-
-    alert("Usuario creado correctamente");
   })
   // edit rule
   .on( 'click', '#edit-datatables1, #hideEditDatatables1', function(e){
@@ -255,25 +252,45 @@
     datas = $this.serializeArray(); // or use $this.serialize()
 
     // do server action to save change here ( ajax )
-    alert("Editar datos "+JSON.stringify(datas));
     // ...
     // just simple rule after ajax is done to demo
     $.each( datas, function( i, data ){
       console.log( data.name + ' = ' + data.value );
     });
-
     // change data selected row datatables
     // get data from selected row
-    var dataSelected = datatables1.$( 'tr.active' ),
-    node = getSelectedNode( datatables1 ),
-    dataUpdate = [ datas[1].value, datas[2].value, datas[3].value, datas[5].value, "Activos5"];
+    var $button = $("#formEditDatatables1 [type=submit]");
+    $button.button('loading')
+    var jqxhr = $.ajax({
+                    method: "PUT",
+                    url: "areas/"+datas[1].value,
+                    data: datas
+                  })
+                  .done(function(xhr) {
+                    console.log("Response: "+JSON.stringify(xhr));
+                    console.log("xhr.id: "+xhr.id);
+                    console.log("xhr.active_price: "+xhr.active_price);
+                    toastr.success( 'Area <b>' + xhr.name + '</b> actualizada exitosamente!' );
+                    // Nuevos
+                    var dataSelected = datatables1.$( 'tr.active' ),
+                    node = getSelectedNode( datatables1 ),
+                    dataUpdate = [ datas[1].value, datas[2].value, datas[3].value, datas[5].value, xhr.active_price];
 
-    dataSelected.data( 'id', datas[0].value );
-    dataSelected.data( 'streetmap', datas[4].value);
-    datatables1.fnUpdate( dataUpdate, node );
+                    dataSelected.data( 'id', datas[0].value );
+                    dataSelected.data( 'streetmap', datas[4].value);
+                    datatables1.fnUpdate( dataUpdate, node );
 
-    // keep display on changed row
-    datatables1.fnDisplayRow( node );
+                    // keep display on changed row
+                    datatables1.fnDisplayRow( node );
+                  })
+                  .fail(function(xhr) {
+                    if(xhr.status==419){toastr.error('Error: Refresque la pagina y vuelva a intentar');}
+                    else if (xhr.status>=500) { toastr.error('Error: Interno del servidor');}
+                    else{ toastr.error('Error: '+JSON.parse(xhr.responseText).error); }
+                  })
+                  .always(function(){
+                    $button.button('reset');
+                  });
 
     // hide form edit
     $( '#editFormContainer' ).addClass( 'hide' );

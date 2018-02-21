@@ -108,22 +108,11 @@ class LocalController extends Controller
        /***********************
        *** Obtener el block ***
        ***********************/
-       $pointLocation = new pointLocation(); // Instancamos la clase
-       $pointSearched = $pointLocation->makePoint(json_decode($request->input('latlng')));
+       $generalFunctions = new generalFunctions();
+       $block=$generalFunctions->returnBlockFromLatLng(json_decode($request->input('latlng')));
+       if(is_null($block)){// No se encontro ningun block en el area
 
-       $blocks = Block::all();
-       //dd($blocks);
-       foreach($blocks as $key => $block){
-       // Armar el poligono
-           $polygon = $pointLocation->makePolygon(json_decode($block->latlng));
-
-           $total = 0;
-           foreach($pointSearched as $key => $point){
-               if($pointLocation->pointInPolygon($point, $polygon) > 0){$total = $total +1;}
-           }
-           //echo('$total = '.$total."</br>");
-           if($total > 0){break;} // En cuanto encuentra una calle se corta ya que no puede estra en dos calles
-         }
+       }
          echo('Block ='.$block->id. "<br>" );
          //dd($block->id);
        $userLocal=Local::create([

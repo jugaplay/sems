@@ -96,7 +96,7 @@ class AreasController extends Controller
             //$area
             $area['active_price']=$area->costs->where('end_date', '>', date('Y-m-d'))->where('start_date', '<=', date('Y-m-d'))->count();
             $area['active']=(1 == $area['active']);
-            return response()->json([$area]);
+            return response()->json($area);
           }else{
             // No tiene permiso para esta accion
             return response()->json(["error"=>"Sin permiso para crear una zona"],403);
@@ -121,7 +121,8 @@ class AreasController extends Controller
       $arrOfAreas=array();
       foreach ($areas as $area) {// ->where('start_date', '<', date('Y-m-d'))
         $preciosActivos=$area->costs->where('end_date', '>', date('Y-m-d'))->where('start_date', '<=', date('Y-m-d'))->count();
-        array_push($arrOfAreas,[$area['id'],$area['name'],(1 == $area['active']),$area['details'],$preciosActivos,$area['latlng']]);
+        $activa=(1 == $area['active']) ? "Activa":"No activa";
+        array_push($arrOfAreas,[$area['id'],$area['name'],$activa,$area['details'],$preciosActivos,$area['latlng']]);
       }
       return response()->json([
           'aaData' => $arrOfAreas
@@ -150,19 +151,28 @@ class AreasController extends Controller
     {
         //
         if(Auth::check()){
+          if(Auth::user()->type=="admsuper" && Auth::user()->account_status!="B" ){
+            $activa=('Activa' == $request->input('editActive')) ? 1 : 0;
           $areaUpdate=Area::where('id', $area->id)
           ->update([
-            'name'    => $request->input('name'),
-            'details' => $request->input('details'),
-            'latlng' => $request->input('latlng'),
+            'name'    => $request->input('editName'),
+            'details' => $request->input('editDetail'),
+            'latlng' => $request->input('editZone'),
+            'active'  => $activa,
           ]);
-          $area=Area::where('id', $area->id)->first();
+          //dump($areaUpdate);
+          if($areaUpdate){
+            $id_area = $area->id;
+          }else{
+            return response()->json(["error"=>"Error actualizando el area en la base de datos"],422);
+          }
+          $area=Area::where('id', $id_area)->first();
         /***************************************************
         *** Buscar los bloques que esten dentro del area ***
         ***************************************************/
         $pointLocation = new pointLocation(); // Instancamos la clase
 
-        $arrCordenadas = json_decode($request->input('latlng'));
+        $arrCordenadas = json_decode($request->input('editZone'));
         // Armar el polygono con los puntos pasados en el imput ***
         $polygon = array();
         foreach ($arrCordenadas as $key => $value) {
@@ -194,8 +204,17 @@ class AreasController extends Controller
             if($total == 4){$news[] = $block->id;}
         } // fin del foreach
         $area->blocks()->sync($news);
+        $area['active_price']=$area->costs->where('end_date', '>', date('Y-m-d'))->where('start_date', '<=', date('Y-m-d'))->count();
+        $area['active']=(1 == $area['active']);
+        return response()->json($area);
 
+      }else{
+        // No tiene permiso para esta accion
+        return response()->json(["error"=>"Sin permiso para crear una zona"],403);
       }
+    }else{// Tiene que hacer el login primero
+      return response()->json(["error"=>"Tiene que estar logueado"],401);
+    }
 
     } // fin update
 

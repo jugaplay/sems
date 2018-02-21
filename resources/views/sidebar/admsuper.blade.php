@@ -53,7 +53,7 @@
         </a>
       </li>
       <li class="nav-item" role="presentation">
-        <a href="spaces.html">
+        <a href="{{ route('spacereservations.index') }}"> 
           <span class="nav-icon"><i class="fa fa-map-pin"></i></span>
           <span class="nav-text">Espacios</span>
         </a>

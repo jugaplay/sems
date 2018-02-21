@@ -15,7 +15,7 @@ use Faker\Generator as Faker;
 'email'				=>	'matiaswernickec@gmail.com',
 'phone'			  =>	'1544008341',
 'type'        =>  'X',
-'account_status' => 'A',
+'account_status' => 'C',
 'password' => bcrypt('123456'),
 
 */
@@ -28,7 +28,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'phone' =>	$faker->phoneNumber,
         'type' =>  'conductor',
         //$faker->randomElement(['local','conductor','inspector','asistente','juez','adm','admsuper','municipal']),
-        'account_status' => 'A',
+        'account_status' => 'C',
         'password' => $faker->password,
         //'remember_token' => str_random(10),
     ];

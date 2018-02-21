@@ -48,7 +48,7 @@
                           <input id="filterDatatables1" class="form-control input-sm" placeholder="Filtro">
                       </div>
                       <div class="btn-group btn-group-sm pull-right">
-                          <a href="areas_price.html" data-toggle="tooltip" data-container="body" title="Precio de areas" class="btn btn-default datatables1-actions" role="button">
+                          <a href="{{ route('costs.index') }}" data-toggle="tooltip" data-container="body" title="Precio de areas" class="btn btn-default datatables1-actions" role="button">
                               <i class="fa fa-usd"></i>
                           </a>
                       </div>
@@ -73,8 +73,8 @@
                                       <label class="select select-sm">
                                           <select name="createActive" id="createActive" required="">
                                               <option value="">Estado</option>
-                                              <option value="true">Activa</option>
-                                              <option value="false">No activa</option>
+                                              <option value="Activa">Activa</option>
+                                              <option value="No activa">No activa</option>
                                           </select>
                                       </label>
                                   </div>
@@ -135,8 +135,8 @@
                                       <label class="select select-sm">
                                           <select name="editActive" id="editActive" required="">
                                               <option value="">Estado</option>
-                                              <option value="true">Activa</option>
-                                              <option value="false">No activa</option>
+                                              <option value="Activa">Activa</option>
+                                              <option value="No activa">No activa</option>
                                           </select>
                                       </label>
                                   </div>

@@ -47,10 +47,12 @@ Route::resource('blocks','BlocksController');
 Route::get('areas/all','AreasController@showAll')->name('areas.showall');
 Route::resource('areas','AreasController');
 
+Route::get('costs/all','CostsController@showAll')->name('costs.showall');
 Route::resource('costs','CostsController');
 
 Route::resource('exeptuatedvehicles','ExeptuatedVehiclesController');
 
 Route::resource('exeptuatedvehiclesblock','ExeptuatedVehiclesBlocksController');
 
+Route::get('spacereservations/all','SpacesReservationsController@showAll')->name('spacereservations.showall');
 Route::resource('spacereservations','SpacesReservationsController');
