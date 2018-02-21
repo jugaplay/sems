@@ -30,11 +30,18 @@ Route::post('/users/vehiclesOff','UserController@disassociateVehicle')->name('us
 // corre esta funcion (userVehicles) con este control (UserController)
 Route::resource('users','UserController');
 
-Route::get('/locals/ticket','LocalController@localTicket')->name('locals.ticket.index');
-Route::post('/locals/ticket','LocalController@localTicketCreate')->name('locals.ticket.save');
 
-Route::get('/locals/credit','LocalController@localCredit')->name('locals.credit.index');
-Route::post('/locals/credit','LocalController@localCreditAdd')->name('locals.credit.save');
+Route::get('/tickets/localticket','TicketController@localTicket')->name('tickets.localticket.index');
+Route::post('/tickets/localticket','TicketController@localTicketCreate')->name('tickets.localticket.save');
+Route::get('/tickets/localcredit','TicketController@localCredit')->name('tickets.localcredit.index');
+Route::post('/tickets/localcredit','TicketController@localCreditAdd')->name('tickets.localcredit.save');
+
+Route::get('/tickets/driverticket','TicketController@driverTicket')->name('tickets.driverlticket.index');
+Route::post('/tickets/driverticket','TicketController@driverTicketCreate')->name('tickets.driverticket.save');
+Route::get('/tickets/drivercredit','TicketController@driverCredit')->name('tickets.drivercredit.index');
+Route::post('/tickets/drivercredit','TicketController@driverCreditAdd')->name('tickets.drivercredit.save');
+
+Route::resource('tickets','TicketController');
 
 Route::get('locals/delete/{local_id?}', 'LocalController@delete');
 Route::resource('locals','LocalController');
@@ -56,3 +63,5 @@ Route::resource('exeptuatedvehiclesblock','ExeptuatedVehiclesBlocksController');
 
 Route::get('spacereservations/all','SpacesReservationsController@showAll')->name('spacereservations.showall');
 Route::resource('spacereservations','SpacesReservationsController');
+
+Route::resource('infringementcauses','InfringementCausesController');

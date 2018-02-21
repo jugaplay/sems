@@ -5,21 +5,15 @@ namespace App\Http\Controllers;
 use App\Area;
 use App\Block;
 use App\Bill;
-use App\Cost;
-use App\CompanySale;
 use App\Local;
 use App\Operation;
-use App\OperationsBill;
-use App\Ticket;
 use App\User;
-use App\Vehicle;
 use App\Wallet;
 
 use App\UsersBillingData;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon; // Clase para manejar fechas de laravel
 
 class LocalController extends Controller
 {
@@ -216,130 +210,6 @@ class LocalController extends Controller
         $wallet=Wallet::where('user_id', $local_id)->first();
         return view('locals.delete',['user'=>$user,'usersBillingData'=>$usersBillingData,'wallet'=>$wallet]);//->with($findProject);
 
-    }
-
-    public function localTicket()
-    {
-        //
-        $local = Auth::user()->local()->get();
-
-        $localData = json_decode($local);
-        $timeNow = date('Y-m-d H:i:s');
-        $priceTime = Block::where('id',$localData[0]->block_id)->first()->priceBlock('time');
-        $priceDay = Block::where('id',$localData[0]->block_id)->first()->priceBlock('day');
-
-       return view('locals.ticket',['priceTime'=>$priceTime,'priceDay'=>$priceDay]);
-    }
-
-    public function localTicketCreate(Request $request){
-
-      $carbon = new Carbon();
-
-      $local = Auth::user()->local()->get();
-      $localData = json_decode($local);
-
-      $cadena = $request->input('plate').$request->input('type').$request->input('time').date('YmdHis');
-      $token = substr(str_shuffle($cadena), 0, 10);
-
-      $start = Carbon::now();
-      $fin = Carbon::now();
-
-      if($request->input('type') == 'time'){
-          $end = $fin->addHour($request->input('time'));}
-        else {
-          $horas = 0;
-          $end = substr($start,0,10).' 23:59:59';
-        }
-
-      if($request->input('type') == 'time'){
-            $prices = Block::where('id',$localData[0]->block_id)->first()->priceBlockBackEnd('time');
-            /*******************************************
-            *** Generar el costo del estacionamiento ***
-            *******************************************/
-            $minutes = ($request->input('time') * 60); // Se pasa a minutos para poder restar
-            $amount = 0;
-            $localPrices = json_decode($prices);
-            $prices = $localPrices[0];
-            foreach ($prices as $minutePrice) {
-              if ($minutePrice->price > 0) {
-                //echo('$amount = '.$amount.' + '.$minutePrice->price.'  ==> '.$minutePrice->starts.'</br>');
-                $amount = $amount + $minutePrice->price;
-                $minutes = $minutes - 1;
-              }
-              if ($minutes <= 0) {
-                $endTime = new Carbon($minutePrice->starts);
-                break;
-              }
-            }
-            $endTime = $endTime->format('Y-m-d H:i:s');
-            $hours = $request->input('time');
-            $detail = 'Ticket por '.$request->input('time').' Horas de estacionamiento desde las '.$start.' hasta las '.$endTime.' de la patente '.$request->input('plate');
-      }
-      else
-      {
-            $hours = 0;
-            $detail = 'Ticket por Estadia el dia '.$start.' de la patente '.$request->input('plate');
-
-            $prices = Block::where('id',$localData[0]->block_id)->first()->priceBlockBackEnd('day');
-            $localPrices = json_decode($prices);
-            $price = $localPrices[0];
-            $amount = $price[0]->price;
-            $endTime = $end;
-            //$amount = $localPrices[0]->price;
-      }
-          /***********************************
-          *** Grabar todas las operaciones ***
-          ***********************************/
-          $generalFunctions = new generalFunctions(); // Instancamos la clase
-         // Grabar el ticket
-          $ticketId = $generalFunctions->ticketSave(Auth::user()->id,$request->input('plate'),$hours,$start,$endTime,
-                                                    $localData[0]->block_id,$localData[0]->latlng,$token,$request->input('type'));
-          // grabar operacion
-          $saveOperationId = $generalFunctions->operationSave('Ticket',$ticketId,($amount *-1));
-          // Actualizar el ticket con el id de la operacion.
-          Ticket::where('id', $ticketId)->update(['operation_id' => $saveOperationId]);
-          // generar venta de la compania (company_sales)
-          $saveBill = $generalFunctions->companySalesSave(Auth::user()->id,$saveOperationId,$detail);
-          // generar la factura (bills) y la realcion con la operacion
-          $saveBill = $generalFunctions->billSave($amount,$detail,$saveOperationId);
-          // restar el saldo a la billetera (wallet) del local
-          $balance = $generalFunctions->modifyBalanceWallet(Auth::user()->id,($amount * -1));
-          // Registrar la patente si no existe
-          $vehicle_id = $generalFunctions->registerVehicle($request->input('plate'));
-
-    }// fin funcion de ticketCreate
-
-    public function localCredit()
-    {
-        //
-        //$local = Auth::user()->local()->get();
-        //$localData = json_decode($local);
-        $drivers = User::where('type', 'driver')->orderBy('name')->get();
-        //dd($drivers);
-       return view('locals.credit',['drivers'=>$drivers]);
-    } // Fin de la funcion de localCredit
-
-    /********************************
-    *** graba el credito cargado  ***
-    ********************************/
-    public function localCreditAdd(Request $request){
-      if($request->input('amount') > 0){
-        $generalFunctions = new generalFunctions(); // Instancamos la clase
-        // Sumar el saldo a la billetera (wallet) al cliente
-        $balance = $generalFunctions->modifyBalanceWallet($request->input('user_id'),$request->input('amount'));
-        // grabar operacion del driver
-        $saveDriverOperationId = $generalFunctions->operationSave('wallet',$request->input('user_id'),$request->input('amount'));
-        // restar el saldo a la billetera (wallet) del local
-        $balance = $generalFunctions->modifyBalanceWallet(Auth::user()->id,($request->input('amount') * -1));
-        // grabar operacion del local
-        $saveLocalOperationId = $generalFunctions->operationSave('wallet',Auth::user()->id,($request->input('amount') * -1));
-        // Grabar operacion entre billeteras (operationBetwenWallets)
-        $operationBetwenWallets = $generalFunctions->operationBetweenWalletsSave($saveDriverOperationId,$saveLocalOperationId);
-        // generar la factura (bills) y la realcion con la operacion
-        $saveBill = $generalFunctions->billSave($request->input('amount'),'Compra de credito',$saveDriverOperationId);
-        // generar venta de la compania (company_sales)
-        $saveBill = $generalFunctions->companySalesSave(Auth::user()->id,$saveDriverOperationId,'Venta de credito');
-      }
     }
 
 }  // Fin de la clase

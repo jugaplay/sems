@@ -15,6 +15,8 @@ use App\Wallet;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon; // Clase para manejar fechas de laravel
+
 
 
 class generalFunctions extends Controller
@@ -37,6 +39,71 @@ class generalFunctions extends Controller
        }
        return NULL;
   }
+  /***********************************
+  *** Generar los datos del ticket ***
+  ***********************************/
+  function dataTicket($plate,$type,$time,$blockId){
+    $carbon = new Carbon();
+
+    $local = Auth::user()->local()->get();
+    $localData = json_decode($local);
+
+    $cadena = $plate.$type.$time.date('YmdHis');
+    $token = substr(str_shuffle($cadena), 0, 10);
+
+    $start = Carbon::now();
+    $fin = Carbon::now();
+
+    if($type == 'time'){
+        $end = $fin->addHour($time);}
+      else {
+        $horas = 0;
+        $end = substr($start,0,10).' 23:59:59';
+      }
+
+    if($type == 'time'){
+          $prices = Block::where('id',$blockId)->first()->priceBlockBackEnd('time');
+          /*******************************************
+          *** Generar el costo del estacionamiento ***
+          *******************************************/
+          $minutes = ($time * 60); // Se pasa a minutos para poder restar
+          $amount = 0;
+          $localPrices = json_decode($prices);
+          $prices = $localPrices[0];
+          foreach ($prices as $minutePrice) {
+            if ($minutePrice->price > 0) {
+              //echo('$amount = '.$amount.' + '.$minutePrice->price.'  ==> '.$minutePrice->starts.'</br>');
+              $amount = $amount + $minutePrice->price;
+              $minutes = $minutes - 1;
+            }
+            if ($minutes <= 0) {
+              $endTime = new Carbon($minutePrice->starts);
+              break;
+            }
+          }
+          $endTime = $endTime->format('Y-m-d H:i:s');
+          $startTime = $start->format('Y-m-d H:i:s');
+          $hours = $time;
+          $detail = 'Ticket por '.$time.' Horas de estacionamiento desde las '.$startTime.' hasta las '.$endTime.' de la patente '.$plate;
+    }
+    else
+    {
+          $hours = 0;
+          $detail = 'Ticket por Estadia el dia '.$start.' de la patente '.$plate;
+
+          $prices = Block::where('id',$blockId)->first()->priceBlockBackEnd('day');
+          $localPrices = json_decode($prices);
+          $price = $localPrices[0];
+          $amount = $price[0]->price;
+          $endTime = $end;
+          $startTime = $start->format('Y-m-d H:i:s');
+          //$amount = $localPrices[0]->price;
+    }
+    $response = array('hours' =>$hours,'start'=>$startTime, 'endTime'=>$endTime,'token'=>$token,'amount'=>$amount,'detail'=>$detail);
+    $response = json_encode($response);
+    return $response;
+  } // fin de dataTicket
+
   /***********************************************
   *** Funciones relacionadas con los vehiculos ***
   ***********************************************/
