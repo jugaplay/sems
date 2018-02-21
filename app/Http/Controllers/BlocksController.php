@@ -61,7 +61,7 @@ class BlocksController extends Controller
           *** Controlar si pertenece a alguna area ***
           *******************************************/
           $pointLocation = new pointLocation(); // Instancamos la clase
-          $pointSearched = $pointLocation->makePoint(json_decode($request->input('createZone')));
+          $pointSearched = $pointLocation->makePoints(json_decode($request->input('createZone')));
           $areas = Area::all();
           foreach($areas as $key => $area){
           // Armar el poligono
@@ -144,7 +144,7 @@ class BlocksController extends Controller
             $pointCordenadas = json_decode($request->input('editZone'));
             $pointSearched = array();
             //Armar el punto
-            $pointSearched = $pointLocation->makePoint($pointCordenadas);
+            $pointSearched = $pointLocation->makePoints($pointCordenadas);
             $block = Block::where('id', $block->id)->first();
 
             /************************************************************************************
