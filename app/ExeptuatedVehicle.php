@@ -26,7 +26,7 @@ class ExeptuatedVehicle extends Model
     }
 
     public function causes(){
-      return $this->belongsTo('App\ExeptuatedCauses');
+      return $this->belongsTo('App\ExeptuatedCauses', 'exeptuated_cause_id');
     }
 
 }

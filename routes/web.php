@@ -36,7 +36,8 @@ Route::post('/locals/ticket','LocalController@localTicketCreate')->name('locals.
 Route::get('/locals/credit','LocalController@localCredit')->name('locals.credit.index');
 Route::post('/locals/credit','LocalController@localCreditAdd')->name('locals.credit.save');
 
-Route::get('locals/delete/{local_id?}', 'LocalController@delete');
+Route::get('locals/delete/{local_id?}', 'LocalController@delete');// Esto me parece que no va asi
+Route::get('locals/all','LocalController@showAll')->name('locals.showall');
 Route::resource('locals','LocalController');
 
 Route::get('blocks/delete/{block_id?}', 'BlocksController@delete');
@@ -50,6 +51,7 @@ Route::resource('areas','AreasController');
 Route::get('costs/all','CostsController@showAll')->name('costs.showall');
 Route::resource('costs','CostsController');
 
+Route::get('exeptuatedvehicles/all','ExeptuatedVehiclesController@showAll')->name('exeptuatedvehicles.showall');
 Route::resource('exeptuatedvehicles','ExeptuatedVehiclesController');
 
 Route::resource('exeptuatedvehiclesblock','ExeptuatedVehiclesBlocksController');

@@ -24,7 +24,8 @@ class ExeptuatedVehiclesController extends Controller
     public function index()
     {
         //
-          return view('exeptuatedvehicles.index');
+          $causes = ExeptuatedCauses::all();
+          return view('exeptuatedvehicles.index',['causes'=>$causes]);
     }
 
     /**
@@ -47,82 +48,47 @@ class ExeptuatedVehiclesController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        //Verificar si el vehiculo existe en la base.
-        $VehicleExist = Vehicle::where('plate', $request->input('plate'))->first();
-        if (!$VehicleExist) {
-          # grabar el vehiculo en la tabla
-          $vehicle=Vehicle::create([
-            'plate' => $request->input('plate'),
-          ]);
-          $id_vehiculo = $vehicle->id;
-        }else {
-          $id_vehiculo = $VehicleExist->id;
-        }
-       /******************************************
-       *** Grabar la tabla exeptuated_vehicles ***
-       ******************************************/
-       $exeptuatedVehicle = ExeptuatedVehicle::create([
-          'vehicle_id'          => $id_vehiculo,
-          'detail'              => $request->input('detail'),
-          'start_time'          => $request->input('start_time'),
-          'end_time'            => $request->input('end_time'),
-          'latlng'              => $request->input('latlng'),
-          'exeptuated_cause_id' => $request->input('exeptuated_cause_id'),
-        ]);
-        $id_exception = $exeptuatedVehicle->id;
-        //echo('Vehiculo exceptuado = '.$id_exception);
-        /***************************
-        *** Grabar la operacion  ***
-        ***************************/
-        $operation = operation::create([
-           'type'    => 'ExeptuatedVehicle', //(wallet/ticket/infringement)
-           'type_id' => $id_exception,
-           'amount'  => $request->input('amount'),
-         ]);
-         $id_operation = $operation->id;
-         # Actualizar la tabla exeptuated_vehicles con el ID de la operacion.
-         ExeptuatedVehicle::where('id', $id_exception)
-            ->update(['operation_id' => $operation->id]);
-        /***************************
-        *** Genera company_sales ***
-        ***************************/
-        $companySalesCreate = CompanySale::create([
-          'user_id'      => Auth::user()->id,
-          'operation_id' => $operation->id,
-          'detail'       =>$request->input('detail'),
-        ]);
-        /*******************************
-        *** Grabar la factura (bill) ***
-        *******************************/
-        $billsExist = Bill::all()->last();
-        if(!$billsExist) {
-          $next_bill = 1;
-        }else {
-          $next_bill = $billsExist->id + 1;
-        }
-        //echo $next_bill;
-        if ($request->input('amount') > 0) {
-          $net = ($request->input('amount') /1.21);
-          $iva = ($net * 21) / 100;
-          $billCreate=Bill::create([
-            'type'            => 'F',
-            'letter'          => 'B',
-            'branch_office'   => '0001',
-            'number'          => $next_bill,
-            'document_type'   => '99', // Consumidor final
-            'document_number' => '0',
-            'net'             => $net,
-            'iva'             => $iva,
-            'total'           => $request->input('amount'),
-            'date'            => date('Y-m-d'),
-            'detail'          => $request->input('detail'),
-          ]);
-          $operationBil = OperationsBill::create([
-            'operation_id' => $operation->id,
-            'bill_id'      => $billCreate->id,
-           ]);
-
+      if(Auth::check()){
+        if(Auth::user()->type=="admsuper" && Auth::user()->account_status!="B" ){
+            /***************************************************
+            ***  Grabar la Excepcion de vehiculos en blockes ***
+            ***************************************************/
+            $generalFunctions = new generalFunctions(); // Instancamos la clase
+            // Registrar la patente si no existe
+            $vehicleId = $generalFunctions->registerVehicle($request->input('createPlate'));
+            $exeptuatedCauseId=ExeptuatedCauses::where('name', $request->input('createType'))->first()->id;
+            //{"createType":"Frentistas","createPlate":"IQW938","createStart":"2017-08-28T08:00","createEnd":"2020-10-28T20:00","createCost":"100","createZone":"[]","createDetail":"Algun detalle"}
+            $exeptuatedVehicle = ExeptuatedVehicle::create([
+                'vehicle_id'          => $vehicleId,
+                'detail'              => $request->input('createDetail'),
+                'start_time'          => $request->input('createStart'),
+                'end_time'            => $request->input('createEnd'),
+                'latlng'              => $request->input('createZone'),
+                'exeptuated_cause_id' => $exeptuatedCauseId
+            ]);
+            if($exeptuatedVehicle->save()){
+              $exeptuatedVehicleid = $exeptuatedVehicle->id;
+            }else{
+              return response()->json(["error"=>"Error creando el vehiculo exceptuado en la base de datos"],422);
+            }
+            // Grabar la operacion
+            $saveOperationId = $generalFunctions->operationSave('exeptuatedVehicles',$exeptuatedVehicleid,$request->input('createCost'));
+            // Actualizar el exeptuated_vehicles con el id de la operacion.
+            $vehicle = ExeptuatedVehicle::where('id', $exeptuatedVehicleid)->update(['operation_id' => $saveOperationId]);
+            if ($request->input('createCost') > 0) {// Si el precio es mayor a 0 genera la venta de la compania y la factura
+              // generar venta de la compania (company_sales)
+              $saveBill = $generalFunctions->companySalesSave(Auth::user()->id,$saveOperationId,$request->input('createDetail'));
+              // generar la factura (bills) y la realcion con la operacion
+              $saveBill = $generalFunctions->billSave($request->input('createCost'),$request->input('createDetail'),$saveOperationId);
+            }
+            $exeptuatedVehicle['plate']=$exeptuatedVehicle->vehicle()->first()->plate;
+            return response()->json($exeptuatedVehicle);
+          }else{
+            // No tiene permiso para esta accion
+            return response()->json(["error"=>"Sin permiso para crear un vehiculo exceptuado"],403);
+          }
+        }else{// Tiene que hacer el login primero
+          return response()->json(["error"=>"Tiene que estar logueado"],401);
         }
       }
 
@@ -136,7 +102,25 @@ class ExeptuatedVehiclesController extends Controller
     {
         //
     }
-
+    public function showAll(){
+      $vehicles = ExeptuatedVehicle::all();
+      $arrOfVehicles=array();
+      foreach ($vehicles as $vehicle) {
+        array_push($arrOfVehicles,[
+          $vehicle->causes()->first()->name,
+          $vehicle->vehicle()->first()->plate,
+          date("Y-m-d",strtotime($vehicle->start_time))."T".date("H:i",strtotime($vehicle->start_time)),
+          date("Y-m-d",strtotime($vehicle->end_time))."T".date("H:i",strtotime($vehicle->end_time)),
+          $vehicle->operation()->first()->amount,
+          $vehicle->id,
+          $vehicle->latlng,
+          $vehicle->detail
+          ]);
+      }
+      return response()->json([
+          'aaData' => $arrOfVehicles
+      ]);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -162,29 +146,37 @@ class ExeptuatedVehiclesController extends Controller
      */
     public function update(Request $request, ExeptuatedVehicle $exeptuatedvehicle)
     {
-        //echo "plate  =  ".$request->input('plate');
-        //echo "  ID   = ".$exeptuatedvehicle->id;
-          //Verificar si el vehiculo existe en la base.
-        $VehicleExist = Vehicle::where('plate', $request->input('plate'))->first();
-        if (!$VehicleExist) {
-          # grabar el vehiculo en la tabla
-          $vehicle=Vehicle::create([
-            'plate' => $request->input('plate'),
-          ]);
-          $id_vehiculo = $vehicle->id;
-        }else {
-          $id_vehiculo = $VehicleExist->id;
+      if(Auth::check()){
+        if(Auth::user()->type=="admsuper" && Auth::user()->account_status!="B" ){
+            /***************************************************
+            ***  Grabar la Excepcion de vehiculos en blockes ***
+            ***************************************************/
+            $generalFunctions = new generalFunctions(); // Instancamos la clase
+            // Registrar la patente si no existe
+            $vehicleId = $generalFunctions->registerVehicle($request->input('editPlate'));
+            $exeptuatedCauseId=ExeptuatedCauses::where('name', $request->input('editType'))->first()->id;
+            $exeptuatedVehicleUpdt = ExeptuatedVehicle::where('id', $exeptuatedvehicle->id)
+              ->update([
+                      'vehicle_id'          => $vehicleId,
+                      'detail'              => $request->input('editDetail'),
+                      'start_time'          => $request->input('editStart'),
+                      'end_time'            => $request->input('editEnd'),
+                      'latlng'              => $request->input('editZone'),
+                      'exeptuated_cause_id' => $exeptuatedCauseId
+                    ]);
+            if(!$exeptuatedVehicleUpdt){
+              return response()->json(["error"=>"Error actualizando el vehiculo exceptuado en la base de datos"],422);
+            }
+            $exeptuatedVehicle=ExeptuatedVehicle::where('id', $exeptuatedvehicle->id)->first();
+            $exeptuatedVehicle['price']=$exeptuatedVehicle->operation()->first()->amount;
+            return response()->json($exeptuatedVehicle);
+          }else{
+            // No tiene permiso para esta accion
+            return response()->json(["error"=>"Sin permiso para actualizar un vehiculo exceptuado"],403);
+          }
+        }else{// Tiene que hacer el login primero
+          return response()->json(["error"=>"Tiene que estar logueado"],401);
         }
-       // actualizar el id en exeptuated_vehicles
-        ExeptuatedVehicle::where('id', $exeptuatedvehicle->id)
-          ->update(['vehicle_id'        => $id_vehiculo,
-                  'detail'              => $request->input('detail'),
-                  'start_time'          => $request->input('start_time'),
-                  'end_time'            => $request->input('end_time'),
-                  'latlng'              => $request->input('latlng'),
-                  'exeptuated_cause_id' => $request->input('exeptuated_cause_id'),
-                ]);
-
     }
 
     /**
