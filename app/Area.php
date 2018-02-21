@@ -14,7 +14,7 @@ class Area extends Model
       'name',
       'details',
       'latlng',
-      'active', //(true/false)
+      'active', //(1/0)
       ];
 
       public function blocks(){
