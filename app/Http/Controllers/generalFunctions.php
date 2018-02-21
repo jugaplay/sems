@@ -24,7 +24,7 @@ class generalFunctions extends Controller
   ***********************************************/
   function returnBlockFromLatLng($latLng){
     $pointLocation = new pointLocation(); // Instancamos la clase
-    $pointSearched = $pointLocation->makePoint([$latLng]);
+    $pointSearched = $pointLocation->makePoints([$latLng]);
     $blocks = Block::all();
     foreach($blocks as $block){
     // Armar el poligono
