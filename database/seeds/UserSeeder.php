@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
           'email'				=>	'administradorgeneral@gmail.com',
           'phone'			  =>	'1544008341',
           'type'        =>  'admsuper',
-          'account_status' => 'A',
+          'account_status' => 'C',
           'password' => bcrypt('123456'),
           ]);
 

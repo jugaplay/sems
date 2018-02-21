@@ -14,5 +14,9 @@ class Vehicle extends Model
       return $this->belongsToMany('App\User',$table='vehicle_users');
     }
 
+    public function exeptuatedvehicles(){
+      return $this->hasOne('App\ExeptuatedVehicle');
+    }
+
 
 }

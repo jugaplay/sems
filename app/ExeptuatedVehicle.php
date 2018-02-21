@@ -18,7 +18,7 @@ class ExeptuatedVehicle extends Model
     ];
 
     public function vehicle(){
-      return $this->belongsTo('App\Vehicle');
+      return $this->belongsTo('App\Vehicle'); // Inversa del hasOne
     }
 
     public function operation(){
@@ -26,7 +26,7 @@ class ExeptuatedVehicle extends Model
     }
 
     public function causes(){
-      return $this->belongsTo('App\ExeptuatedCauses');
+      return $this->belongsTo('App\ExeptuatedCauses', 'exeptuated_cause_id');
     }
 
 }

@@ -20,10 +20,10 @@ class Costs extends Migration
             $table->time('time_zone_end');
             $table->date('start_date');
             $table->date('end_date')->default('2999-12-31');
-            $table->string('pirority')->nullable;
+            $table->string('priority')->nullable;
             $table->decimal('cost',13,2)->nullable;
             $table->string('type');
-            $table->smallInteger('day_starts')->unsigned();
+            $table->smallInteger('day_start')->unsigned();
             $table->smallInteger('day_end')->unsigned();
             $table->foreign('area_id')->references('id')->on('areas');
             $table->timestamps();

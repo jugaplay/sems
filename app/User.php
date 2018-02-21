@@ -23,6 +23,21 @@ class User extends Authenticatable
         'account_status',
     ];
 
+    public function vehicles(){
+      return $this->belongsToMany('App\Vehicle',$table='vehicle_users')->withTimestamps();
+    }
+
+    public function wallet(){
+      return $this->hasOne('App\Wallet');
+    }
+
+    public function local(){
+      return $this->hasOne('App\Local');
+    }
+
+    public function userbillingdata(){
+      return $this->hasOne('App\UsersBillingData');
+    }
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -32,21 +47,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function vehicles(){
-      return $this->belongsToMany('App\Vehicle',$table='vehicle_users')->withTimestamps();
-    }
-
-    public function wallet(){
-      return $this->belongsTo('App\Wallet');
-    }
-
-    public function local(){
-      return $this->belongsTo('App\Local');
-    }
-
-    public function userBillingData(){
-      return $this->belongsTo('App\UsersBillingData');
-    }
 
 
 }

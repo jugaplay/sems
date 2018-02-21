@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Area;
+use App\Block;
+use App\Bill;
+use App\Local;
+use App\Operation;
 use App\User;
 use App\Wallet;
-use App\Local;
+
 use App\UsersBillingData;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -63,7 +69,7 @@ class LocalController extends Controller
       }
 
       if(Auth::check()){
-        $user=User::create([
+          $user=User::create([
           'name' => $request->input('bussines_name'),
           'email' => $request->input('email'),
           'phone' => $request->input('phone'),
@@ -80,6 +86,7 @@ class LocalController extends Controller
             'credit'  => 0,
             ]);
        // Genra datos empresa
+
        $userLocal=UsersBillingData::create([
             'user_id'         => $id_user,
             'bussines_name'   => $request->input('bussines_name'),
@@ -92,16 +99,26 @@ class LocalController extends Controller
              ]);
              echo "UsersBillingData creada =>".$id_user. "\n" ;
        // Genera datos local
+       /***********************
+       *** Obtener el block ***
+       ***********************/
+       $generalFunctions = new generalFunctions();
+       $block=$generalFunctions->returnBlockFromLatLng(json_decode($request->input('latlng')));
+       if(is_null($block)){// No se encontro ningun block en el area
+
+       }
+         echo('Block ='.$block->id. "<br>" );
+         //dd($block->id);
        $userLocal=Local::create([
           'user_id'    => $id_user,
-          'latlng'   => $request->input('latlng'),
+          'latlng'     => $request->input('latlng'),
           'fee'        => $request->input('fee'),       //(default es 0)
           'verified'   => 1,
+          'block_id'   => $block->id,
           'address'    => $request->input('address'),
         ]);
-
-        }
-      }
+      } // Fin del Auth::check
+    } // Fin del store
 
 
     /**
@@ -124,23 +141,10 @@ class LocalController extends Controller
     public function edit($local_id=null)
     {
         $user = User::where('id', $local_id)->first();
-        //dd($user);
-
-        $local=Local::where('user_id', $local_id)->first();
-        $usersBillingData=UsersBillingData::where('user_id', $local_id)->first();
-        $wallet=Wallet::where('user_id', $local_id)->first();
-        /*****************************************
-        Cuando quieros usar estas funciones no me trae nada.
-        Estan creadas en App\User.
-        Probe ponerlas en App\Local pero tampoco
-        $local= $user->local();
-        $usersBillingData=$user->userBillingData();
-        $wallet=$user->wallet();
-        //dump($local);
-        //dump($usersBillingData);
-        //dump($wallet);
-        *******************************************/
-        return view('locals.edit',['user'=>$user,'local'=>$local,'usersBillingData'=>$usersBillingData,'wallet'=>$wallet]);
+        //$wallet = $user->wallet()->get();
+        //dump($user);
+        //dd($wallet);
+      return view('locals.edit',['user'=>$user]);
     }
 
     /**
@@ -207,4 +211,5 @@ class LocalController extends Controller
         return view('locals.delete',['user'=>$user,'usersBillingData'=>$usersBillingData,'wallet'=>$wallet]);//->with($findProject);
 
     }
-}
+
+}  // Fin de la clase

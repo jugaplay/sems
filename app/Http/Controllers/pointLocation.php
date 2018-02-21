@@ -89,7 +89,7 @@ class pointLocation {
       return $polygon;
     }
 
-    function makePoint($latLngPoint){
+    function makePoints($latLngPoint){
       // Generar los puntos a buscar. Se debe pasar un array
       $pointSearched = array();
       foreach ($latLngPoint as $key => $value) {

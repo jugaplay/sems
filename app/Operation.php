@@ -8,7 +8,7 @@ class Operation extends Model
 {
     //
     protected $fillable = [
-      'type', //(wallet/ticket/infringement)
+      'type', //(wallet/ticket/infringement/spacereservation)
       'type_id',
       'amount',
     ];

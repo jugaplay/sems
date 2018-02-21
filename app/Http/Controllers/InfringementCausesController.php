@@ -12,20 +12,25 @@ class InfringementCausesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+     public function index()
+     {
+       //
+       //$companies = Company::all();
+       return view('infringementcauses.index');
+     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+     /**
+      * Show the form for creating a new resource.
+      *
+      * @return \Illuminate\Http\Response
+      */
+     public function create()
+     {
+         //
+         return view('infringementcauses.create');
+     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +40,16 @@ class InfringementCausesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      if(Auth::check()){
+        if(Auth::user()->type=="admsuper" && Auth::user()->account_status!="B" ){
+          $activa=('Activa' == $request->input('createActive')) ? 1 : 0;
+          $area=Area::create([
+            'name'           => $request->input('createName'),
+            'details'        => $request->input('createDetail'),
+            'cost'           =>  $request->input('cost'),
+            'voluntary_cost' => $request->input('voluntary_cost'),
+          ]);
+        }
     }
 
     /**

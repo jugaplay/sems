@@ -107,7 +107,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+          return view('users.edit',['user'=>$user]);
     }
 
     /**
@@ -120,6 +120,15 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         //
+        if(Auth::check()){
+          $user=User::where('id', $user->id)
+          ->update([
+            'name'    => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            //'password' => bcrypt($request->input('password')),
+          ]);
+        }
     }
 
     /**
@@ -172,4 +181,23 @@ class UserController extends Controller
         //
 
           }
+
+          public function userVehiclesOff()
+          {
+              //
+              //$user_id = Auth::user()->id;
+              //$user = User::where('id', $user_id)->first();
+              //dump($user);
+              // $findVehicles = $user->vehicles()->get();
+              // es lo mismo que wscribir
+              $findVehicles = Auth::user()->vehicles()->get();
+              return view('users.vehiclesOff',['findVehicles'=>$findVehicles]);
+          }
+
+          public function disassociateVehicle(Request $request){
+            echo "Patente = ".$request->input('plate_id'). "<br>" ;
+            Auth::user()->vehicles()->detach($request->input('plate_id'));
+
+          }
+
 } // function associateVehicle
