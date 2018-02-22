@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\InfringementCause;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class InfringementCausesController extends Controller
 {
@@ -42,14 +45,14 @@ class InfringementCausesController extends Controller
     {
       if(Auth::check()){
         if(Auth::user()->type=="admsuper" && Auth::user()->account_status!="B" ){
-          $activa=('Activa' == $request->input('createActive')) ? 1 : 0;
-          $area=Area::create([
-            'name'           => $request->input('createName'),
-            'details'        => $request->input('createDetail'),
+          $area=InfringementCause::create([
+            'name'           => $request->input('name'),
+            'detail'        => $request->input('detail'),
             'cost'           =>  $request->input('cost'),
             'voluntary_cost' => $request->input('voluntary_cost'),
           ]);
         }
+      }
     }
 
     /**
@@ -69,9 +72,10 @@ class InfringementCausesController extends Controller
      * @param  \App\InfringementCause  $infringementCause
      * @return \Illuminate\Http\Response
      */
-    public function edit(InfringementCause $infringementCause)
+    public function edit($infringementcausesId =null)
     {
-        //
+      $infringementcauses = InfringementCause::where('id', $infringementcausesId)->first();
+      return view('infringementcauses.edit',['infringementcauses'=>$infringementcauses]);
     }
 
     /**
@@ -83,7 +87,18 @@ class InfringementCausesController extends Controller
      */
     public function update(Request $request, InfringementCause $infringementCause)
     {
-        //
+      if(Auth::check()){
+        if(Auth::user()->type=="admsuper" && Auth::user()->account_status!="B" ){
+          $InfringementCauseUpdate = InfringementCause::where('id', $request->input('infringementcausesId'))
+                  ->update([
+                    'name'           => $request->input('name'),
+                    'detail'         => $request->input('detail'),
+                    'cost'           => $request->input('cost'),
+                    'voluntary_cost' => $request->input('voluntary_cost'),
+                  ]);
+             }
+      }
+
     }
 
     /**
