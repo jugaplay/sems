@@ -15,7 +15,7 @@
     'oLanguage': {
       'sInfoFiltered': '<span class="label label-info"><i class="fa fa-filter"></i> filtrado de _MAX_ registros</span>',
     },
-    'sAjaxSource': '../_includes/data-locals-source.json', // Aca van los datos y los carga con Ajax?!
+    'sAjaxSource': 'locals/all', // Aca van los datos y los carga con Ajax?!
     'fnInitComplete': function(settings) {
       var aoData = settings.aoData;
 
@@ -209,64 +209,59 @@
     datas = $this.serializeArray(); // or use $this.serialize()
 
     // do server action to save change here ( ajax )
-    alert("Guardar datos "+JSON.stringify(datas));
-    /*
-    "name",
-    "email",
-    "addres",
-    "phone",
-    "account_status",
-    "verified",
-    "4",
-    "latitude",
-    "longitude",
-    "fee",
-    "bussines_name"
-    "tax_treatment"
-    "billing_address"
-    "city"
-    "state"
-    "document_type"
-    "document_number"
-      */
     // ...
     // just simple rule after ajax is done (demo)
     $.each( datas, function( i, data ){
       console.log( data.name + ' = ' + data.value );
     });
-
-    // add new row to datatables using datatables plugin fnAddDataAndDisplay([ 1,2,3,... ]) ( see scripts/demo/datatables-plugins.js )
-    // or you can just use fnAddData([ 1,2,3,... ]) - without any datatables plugin
-    var addData = datatables1.fnAddDataAndDisplay([
-      datas[0].value,
-      datas[1].value,
-      datas[2].value,
-      datas[3].value,
-      datas[4].value
-      ]),
-    newRow = addData.nTr,
-      newID = datatables1.fnGetData().length; // just sample id (on real case: get it from server callback)
-    datatables1.$( 'tr.active' ).removeClass( 'active' );
-    $( newRow ).attr( 'data-verified', datas[5].value);
-    $( newRow ).attr( 'data-userid', datas[6].value);
-    $( newRow ).attr( 'data-latitude', datas[7].value);
-    $( newRow ).attr( 'data-longitude', datas[8].value);
-    $( newRow ).attr( 'data-fee', datas[9].value);
-    $( newRow ).attr( 'data-bussines_name', datas[10].value);
-    $( newRow ).attr( 'data-tax_treatment', datas[11].value);
-    $( newRow ).attr( 'data-billing_address', datas[12].value);
-    $( newRow ).attr( 'data-city', datas[13].value);
-    $( newRow ).attr( 'data-state', datas[14].value);
-    $( newRow ).attr( 'data-document_type', datas[15].value);
-    $( newRow ).attr( 'data-document_number', datas[16].value);
-    $( newRow ).attr( 'data-id', 'datatables1_' + newID );
-    $( newRow ).attr( 'data-userid', '1' )// Agrega el UserId que devuelve
-    .addClass( 'active' );
-    // activate actions edit & delete
-    $( '.datatables1-actions' ).removeClass( 'disabled' );
-    // reset form
-    $( '#formAddDatatables1' )[0].reset();
-    alert("Usuario creado correctamente");
+    var $button = $("#formAddDatatables1 [type=submit]");
+    $button.button('loading')
+    var jqxhr = $.ajax({
+                    method: "POST",
+                    url: "locals",
+                    data: datas
+                  })
+                  .done(function(xhr) {
+                    toastr.success( 'Local <b>' + xhr.name + '</b> agregado exitosamente!' );
+                    // add new row to datatables using datatables plugin fnAddDataAndDisplay([ 1,2,3,... ]) ( see scripts/demo/datatables-plugins.js )
+                    // or you can just use fnAddData([ 1,2,3,... ]) - without any datatables plugin
+                    var addData = datatables1.fnAddDataAndDisplay([
+                      datas[0].value,
+                      datas[1].value,
+                      datas[2].value,
+                      datas[3].value,
+                      datas[4].value
+                      ]),
+                    newRow = addData.nTr,
+                    newID = datatables1.fnGetData().length; // Id for row!
+                    datatables1.$( 'tr.active' ).removeClass( 'active' );
+                    $( newRow ).attr( 'data-verified', datas[5].value);
+                    $( newRow ).attr( 'data-latitude', datas[7].value);
+                    $( newRow ).attr( 'data-longitude', datas[8].value);
+                    $( newRow ).attr( 'data-fee', datas[9].value);
+                    $( newRow ).attr( 'data-bussines_name', datas[10].value);
+                    $( newRow ).attr( 'data-tax_treatment', datas[11].value);
+                    $( newRow ).attr( 'data-billing_address', datas[12].value);
+                    $( newRow ).attr( 'data-city', datas[13].value);
+                    $( newRow ).attr( 'data-state', datas[14].value);
+                    $( newRow ).attr( 'data-document_type', datas[15].value);
+                    $( newRow ).attr( 'data-document_number', datas[16].value);
+                    $( newRow ).attr( 'data-id', 'datatables1_' + newID );
+                    $( newRow ).attr( 'data-userid', xhr.id )// Agrega el UserId que devuelve
+                    .addClass( 'active' );
+                    // activate actions edit & delete
+                    $( '.datatables1-actions' ).removeClass( 'disabled' );
+                    // reset form
+                    $( '#formAddDatatables1' )[0].reset();
+                  })
+                  .fail(function(xhr) {
+                    if(xhr.status==419){toastr.error('Error: Refresque la pagina y vuelva a intentar');}
+                    else if (xhr.status>=500) { toastr.error('Error: Interno del servidor');}
+                    else{ toastr.error('Error: '+JSON.parse(xhr.responseText).error); }
+                  })
+                  .always(function(){
+                    $button.button('reset');
+                  });
   })
   // edit rule
   .on( 'click', '#edit-datatables1, #hideEditDatatables1', function(e){
@@ -282,39 +277,58 @@
     datas = $this.serializeArray(); // or use $this.serialize()
 
     // do server action to save change here ( ajax )
-    alert("Editar datos "+JSON.stringify(datas));
-    // ...
     // just simple rule after ajax is done to demo
     $.each( datas, function( i, data ){
       console.log( data.name + ' = ' + data.value );
     });
-
     // change data selected row datatables
     // get data from selected row
-    var dataSelected = datatables1.$( 'tr.active' ),
-    node = getSelectedNode( datatables1 ),
-    dataUpdate = [ datas[2].value, datas[3].value, datas[4].value, datas[5].value, datas[6].value ];
+    var $button = $("#formEditDatatables1 [type=submit]");
+    $button.button('loading')
+    var jqxhr = $.ajax({
+                    method: "PUT",
+                    url: "locals/"+datas[1].value,
+                    data: datas
+                  })
+                  .done(function(xhr) {
+                    toastr.success( 'Local <b>' + xhr.name + '</b> actualizado exitosamente!' );
+                    // change data selected row datatables
+                    // get data from selected row
+                    var dataSelected = datatables1.$( 'tr.active' ),
+                    node = getSelectedNode( datatables1 ),
+                    dataUpdate = [ datas[2].value, datas[3].value, datas[4].value, datas[5].value, datas[6].value ];
 
-    dataSelected.data( 'id', datas[0].value );
-    dataSelected.data( 'userid', datas[1].value);
-    dataSelected.data( 'verified', datas[7].value);
-    dataSelected.data( 'latitude', datas[8].value);
-    dataSelected.data( 'longitude', datas[9].value);
-    dataSelected.data( 'fee', datas[10].value);
-    dataSelected.data( 'bussines_name', datas[11].value);
-    dataSelected.data( 'tax_treatment', datas[12].value);
-    dataSelected.data( 'billing_address', datas[13].value);
-    dataSelected.data( 'city', datas[14].value);
-    dataSelected.data( 'state', datas[15].value);
-    dataSelected.data( 'document_type', datas[16].value);
-    dataSelected.data( 'document_number', datas[17].value);
-    datatables1.fnUpdate( dataUpdate, node );
+                    dataSelected.data( 'id', datas[0].value );
+                    dataSelected.data( 'userid', datas[1].value);
+                    dataSelected.data( 'verified', datas[7].value);
+                    dataSelected.data( 'latitude', datas[8].value);
+                    dataSelected.data( 'longitude', datas[9].value);
+                    dataSelected.data( 'fee', datas[10].value);
+                    dataSelected.data( 'bussines_name', datas[11].value);
+                    dataSelected.data( 'tax_treatment', datas[12].value);
+                    dataSelected.data( 'billing_address', datas[13].value);
+                    dataSelected.data( 'city', datas[14].value);
+                    dataSelected.data( 'state', datas[15].value);
+                    dataSelected.data( 'document_type', datas[16].value);
+                    dataSelected.data( 'document_number', datas[17].value);
+                    datatables1.fnUpdate( dataUpdate, node );
 
-    // keep display on changed row
-    datatables1.fnDisplayRow( node );
+                    // keep display on changed row
+                    datatables1.fnDisplayRow( node );
 
-    // hide form edit
-    $( '#editFormContainer' ).addClass( 'hide' );
+                    // hide form edit
+                    $( '#editFormContainer' ).addClass( 'hide' );
+                  })
+                  .fail(function(xhr) {
+                    if(xhr.status==419){toastr.error('Error: Refresque la pagina y vuelva a intentar');}
+                    else if (xhr.status>=500) { toastr.error('Error: Interno del servidor');}
+                    else{ toastr.error('Error: '+JSON.parse(xhr.responseText).error); }
+                  })
+                  .always(function(){
+                    $button.button('reset');
+                  });
+
+
   });
 
   // simple fn to get a single node of selected row

@@ -87,58 +87,18 @@ class SpacesReservationsController extends Controller
           /***************************
           *** Grabar la operacion  ***
           ***************************/
-          $operation = operation::create([
-             'type'    => 'SpaceReservation', //(wallet/ticket/infringement)
-             'type_id' => $spacesreservation->id,
-             'amount'  => $request->input('createCost'),
-           ]);
-           $id_operation = $operation->id;
+          // Grabar la operacion
+          $saveOperationId = $generalFunctions->operationSave('SpaceReservation',$exeptuatedVehicleid,$request->input('createCost'));
            # Actualizar la tabla space_reservations con el ID de la operacion.
-           SpaceReservation::where('id', $spacesreservation->id)
-              ->update(['operation_id' => $operation->id]);
-
-              /***************************
-              *** Genera company_sales ***
-              ***************************/
-              $companySalesCreate = CompanySale::create([
-                'user_id'      => Auth::user()->id,
-                'operation_id' => $operation->id,
-                'detail'       => 'Reserva '.$request->input('createType'),
-              ]);
-              /*******************************
-              *** Grabar la factura (bill) ***
-              *******************************/
-              $billsExist = Bill::all()->last();
-              if(!$billsExist) {
-                $next_bill = 1;
-              }else {
-                $next_bill = $billsExist->id + 1;
-              }
-              //echo $next_bill;
-              if ($request->input('createCost') > 0) {
-                $net = ($request->input('createCost') /1.21);
-                $iva = ($net * 21) / 100;
-                $billCreate=Bill::create([
-                  'type'            => 'F',
-                  'letter'          => 'B',
-                  'branch_office'   => '0001',
-                  'number'          => $next_bill,
-                  'document_type'   => '99', // Consumidor final
-                  'document_number' => '0',
-                  'net'             => $net,
-                  'iva'             => $iva,
-                  'total'           => $request->input('createCost'),
-                  'date'            => date('Y-m-d'),
-                  'detail'          => 'Reserva '.$request->input('createType'),
-                ]);
-                $operationBil = OperationsBill::create([
-                  'operation_id' => $operation->id,
-                  'bill_id'      => $billCreate->id,
-                 ]);
-
-              }
-              $spacesreservation['street_name']=$block->street;
-              return response()->json($spacesreservation);
+           SpaceReservation::where('id', $spacesreservation->id)->update(['operation_id' => $saveOperationId]);
+           if ($request->input('createCost') > 0) {// Si el precio es mayor a 0 genera la venta de la compania y la factura
+             // generar venta de la compania (company_sales)
+             $saveBill = $generalFunctions->companySalesSave(Auth::user()->id,$saveOperationId,'Reserva '.$request->input('createType'));
+             // generar la factura (bills) y la realcion con la operacion
+             $saveBill = $generalFunctions->billSave($request->input('createCost'),'Reserva '.$request->input('createType'),$saveOperationId);
+           }
+          $spacesreservation['street_name']=$block->street;
+          return response()->json($spacesreservation);
         }else{
           // No tiene permiso para esta accion
           return response()->json(["error"=>"Sin permiso para crear una zona"],403);

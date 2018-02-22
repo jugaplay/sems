@@ -220,9 +220,11 @@
                       xhr.active_price,
                       datas[2].value
                       ]),
-                    newRow = addData.nTr;
+                    newRow = addData.nTr,
+                    newID = datatables1.fnGetData().length;
                     datatables1.$( 'tr.active' ).removeClass( 'active' );
-                    $( newRow ).attr( 'data-streetmap', datas[2].value)
+                    $( newRow ).attr( 'data-streetmap', datas[2].value);
+                    $( newRow ).attr( 'data-id', 'datatables1_' + newID )
                     .addClass( 'active' );
                     // activate actions edit & delete
                     $( '.datatables1-actions' ).removeClass( 'disabled' );

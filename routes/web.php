@@ -28,6 +28,7 @@ Route::get('/users/vehiclesOff','UserController@userVehiclesOff')->name('user.ve
 Route::post('/users/vehiclesOff','UserController@disassociateVehicle')->name('user.vehiclesOff.save');
 
 // corre esta funcion (userVehicles) con este control (UserController)
+Route::get('users/all','UserController@showAll')->name('users.showall');
 Route::resource('users','UserController');
 
 

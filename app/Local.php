@@ -10,7 +10,6 @@ class Local extends Model
     protected $fillable = [
       'user_id',
       'latlng',
-      'longitude',
       'fee',
       'verified',
       'block_id',
