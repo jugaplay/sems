@@ -65,7 +65,7 @@
                       <div class="col-md-2">
                         <div class="form-group">
                           <label class="select select-sm">
-                            <select name="createAccountType " id="createAccountType" required="">
+                            <select name="createAccountType" id="createAccountType" required="">
                               <option value="">Tipo</option>
                               <option value="Inspector">Inspector</option>
                               <option value="Asistente">Asistente</option>
@@ -81,7 +81,7 @@
                       <div class="col-md-2">
                         <div class="form-group">
                           <label class="select select-sm">
-                            <select name="createAccountStatus " id="createAccountStatus" required="">
+                            <select name="createAccountStatus" id="createAccountStatus" required="">
                               <option value="">Estado</option>
                               <option value="Confirmada"> Confirmada </option>
                               <option value="No confirmada"> No confirmada </option>
@@ -131,7 +131,7 @@
                       <div class="col-md-2">
                         <div class="form-group">
                           <label class="select select-sm">
-                            <select name="editAccountType " id="editAccountType" required="">
+                            <select name="editAccountType" id="editAccountType" required="">
                               <option value="">Tipo</option>
                               <option value="Inspector">Inspector</option>
                               <option value="Asistente">Asistente</option>
@@ -147,7 +147,7 @@
                       <div class="col-md-2">
                         <div class="form-group">
                           <label class="select select-sm">
-                            <select name="editAccountStatus " id="editAccountStatus" required="">
+                            <select name="editAccountStatus" id="editAccountStatus" required="">
                               <option value="">Estado</option>
                               <option value="Confirmada"> Confirmada </option>
                               <option value="No confirmada"> No confirmada </option>

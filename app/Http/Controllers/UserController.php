@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Auth;
 
 function parseAccountStatus($status){
   switch ($status) {
-    case 'C':
+    case "C":
       return "Confirmada";
       break;
-    case 'N':
+    case "N":
       return "No confirmada";
       break;
-    case 'B':
+    case "B":
       return "Baja";
       break;
     default:
@@ -27,7 +27,7 @@ function parseAccountStatus($status){
 }
 function parseInverseAccountStatus($status){
   switch ($status) {
-    case 'Confirmada':
+    case "Confirmada":
       return "C";
       break;
     case 'No confirmada':
@@ -87,7 +87,7 @@ function parseInverseAccountType($type){
       return "driver";
       break;
     default:
-      return "Other";
+      return "other";
       break;
   }
 }
@@ -142,8 +142,8 @@ class UserController extends Controller
           'name' => $request->input('createName'),
           'email' => $request->input('createMail'),
           'phone' => $request->input('createPhone'),
-          'type' => parseInverseAccountType($request->input('createAccountType')),
-          'account_status' => parseInverseAccountStatus($request->input('createAccountStatus')),
+          'type' => parseAccountType($request->input('createAccountType')),
+          'account_status' => parseAccountStatus($request->input('createAccountStatus')),
           'password' => bcrypt($request->input('createPassword')),
             ]);
             if(!$user->save()){
