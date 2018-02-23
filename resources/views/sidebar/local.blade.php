@@ -7,14 +7,14 @@
       <div class="sidebar-block" style="">
         <div class="media">
           <div class="media-left">
-            <a href="page-profile.html">
+            <a href="{{ route('home') }}">
               <img class="media-object img-circle" src="images/dummy/uifaces14.jpg" alt="photo profile">
             </a>
           </div>
           <div class="media-body">
-            <h4 class="media-heading">Maxi Quiosco 14</h4>
+            <h4 class="media-heading">{{Auth::user()->name}}</h4>
             <p class="text-muted">
-              <small><i class="fa fa-map-marker fa-fw"></i> Luis Costa 150</small>
+              <small><i class="fa fa-map-marker fa-fw"></i> {{Auth::user()->local->address}}</small>
             </p>
           </div>
         </div>
@@ -26,15 +26,21 @@
         <ul class="nav nav-stacked nav-left nav-tabs nav-contrast-teal" role="navigation">
           <li class="divider"></li>
           <li class="nav-header credit" role="presentation">SALDO</li>
-          <li class="nav-item credit less" role="presentation">
+          <li class="nav-item credit
+          @if (Auth::user()->wallet->balance > 0)
+              plus
+          @else
+              less
+          @endif
+                                        " role="presentation">
             <a href="load_credit.html">
-              <span class="nav-text"><i class="fa fa-usd"></i> 400.27</span>
+              <span class="nav-text"><i class="fa fa-usd"></i> {{abs(intval(Auth::user()->wallet->balance))}}</span>
             </a>
           </li>
           <li class="divider"></li>
           <li class="nav-header" role="presentation">VENTAS</li>
           <li class="nav-item" role="presentation">
-            <a href="sell_tickets.html">
+            <a href="{{ route('tickets.index') }}">
               <span class="nav-icon"><i class="fa fa-ticket"></i></span>
               <span class="nav-text">Tickets</span>
             </a>
