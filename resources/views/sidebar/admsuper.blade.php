@@ -23,13 +23,13 @@
       <li class="divider"></li>
       <li class="nav-header" role="presentation">ADMINISTRAR</li>
       <li class="nav-item" role="presentation">
-        <a href="users.html">
+        <a href="{{ route('users.index') }}">
           <span class="nav-icon"><i class="fa fa-users"></i></span>
           <span class="nav-text">Usuarios</span>
         </a>
       </li>
 <li class="nav-item" role="presentation">
-        <a href="locals.html">
+        <a href="{{ route('locals.index') }}">
           <span class="nav-icon"><i class="fa fa-building"></i></span>
           <span class="nav-text">Locales</span>
         </a>

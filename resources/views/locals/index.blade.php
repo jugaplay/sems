@@ -72,9 +72,9 @@
                           <label class="select select-sm">
                             <select name="createAccountStatus " id="createAccountStatus" required="">
                               <option value="">Estado</option>
-                              <option value="C"> Confirmada </option>
-                              <option value="N"> No Confirmada </option>
-                              <option value="B"> Baja </option>
+                              <option value="Confirmada"> Confirmada </option>
+                              <option value="No confirmada"> No confirmada </option>
+                              <option value="Baja"> Baja </option>
                             </select>
                           </label>
                         </div>
@@ -83,8 +83,8 @@
                         <div class="form-group">
                           <label class="select select-sm">
                             <select name="createAccountVerified" id="createAccountVerified" required="">
-                              <option value="false"> No Verificada </option>
-                              <option value="true"> Verificada </option>
+                              <option value="No Verificada"> No Verificada </option>
+                              <option value="Verificada"> Verificada </option>
                             </select>
                           </label>
                         </div>
@@ -123,7 +123,7 @@
                               <option value="">Trato impositivo</option>
                               <option value="Inscripto">Inscripto</option>
                               <option value="Monotributo">Monotributo</option>
-                              <option value="Consumidor Final">Consumidor Final</option>
+                              <option value="Consumidor final">Consumidor final</option>
                             </select>
                           </label>
                         </div>
@@ -174,7 +174,7 @@
                   <input type="hidden" name="datatables1ID" id="datatables1ID">
                   <input type="hidden" name="userId" id="userId">
                   <div class="form-group">
-                    <p class="lead">Agregar local</p>
+                    <p class="lead">Editar local</p>
                     <div class="row">
                       <div class="col-md-3">
                         <div class="form-group">
@@ -201,9 +201,9 @@
                           <label class="select select-sm">
                             <select name="editAccountStatus " id="editAccountStatus" required="">
                               <option value="">Estado</option>
-                              <option value="C"> Confirmada </option>
-                              <option value="N"> No Confirmada </option>
-                              <option value="B"> Baja </option>
+                              <option value="Confirmada"> Confirmada </option>
+                              <option value="No confirmada"> No confirmada </option>
+                              <option value="Baja"> Baja </option>
                             </select>
                           </label>
                         </div>
@@ -212,8 +212,8 @@
                         <div class="form-group">
                           <label class="select select-sm">
                             <select name="editAccountVerified" id="editAccountVerified" required="">
-                              <option value="false"> No Verificada </option>
-                              <option value="true"> Verificada </option>
+                              <option value="No Verificada"> No Verificada </option>
+                              <option value="Verificada"> Verificada </option>
                             </select>
                           </label>
                         </div>
@@ -252,7 +252,7 @@
                               <option value="">Trato impositivo</option>
                               <option value="Inscripto">Inscripto</option>
                               <option value="Monotributo">Monotributo</option>
-                              <option value="Consumidor Final">Consumidor Final</option>
+                              <option value="Consumidor final">Consumidor final</option>
                             </select>
                           </label>
                         </div>

@@ -221,11 +221,13 @@
                       datas[3].value,
                       datas[4].value
                       ]),
-                    newRow = addData.nTr; // just sample id (on real case: get it from server callback)
+                    newRow = addData.nTr,
+                    newID = datatables1.fnGetData().length; // just sample id (on real case: get it from server callback)
                     datatables1.$( 'tr.active' ).removeClass( 'active' );
                     $( newRow ).attr( 'data-exceptuatedid', xhr.id);// Agrega el Id que devuelve
                     $( newRow ).attr( 'data-zone', datas[5].value);
-                    $( newRow ).attr( 'data-detail', datas[6].value)
+                    $( newRow ).attr( 'data-detail', datas[6].value);
+                    $( newRow ).attr( 'data-id', 'datatables1_' + newID )
                     .addClass( 'active' );
                     // activate actions edit & delete
                     $( '.datatables1-actions' ).removeClass( 'disabled' );

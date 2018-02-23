@@ -234,7 +234,8 @@
                       datas[7].value,
                       datas[2].value
                       ]),
-                    newRow = addData.nTr; // just sample id (on real case: get it from server callback)
+                    newRow = addData.nTr,
+                    newID = datatables1.fnGetData().length; // just sample id (on real case: get it from server callback)
                     datatables1.$( 'tr.active' ).removeClass( 'active' );
                     $( newRow ).attr( 'data-apid', xhr.id);
                     $( newRow ).attr( 'data-areaid', datas[0].value);
@@ -244,7 +245,8 @@
                     $( newRow ).attr( 'data-endday', datas[4].value);
                     $( newRow ).attr( 'data-starttimezone', datas[5].value);
                     $( newRow ).attr( 'data-endtimezone', datas[6].value);
-                    $( newRow ).attr( 'data-priority', datas[9].value)
+                    $( newRow ).attr( 'data-priority', datas[9].value);
+                    $( newRow ).attr( 'data-id', 'datatables1_' + newID )
                     .addClass( 'active' );
                     // activate actions edit & delete
                     $( '.datatables1-actions' ).removeClass( 'disabled' );
