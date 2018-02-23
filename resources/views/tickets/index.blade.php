@@ -1,1 +1,10 @@
-<h1>Entre al index de tickets</h1>
+@switch(Auth::user()->type)
+    @case("driver")
+        @include('tickets.driver')
+        @break
+    @case("local")
+        @include('tickets.local')
+        @break
+    @default
+        @include('error.index')
+@endswitch
