@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use App\Bill;
 use App\Block;
 use App\CompanySale;
+use App\Infringement;
+use App\InfringementCause;
+use App\InfringementDetail;
 use App\Operation;
 use App\OperationBetweenWallet;
 use App\OperationsBill;
@@ -222,6 +225,84 @@ class generalFunctions extends Controller
   }
 
 
+ /*******************************
+ *** Controlar horario ticket ***
+ *******************************/
+ function controlTicket($plate){
+   // desde ==> 2018-02-15 19:18:39
+   // Hasta ==> 2018-02-16 09:18:00
+   // $endTime = $endTime->format('Y-m-d H:i:s');
+   //$startTime = $start->format('Y-m-d H:i:s');
+   $carbon = new Carbon();
+   $start = Carbon::now();
+   $fin = Carbon::now();
+   $end = $fin->addMinute(10); // Le agrego 10 minutoa al final por la tolerancia
+   $date = date('Y-m-d H:i:s');
+   $date = '2018-02-15 19:30:39';
+   $ticket = Ticket::where('plate',$plate)
+                     ->where('start_time','<=',$start)
+                     ->where('end_time','>=',$end)
+                    ->first();
 
+   return $ticket;
+ }
+
+ /*************************************************
+ *** Generar pre infraccion por falta de ticket ***
+ *************************************************/
+ function preInfringement($plate,$latlng){
+   $generalFunctions = new generalFunctions();
+   $date = date('Y-m-d H:i:s');
+   $dateControl = date('Y-m-d');
+   $fin = Carbon::now();
+   $end = $fin->addDay(30); // Le agrego 30dias para el pago voluntario
+   $end =  $end->format('Y-m-d');
+   $infringementCause = InfringementCause::where('id',1)->first();
+   $block = $generalFunctions->returnBlockFromLatLng(json_decode($latlng));
+   // Verificar que no tenga infracciones del dia de hoy en la misma cuadra.
+   echo "control ==> ".$plate.' ==> '.$block->id.' ==> '. $dateControl.'</br>';
+   $infringementExist =Infringement::where('plate',$plate)
+                                   ->where('block_id',$block->id)
+                                   ->where('date','=', $dateControl)->first();
+
+   //dd($infringementExist);
+   if(!$infringementExist){ // Si no existe generar infraccion
+      $infringement=Infringement::create([
+        'plate'                    => $plate,
+        'user_id'                  => Auth::user()->id,
+        'date'                     => $date,
+        'situation'                => 'before', //(before/saved/voluntary/judge/close)
+        'infringement_cause_id'    => '1',
+        'cost'                     => $infringementCause->cost,
+        'voluntary_cost'           => $infringementCause->voluntary_cost,
+        'voluntary_end_date'       => $end,
+        'latlng'                   => $latlng,
+        'block_id'                 => $block->id,
+      ]);
+      $infringementDetail=InfringementDetail::create([
+        'user_id'          => Auth::user()->id,
+        'infringement_id'  => $infringement->id,
+        'detail'           => 'No tiene ticket. Controlado por inspector',
+      ]);
+      echo "Infraccion generada";
+    }else{echo "Ya tiene infraccion para el dia de hoy y esta cuadra";}
+ }
+
+ // Actualizar las infracciones
+ function infringementsUpdate($infringementId,$situation,$detail,$close_date,$close_cost){
+   $Infringement = Infringement::where('id', $infringementId)
+           ->update([
+             'situation'  => $situation, //(before/saved/voluntary/judge/close)
+             'close_date' => $close_date, //(before/saved/voluntary/judge/close)
+             'close_cost' => $close_cost, //(before/saved/voluntary/judge/close)
+              ]);
+
+   $infringementDetail=InfringementDetail::create([
+                   'user_id'          => Auth::user()->id,
+                   'infringement_id'  => $infringementId,
+                   'detail'           => $detail,
+                    ]);
+
+ }
 
 } // fin de la clase

@@ -8,6 +8,8 @@ use App\InfringementDetail;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon; // Clase para manejar fechas de laravel
+
 
 class InfringementsController extends Controller
 {
@@ -55,18 +57,13 @@ class InfringementsController extends Controller
             'plate'                    => $request->input('plate'),
             'user_id'                  => Auth::user()->id,
             'date'                     => $request->input('date'),
-            'situation'                => 'before', //(before/saved/voluntary/judge/close)
+            'situation'                => 'saved', //(before/saved/voluntary/judge/close)
             'infringement_cause_id'    => $request->input('infragmentCausesId'),
             'cost'                     => $infringementCause->cost,
             'voluntary_cost'           => $infringementCause->voluntary_cost,
             'voluntary_end_date'       => $request->input('voluntary_end_date'),
             'latlng'                   => $request->input('latlng'),
             'block_id'                 => $block->id,
-            ]);
-          $infringementDetail=InfringementDetail::create([
-            'user_id'          => Auth::user()->id,
-            'infringement_id'  => $infringement->id,
-            'detail'           => $request->input('detail'),
             ]);
             echo "Infraccion grabada";
         } // Auth::user()
@@ -94,12 +91,6 @@ class InfringementsController extends Controller
     {
       $infringement = Infringement::where('id', $infringementId)->first();
       $infragmentCauses = InfringementCause::all();
-
-      //$infringementDetail = $infringement->infringement_cause()->first();
-      //dump($infringement);
-      //dd($infringement->infringementdetail()->first()->detail);
-      //echo('Causa ID= '.$infringement->infringement_cause_id);
-      //echo('Causa   = '.Infringement::infringement_cause()->
       return view('infringements.edit',['infringement'=>$infringement,'infragmentCauses'=>$infragmentCauses]);
     }
 
@@ -140,13 +131,6 @@ class InfringementsController extends Controller
                       'latlng'                   => $request->input('latlng'),
                       'block_id'                 => $block->id,
                     ]);
-
-            $infringementDetail = InfringementDetail::where('id', $request->input('infringementDetailId'))
-                    ->update([
-                      'user_id'          => Auth::user()->id,
-                      'infringement_id'  => $infringement->id,
-                      'detail'           => $request->input('detail'),
-                    ]);
                }
         }
     }
@@ -176,7 +160,7 @@ class InfringementsController extends Controller
                   // Actualizar el ticket con el id de la operacion.
                   $Infringement = Infringement::where('id',$request->input('infringementId'))
                       ->update([
-                        'situation'    => $request->input('situation'), //(before/saved/voluntary/judge/close)
+                        'situation'    => $request->input('situation'), //(before/saved/voluntary/judge/close/preclose)
                         'close_date'   => $closeDate,
                         'close_cost'   => $request->input('payment'),
                         'operation_id' => $saveOperationId,
@@ -201,4 +185,46 @@ class InfringementsController extends Controller
     {
         //
     }
+
+    /*******************************************************************
+    *** Control de las infracciones previas (before) para  Controlar ***
+    *** los 10 minutos de tolerancia en el estacionamiento           ***
+    *******************************************************************/
+    public function control(Infringement $infringement)
+    {
+      $generalFunctions = new generalFunctions(); // Instancamos la clase
+      $infringements = Infringement::where('situation','before')->get();
+      foreach ($infringements as $infringement) {
+        $dateCreated = new carbon($infringement->created_at);// $endTime = new Carbon($minutePrice->starts);
+        $ticket = $generalFunctions->controlTicket($infringement->plate);
+
+        if($ticket){$fecha2 = new carbon($ticket->start_time);
+                    $difference = $fecha2->diffInMinutes($dateCreated);
+                    if($difference < 11){$situation = 'preclose';
+                                         $detail ='Compro tiket dentro del plazo establecido';
+                                         $close_date = date('Y-m-d');
+                                         $close_cost = 0;
+                                        }
+                                        else
+                                        {$situation = 'preclose';
+                                         $detail ='No Compro tiket dentro del plazo establecido';
+                                         $close_date = Null;
+                                         $close_cost = Null;
+                                        }
+                    $infringementsUpdate = $generalFunctions->infringementsUpdate($infringement->id,$situation,$detail,$close_date,$close_cost);
+                   }
+                   else
+                   {$fecha2 = new carbon();
+                    $difference = $fecha2->diffInMinutes($dateCreated);
+                    if($difference > 10){$situation = 'saved';
+                                         $detail ='No Compro tiket dentro del plazo establecido';
+                                         $close_date = Null;
+                                         $close_cost = Null;
+                                         $infringementsUpdate = $generalFunctions->infringementsUpdate($infringement->id,$situation,$detail,$close_date,$close_cost);
+                                        }
+                   }
+        echo($infringement->plate.'  '.$infringement->block_id.'  '.$dateCreated.' fecha Control => '.$fecha2.' Difer=>'.$difference.'</br>');
+      } // End foreach
+    }// Fin de la rutina control
+
 }
