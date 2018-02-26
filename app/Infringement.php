@@ -24,11 +24,15 @@ class Infringement extends Model
     ];
 
     public function infringement_cause(){
-      return $this->belongsTo('App\InfringementCause_id');
+      return $this->belongsTo('App\InfringementCause','infringement_cause_id');
     }
 
     public function user(){
       return $this->belongsTo('App\User');
+    }
+
+    public function block(){
+      return $this->belongsTo('App\Block');
     }
 
     public function operational(){
@@ -39,4 +43,7 @@ class Infringement extends Model
       return $this->morphMany('App\Imagen','visible_type');
     }
 
+    public function infringementdetail(){
+      return $this->hasMany('App\InfringementDetail');
+    }
 }

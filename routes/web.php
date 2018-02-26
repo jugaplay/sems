@@ -28,18 +28,24 @@ Route::get('/users/vehiclesOff','UserController@userVehiclesOff')->name('user.ve
 Route::post('/users/vehiclesOff','UserController@disassociateVehicle')->name('user.vehiclesOff.save');
 
 // corre esta funcion (userVehicles) con este control (UserController)
+Route::get('users/all','UserController@showAll')->name('users.showall');
 Route::resource('users','UserController');
 
 
 Route::get('/tickets/localticket','TicketController@localTicket')->name('tickets.localticket.index');
 Route::post('/tickets/localticket','TicketController@localTicketCreate')->name('tickets.localticket.save');
+
 Route::get('/tickets/localcredit','TicketController@localCredit')->name('tickets.localcredit.index');
 Route::post('/tickets/localcredit','TicketController@localCreditAdd')->name('tickets.localcredit.save');
 
-Route::get('/tickets/driverticket','TicketController@driverTicket')->name('tickets.driverlticket.index');
+Route::get('/tickets/driverticket','TicketController@driverTicket')->name('tickets.driverticket.index');
 Route::post('/tickets/driverticket','TicketController@driverTicketCreate')->name('tickets.driverticket.save');
+
 Route::get('/tickets/drivercredit','TicketController@driverCredit')->name('tickets.drivercredit.index');
 Route::post('/tickets/drivercredit','TicketController@driverCreditAdd')->name('tickets.drivercredit.save');
+
+Route::get('/tickets/controlparking','TicketController@controlParking')->name('tickets.controlparking.index');
+Route::post('/tickets/controlparking','TicketController@controlParkingDo')->name('tickets.controlparking.save');
 
 Route::resource('tickets','TicketController');
 
@@ -65,5 +71,14 @@ Route::resource('exeptuatedvehiclesblock','ExeptuatedVehiclesBlocksController');
 
 Route::get('spacereservations/all','SpacesReservationsController@showAll')->name('spacereservations.showall');
 Route::resource('spacereservations','SpacesReservationsController');
+
+Route::get('/infringements/cancel/{infringementId?}','InfringementsController@cancel')->name('infringements.cancel.index');
+Route::post('/infringements/cancel','InfringementsController@cancelUpdate')->name('infringements.cancel.save');
+
+Route::get('infringements/control','InfringementsController@control')->name('infringements.control');
+
+
+
+Route::resource('infringements','InfringementsController');
 
 Route::resource('infringementcauses','InfringementCausesController');

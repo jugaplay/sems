@@ -16,24 +16,39 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="visible-xs">
-                                    <h2 class="display-name media-heading text-teal">Maxi Quiosco 14</h2>
+                                    <h2 class="display-name media-heading text-teal">{{Auth::user()->name}}</h2>
                                     <p class="text-muted mb-4x">
-                                        <i class="fa fa-map-marker fa-fw"></i> Luis Costa 150</span>
+                                        <i class="fa fa-map-marker fa-fw"></i> {{Auth::user()->local->address}}</span>
                                     </p>
                                 </div>
                                 <div class="hidden-xs">
-                                    <h2 class="media-heading text-light">Maxi Quiosco 14</h2>
+                                    <h2 class="media-heading text-light">{{Auth::user()->name}}</h2>
                                     <p class="mb-4x text-light">
                                         <span>
-                                            <i class="fa fa-map-marker fa-fw"></i>Luis Costa 150</span>
+                                            <i class="fa fa-map-marker fa-fw"></i> {{Auth::user()->local->address}}</span>
                                     </p>
                                 </div>
                                 <div class="mt-4x">
                                     <p>
-                                        <i class="fa fa-phone" aria-hidden="true"></i> 0263 428-0448</p>
+                                        <i class="fa fa-phone" aria-hidden="true"></i> {{Auth::user()->phone}}</p>
                                     <p>
-                                        <i class="fa fa-check-square-o" aria-hidden="true"></i> Habilitado</p>
-
+                                      @switch(Auth::user()->account_status)
+                                        @case("C")
+                                            <p><i class="fa fa-check-square-o" aria-hidden="true"></i> Habilitado</p>
+                                            @break
+                                        @case("N")
+                                            <p><i class="fa fa-share-square-o" aria-hidden="true"></i> Falta confirmar mail</p>
+                                            @break
+                                        @default
+                                            <p><i class="fa fa-times" aria-hidden="true"></i> No habilitado</p>
+                                    @endswitch
+                                    @switch(Auth::user()->local->verified)
+                                      @case(1)
+                                          <p><i class="fa fa-check-square-o" aria-hidden="true"></i> Verificado</p>
+                                          @break
+                                      @default
+                                          <p><i class="fa fa-share-square-o" aria-hidden="true"></i> Falta verificar</p>
+                                  @endswitch
                                 </div>
                             </div>
                             <!-- /.media-body -->
@@ -47,16 +62,20 @@
                         <div class="row">
 
                             <div class="col-xs-6">
-                                <span class="headline credit less" style="
-      background: transparent;
-  ">
-                                    <strong>$ 400,27</strong>
+                                <span class="headline credit
+                                @if (Auth::user()->wallet->balance > 0)
+                                    plus
+                                @else
+                                    less
+                                @endif
+                                " style="background: transparent;">
+                                    <strong>$ {{abs(intval(Auth::user()->wallet->balance))}}</strong>
                                 </span>
                                 <p>SALDO</p>
                             </div>
                             <div class="col-xs-6">
                                 <span class="headline">
-                                    <strong>$5.000</strong>
+                                    <strong>${{abs(intval(Auth::user()->wallet->credit))}}</strong>
                                 </span>
                                 <p>CREDITO</p>
                             </div>
@@ -73,7 +92,7 @@
         <div class="content-body">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="sell_tickets.html" style="color: inherit;">
+                    <a href="{{ route('tickets.index') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
@@ -151,7 +170,12 @@
                                     </div>
                                     <div class="media-body">
                                         <h3 class="media-heading">Recargar Saldo</h3>
-                                        <p class="help-block">Consumidos $600 de $5.000</p>
+                                        @if (Auth::user()->wallet->balance > 0)
+                                            <p class="help-block">Consumidos $0 de {{abs(intval(Auth::user()->wallet->credit))}}</p>
+                                        @else
+                                            <p class="help-block">Consumidos ${{abs(intval(Auth::user()->wallet->balance))}} de {{abs(intval(Auth::user()->wallet->credit))}}</p>
+                                        @endif
+
                                     </div>
                                     <!-- /.media -body-->
                                 </div>
@@ -160,9 +184,11 @@
                             <!-- /.panel-body -->
 
                             <div class="progress progress-xs no-radius no-margin">
-                                <div class="progress-bar bg-grd-cyan" role="progressbar" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100" style="width: 89%">
-                                    <span class="sr-only">89% Complete</span>
-                                </div>
+                              @if (Auth::user()->wallet->balance > 0)
+                              <div class="progress-bar bg-grd-cyan" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                              @else
+                                  <div class="progress-bar bg-grd-cyan" role="progressbar" aria-valuenow="{{100-abs(intval(Auth::user()->wallet->balance/Auth::user()->wallet->credit*100))}}" aria-valuemin="0" aria-valuemax="100" style="width: {{100-abs(intval(Auth::user()->wallet->balance/Auth::user()->wallet->credit*100))}}%"></div>
+                              @endif
                             </div>
                             <!-- /.progress -->
                         </div>

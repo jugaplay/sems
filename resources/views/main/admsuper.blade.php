@@ -51,9 +51,7 @@
                         <div class="row">
 
                             <div class="col-xs-4">
-                                <span class="headline credit plus" style="
-      background: transparent;
-  ">
+                                <span class="headline credit plus" style="background: transparent;">
                                     <strong>1500</strong>
                                 </span>
                                 <p>USUARIOS</p>
@@ -87,7 +85,7 @@
         <div class="content-body">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="users.html" style="color: inherit;">
+                    <a href="{{ route('users.index') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
@@ -120,7 +118,7 @@
                 <!-- /.cols -->
 
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="locals.html" style="color: inherit;">
+                    <a href="{{ route('locals.index') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
@@ -153,7 +151,7 @@
                 <!-- /.cols -->
 
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="special_vehicles.html" style="color: inherit;">
+                    <a href="{{ route('exeptuatedvehicles.index') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
@@ -246,7 +244,7 @@
                     </a>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="spaces.html" style="color: inherit;">
+                    <a href="{{ route('spacereservations.index') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">

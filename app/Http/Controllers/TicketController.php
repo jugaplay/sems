@@ -17,7 +17,14 @@ class TicketController
 
   public function index()
   {
-    return view('tickets.index');
+    if(Auth::user()->type=='local'){
+      $timeNow = date('Y-m-d H:i:s');
+      $priceTime = Block::where('id',Auth::user()->local->block_id)->first()->priceBlock('time'); // Tengo que hacer un parse a al horario de javascript
+      $priceDay = Block::where('id',Auth::user()->local->block_id)->first()->priceBlock('day');
+      return view('tickets.index',['priceTime'=>$priceTime,'priceDay'=>$priceDay]);
+    }else{
+      return view('tickets.index');
+    }
   }
 
   public function show(User $user)
@@ -27,24 +34,20 @@ class TicketController
 
   public function localTicket()
   {
-      $local = Auth::user()->local()->get();
-      $localData = json_decode($local);
       $timeNow = date('Y-m-d H:i:s');
-      $priceTime = Block::where('id',$localData[0]->block_id)->first()->priceBlock('time');
-      $priceDay = Block::where('id',$localData[0]->block_id)->first()->priceBlock('day');
+      $priceTime = Block::where('id',Auth::user()->local->block_id)->first()->priceBlock('time');
+      $priceDay = Block::where('id',Auth::user()->local->block_id)->first()->priceBlock('day');
 
      return view('tickets.localticket',['priceTime'=>$priceTime,'priceDay'=>$priceDay]);
   }
 
   public function localTicketCreate(Request $request){
 
-        $local = Auth::user()->local()->get();
-        $localData = json_decode($local);
-
+        $block_id=Auth::user()->local->block_id;
+        $latlng=Auth::user()->local->latlng;
         $generalFunctions = new generalFunctions(); // Instancamos la clase
-
         // Generar el costo y los dartos del ticket o la estadia
-        $dataTicket = $generalFunctions->dataTicket($request->input('plate'),$request->input('type'),$request->input('time'),$localData[0]->block_id);
+        $dataTicket = $generalFunctions->dataTicket($request->input('plate'),$request->input('type'),$request->input('time'),$block_id);
         $dataTicket = json_decode($dataTicket);
         //dd($dataTicket);
         /***********************************
@@ -52,7 +55,7 @@ class TicketController
         ***********************************/
        // Grabar el ticket
         $ticketId = $generalFunctions->ticketSave(Auth::user()->id,$request->input('plate'),$dataTicket->hours,$dataTicket->start,
-                                                  $dataTicket->endTime,$localData[0]->block_id,$localData[0]->latlng,
+                                                  $dataTicket->endTime,$block_id,$latlng,
                                                   $dataTicket->token,$request->input('type'));
         // grabar operacion
         $saveOperationId = $generalFunctions->operationSave('Ticket',$ticketId,($dataTicket->amount *-1));
@@ -161,5 +164,29 @@ class TicketController
     }
   } // Fin de localCreditAdd
 
+  public function controlParking()
+  {
+      return view('tickets.controlparking');
+  }
+
+  public function controlParkingDo(Request $request)
+  {
+      echo "Grabar control ==> ".$request->input('plate').' ==> '.$request->input('latlng').'</br>';
+      $generalFunctions = new generalFunctions(); // Instancamos la clase
+      // Busar el ticket dentro del horario establecido
+      $ticket = $generalFunctions->controlTicket($request->input('plate'));
+      if(!$ticket){
+        echo "No Tiene tiket vigente".'</br>';
+        // Generar infraccion
+        $ticket = $generalFunctions->preInfringement($request->input('plate'),$request->input('latlng'));
+      }else {
+        echo "Tiene ticket Vigente hasta las ".$ticket->end_time.'</br>';
+        // averiguar el blocke
+        $block = $generalFunctions->returnBlockFromLatLng(json_decode($request->input('latlng')));
+        //Actualizar latitud y block
+        $ticket->update(['latlng'=>$request->input('latlng'),'block_id'=>$block->id]);
+        //dd($ticket->end_time);
+      }
+  }
 
 }
