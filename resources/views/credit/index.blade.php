@@ -1,12 +1,9 @@
 @switch(Auth::user()->type)
     @case("driver")
-        @include('tickets.driver')
-        @break
-    @case("inspector")
-        @include('tickets.inspector')
+        @include('credit.driver')
         @break
     @case("local")
-        @include('tickets.local')
+        @include('credit.local')
         @break
     @default
         @include('error.index')

@@ -44,66 +44,49 @@ class generalFunctions extends Controller
   /***********************************
   *** Generar los datos del ticket ***
   ***********************************/
-  function dataTicket($plate,$type,$time,$blockId){
+  function dataTicket($plate,$type,$minutes,$blockId){
     $carbon = new Carbon();
-
-    $local = Auth::user()->local()->get();
-    $localData = json_decode($local);
-
-    $cadena = $plate.$type.$time.date('YmdHis');
+    $cadena = $plate.$type.$minutes.date('YmdHis');
     $token = substr(str_shuffle($cadena), 0, 10);
-
-    $start = Carbon::now();
-    $fin = Carbon::now();
-
-    if($type == 'time'){
-        $end = $fin->addHour($time);}
-      else {
-        $horas = 0;
-        $end = substr($start,0,10).' 23:59:59';
-      }
+    $start = Carbon::now('America/Argentina/Buenos_Aires');
+    $fin = Carbon::now('America/Argentina/Buenos_Aires');
+    $hours = $minutes/60;
 
     if($type == 'time'){
-          $prices = Block::where('id',$blockId)->first()->priceBlockBackEnd('time');
+
           /*******************************************
           *** Generar el costo del estacionamiento ***
           *******************************************/
-          $minutes = ($time * 60); // Se pasa a minutos para poder restar
+          //$minutes = ($time * 60); // Se pasa a minutos para poder restar
           $amount = 0;
-          $localPrices = json_decode($prices);
-          $prices = $localPrices[0];
-          foreach ($prices as $minutePrice) {
-            if ($minutePrice->price > 0) {
-              //echo('$amount = '.$amount.' + '.$minutePrice->price.'  ==> '.$minutePrice->starts.'</br>');
-              $amount = $amount + $minutePrice->price;
+          $prices = Block::where('id',$blockId)->first()->priceBlockBackEnd('time');
+          //return sizeOf($prices);
+
+          foreach ($prices as $valor) {// 1440 minutos
+            if ($valor["price"] > 0) {
+              $amount = $amount + $valor["price"];
               $minutes = $minutes - 1;
             }
             if ($minutes <= 0) {
-              $endTime = new Carbon($minutePrice->starts);
+              $endTime = new Carbon($valor["starts"]);
               break;
             }
           }
           $endTime = $endTime->format('Y-m-d H:i:s');
           $startTime = $start->format('Y-m-d H:i:s');
-          $hours = $time;
-          $detail = 'Ticket por '.$time.' Horas de estacionamiento desde las '.$startTime.' hasta las '.$endTime.' de la patente '.$plate;
+          $detail = 'Ticket por '.$hours.' Horas de estacionamiento desde las '.$start.' hasta las '.$endTime.' de la patente '.$plate;
     }
     else
     {
           $hours = 0;
           $detail = 'Ticket por Estadia el dia '.$start.' de la patente '.$plate;
 
-          $prices = Block::where('id',$blockId)->first()->priceBlockBackEnd('day');
-          $localPrices = json_decode($prices);
-          $price = $localPrices[0];
-          $amount = $price[0]->price;
-          $endTime = $end;
+          $amount = Block::where('id',$blockId)->first()->priceBlockBackEnd('day');// Devuelve el precio
+          $endTime = substr($start,0,10).' 23:59:59';;
           $startTime = $start->format('Y-m-d H:i:s');
           //$amount = $localPrices[0]->price;
     }
-    $response = array('hours' =>$hours,'start'=>$startTime, 'endTime'=>$endTime,'token'=>$token,'amount'=>$amount,'detail'=>$detail);
-    $response = json_encode($response);
-    return $response;
+    return (object) array('hours' =>$hours,'start'=>$startTime, 'endTime'=>$endTime,'token'=>$token,'amount'=>round($amount, 2),'detail'=>$detail);
   } // fin de dataTicket
 
   /***********************************************
@@ -128,7 +111,7 @@ class generalFunctions extends Controller
   /********************************************
   *** Funciones relacionadas con los wallet ***
   ********************************************/
-  function modifyBalanceWallet($user,$amount){
+  function modifyBalanceWallet($user,$amount){// Esta la podriamos borrar
     # se debera pasar el usaurio ($user) y el importe
     # ($amount) con el signo correspondiente.
     $walletExist = Wallet::where('user_id',$user)->first();
@@ -204,6 +187,7 @@ class generalFunctions extends Controller
             'operation_id' => $operationsBillIs,
             'bill_id'      => $billCreate->id,
           ]);
+      return $billCreate;
   }
 
   /************************
@@ -221,7 +205,7 @@ class generalFunctions extends Controller
       'token'      => $token,
       'type'       => $type, //(time/day)
     ]);
-    return $ticket->id;
+    return $ticket;
   }
 
 
@@ -234,8 +218,8 @@ class generalFunctions extends Controller
    // $endTime = $endTime->format('Y-m-d H:i:s');
    //$startTime = $start->format('Y-m-d H:i:s');
    $carbon = new Carbon();
-   $start = Carbon::now();
-   $fin = Carbon::now();
+   $start = Carbon::now('America/Argentina/Buenos_Aires');
+   $fin = Carbon::now('America/Argentina/Buenos_Aires');
    $end = $fin->addMinute(10); // Le agrego 10 minutoa al final por la tolerancia
    $date = date('Y-m-d H:i:s');
    $date = '2018-02-15 19:30:39';
@@ -254,7 +238,7 @@ class generalFunctions extends Controller
    $generalFunctions = new generalFunctions();
    $date = date('Y-m-d H:i:s');
    $dateControl = date('Y-m-d');
-   $fin = Carbon::now();
+   $fin = Carbon::now('America/Argentina/Buenos_Aires');
    $end = $fin->addDay(30); // Le agrego 30dias para el pago voluntario
    $end =  $end->format('Y-m-d');
    $infringementCause = InfringementCause::where('id',1)->first();

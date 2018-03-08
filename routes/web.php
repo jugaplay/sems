@@ -48,6 +48,10 @@ Route::get('/tickets/controlparking','TicketController@controlParking')->name('t
 Route::post('/tickets/controlparking','TicketController@controlParkingDo')->name('tickets.controlparking.save');
 
 Route::resource('tickets','TicketController');
+//checkuser
+Route::get('/self_load','CreditController@selfLoad')->name('credit.self');
+Route::post('/credit/checkuser','CreditController@checkUser')->name('credit.checkuser');
+Route::resource('credit','CreditController');
 
 Route::get('locals/delete/{local_id?}', 'LocalController@delete');// Esto me parece que no va asi
 Route::get('locals/all','LocalController@showAll')->name('locals.showall');

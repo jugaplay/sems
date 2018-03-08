@@ -125,7 +125,7 @@
                 <!-- /.cols -->
 
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="sell_credit.html" style="color: inherit;">
+                    <a href="{{ route('credit.index') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
@@ -158,7 +158,7 @@
                 <!-- /.cols -->
 
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="load_credit.html" style="color: inherit;">
+                    <a href="{{ route('credit.self') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
