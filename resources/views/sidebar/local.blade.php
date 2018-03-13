@@ -45,7 +45,7 @@
               <span class="nav-text">Tickets</span>
             </a>
           <li class="nav-item" role="presentation">
-            <a href="sell_credit.html">
+            <a href="{{ route('credit.index') }}">
               <span class="nav-icon"><i class="fa fa-money"></i></span>
               <span class="nav-text">Credito</span>
             </a>
@@ -77,7 +77,9 @@
             </a>
           </li>
           <li class="nav-item" role="presentation">
-            <a href="login.html">
+            <a href="{{ route('logout') }}"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <!-- El logut esta escondido en el navbar -->
               <span class="nav-icon"><i class="fa fa-sign-out"></i></span>
               <span class="nav-text">Salir</span>
             </a>

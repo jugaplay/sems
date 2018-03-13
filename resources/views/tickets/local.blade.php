@@ -21,34 +21,43 @@
                             <h3 class="panel-title"><i class="fa fa-ticket fa-fw" aria-hidden="true"></i> Datos del estacionamiento</h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <form role="form" id="ticketFormContainer">
                                 <div class="form-group form-group-lg">
                                     <label class="control-label" for="mask-date">Patente</label>
                                     <div class="input-group input-group-in">
                                         <span class="input-group-addon"><i class="fa fa-car"></i></span>
-                                        <input type="text" class="form-control input-lg" id="inputPass" placeholder="Patente">
+                                        <input type="text" class="form-control input-lg" name="ticketPlate" id="ticketPlate" placeholder="Patente" required="">
                                     </div>
                                     <!-- /input-group-in -->
                                 </div>
                                 <!--/form-group-->
                                 <div class="form-group form-group-lg">
-                                    <label class="control-label" for="mask-time">Tiempo <small><small> (Máximo 23 horas) </small></small></label>
+                                    <label class="control-label" for="mask-time">Horas de estacionamiento <small><small> (Fracción mínima, 30 minutos) </small></small></label>
                                     <div class="input-group input-group-in">
-                                        <span class="input-group-addon"><i class="icon-clock"></i></span>
-                                        <input type="time" class="form-control" value="13:45:00" name="ticket-time" id="ticket-time">
+                                        <span class="input-group-addon"><i class="fa fa-hourglass-start"></i></span>
+                                        <input type="number" class="form-control" value="0" min="0" max="23" step="0.5" name="ticketHours" id="ticketHours">
                                         <span class="input-group-btn">
                                           <a rel="tooltip" data-container="body" title="Elegir estadia" onclick="setToDayTicket()" class="btn">
                                             <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
                                           </a>
                                         </span>
-                                        <input type="hidden" value="false" name="ticket-day" id="ticket-day">
+                                    </div>
+                                    <!--/input-group-in-->
+                                </div>
+                                <!--/form-group-->
+                                <div class="form-group form-group-lg">
+                                    <label class="control-label" for="mask-time">Hora de salida <small><small> (Máximo 23 horas) </small></small></label>
+                                    <div class="input-group input-group-in">
+                                        <span class="input-group-addon"><i class="icon-clock"></i></span>
+                                        <input type="time" class="form-control" value="" name="ticketTime" id="ticketTime">
+                                        <input type="hidden" value="false" name="ticketDay" id="ticketDay">
                                     </div>
                                     <!--/input-group-in-->
                                 </div>
                                 <!--/form-group-->
                                 <div class="form-group form-group-lg">
                                     <label for="sel1">Tipo de pago:</label>
-                                    <select class="form-control" name="ticket-payment" id="ticket-payment">
+                                    <select class="form-control" name="ticketPayment" id="ticketPayment">
                                         <option value="EF">Efectivo</option>
                                         <option value="ON">Online</option>
                                     </select>
@@ -57,7 +66,9 @@
                                 <!--/form-group-->
                                 <div class="form-group form-group-lg">
                                     {{csrf_field()}}
-                                    <input type="submit" class="btn btn-primary btn-lg" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Procesando" value="Comprar" />
+                                    <button type="submit" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Procesando" class="btn btn-primary btn-lg">
+                                      Comprar
+                                    </button>
                                 </div>
 
                                 <div class="form-group form-group-lg">
@@ -80,8 +91,8 @@
                         <!-- /panel-body -->
                     </div>
                     <!-- /.col-md-6 col-md-offset-3 col-xs-12 -->
-                    <input type="hidden" id="price-time" value="{{$priceTime}}" />
-                    <input type="hidden" id="price-day" value="{{$priceDay}}" />
+                    <input type="hidden" id="price-time" value="{{ $priceTime }}" />
+                    <input type="hidden" id="price-day" value="{{ $priceDay }}" />
                     <input type="hidden" id="wallet-balance" value="{{Auth::user()->wallet->balance}}" />
                     <input type="hidden" id="wallet-credit" value="{{Auth::user()->wallet->credit}}" />
                 </div>

@@ -422,8 +422,8 @@ class LocalController extends Controller
       $cadena = $request->input('plate').$request->input('type').$request->input('time').date('YmdHis');
       $token = substr(str_shuffle($cadena), 0, 10);
 
-      $start = Carbon::now();
-      $fin = Carbon::now();
+      $start = Carbon::now('America/Argentina/Buenos_Aires');
+      $fin = Carbon::now('America/Argentina/Buenos_Aires');
 
       if($request->input('type') == 'time'){
           $end = $fin->addHour($request->input('time'));}

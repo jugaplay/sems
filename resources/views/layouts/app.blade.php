@@ -104,6 +104,7 @@
 
   <script src="/scripts/toastr.js"></script>
   <!-- END COMPONENTS -->
+  <script src="/scripts/sems/general.js"></script>
   @stack('scripts')
 
   </script>

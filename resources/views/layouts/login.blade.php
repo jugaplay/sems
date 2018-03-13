@@ -52,6 +52,10 @@
   <!-- PLUGIN SETUPS: vendors & dependencies setups -->
   <script src="/scripts/plugin-setups.js"></script>
   <!-- END PLUGIN SETUPS -->
+  <!-- COMPONENTS -->
+  <script src="/scripts/bootbox.js"></script>
+  <script src="/scripts/toastr.js"></script>
+  <script src="/scripts/sems/general.js"></script>
 
 
 

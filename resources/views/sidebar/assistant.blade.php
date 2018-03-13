@@ -2,12 +2,12 @@
       <div class="sidebar-block" style="">
         <div class="media">
           <div class="media-left">
-            <a href="page-profile.html">
+            <a href="{{ route('home') }}">
               <img class="media-object img-circle" src="images/dummy/uifaces17.jpg" alt="photo profile">
             </a>
           </div>
           <div class="media-body">
-            <h4 class="media-heading">Juan Carlos</h4>
+            <h4 class="media-heading">{{Auth::user()->name}}</h4>
             <p class="text-muted">
               <small><i class="fa fa-map-marker fa-fw"></i> Gps encendido</small>
             </p>
@@ -66,7 +66,8 @@
             </a>
           </li>
           <li class="nav-item" role="presentation">
-            <a href="login.html">
+            <a href="{{ route('logout') }}"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
               <span class="nav-icon"><i class="fa fa-sign-out"></i></span>
               <span class="nav-text">Salir</span>
             </a>

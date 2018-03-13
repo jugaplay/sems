@@ -52,7 +52,7 @@
         <div class="form-group has-feedback">
           <div class="input-group input-group-in">
             <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-            <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+            <input type="emailSignUp" name="emailSignUp" id="emailSignUp" class="form-control" placeholder="Email">
             <span class="form-control-feedback"></span>
           </div>
         </div><!-- /.form-group -->
@@ -102,7 +102,7 @@
         <div class="form-group has-feedback">
           <div class="input-group input-group-in">
             <span class="input-group-addon"><i class="icon-key"></i></span>
-            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+            <input type="password" name="passwordSignUp" id="passwordSignUp" class="form-control" placeholder="Password">
             <span class="form-control-feedback"></span>
           </div>
         </div><!-- /.form-group -->
