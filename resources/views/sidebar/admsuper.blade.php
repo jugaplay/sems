@@ -90,7 +90,8 @@
         </a>
       </li>
       <li class="nav-item" role="presentation">
-        <a href="login.html">
+        <a href="{{ route('logout') }}"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
           <span class="nav-icon"><i class="fa fa-sign-out"></i></span>
           <span class="nav-text">Salir</span>
         </a>

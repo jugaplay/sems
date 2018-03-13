@@ -16,13 +16,13 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="visible-xs">
-                                    <h2 class="display-name media-heading text-teal">Pedro Gonzales</h2>
+                                    <h2 class="display-name media-heading text-teal">{{Auth::user()->name}}</h2>
                                     <p class="text-muted mb-4x">
                                         <i class="fa fa-map-marker fa-fw"></i> Gps Activo</span>
                                     </p>
                                 </div>
                                 <div class="hidden-xs">
-                                    <h2 class="media-heading text-light">Pedro Gonzales</h2>
+                                    <h2 class="media-heading text-light">{{Auth::user()->name}}</h2>
                                     <p class="mb-4x text-light">
                                         <span>
                                             <i class="fa fa-map-marker fa-fw"></i>Gps Activo</span>
@@ -32,7 +32,16 @@
                                     <p>
                                         <i class="fa fa-user" aria-hidden="true"></i> Inspector</p>
                                     <p>
-                                        <i class="fa fa-check-square-o" aria-hidden="true"></i> Habilitado</p>
+                                      @switch(Auth::user()->account_status)
+                                        @case("C")
+                                            <p><i class="fa fa-check-square-o" aria-hidden="true"></i> Habilitado</p>
+                                            @break
+                                        @case("N")
+                                            <p><i class="fa fa-share-square-o" aria-hidden="true"></i> Falta confirmar mail</p>
+                                            @break
+                                        @default
+                                            <p><i class="fa fa-times" aria-hidden="true"></i> No habilitado</p>
+                                    @endswitch
 
                                 </div>
                             </div>
@@ -54,7 +63,7 @@
         <div class="content-body">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="check-car.html" style="color: inherit;">
+                    <a href="{{ route('tickets.index') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
