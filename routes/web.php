@@ -44,8 +44,7 @@ Route::post('/tickets/driverticket','TicketController@driverTicketCreate')->name
 Route::get('/tickets/drivercredit','TicketController@driverCredit')->name('tickets.drivercredit.index');
 Route::post('/tickets/drivercredit','TicketController@driverCreditAdd')->name('tickets.drivercredit.save');
 
-Route::get('/tickets/controlparking','TicketController@controlParking')->name('tickets.controlparking.index');
-Route::post('/tickets/controlparking','TicketController@controlParkingDo')->name('tickets.controlparking.save');
+Route::post('/tickets/controlparking','TicketController@controlParking')->name('tickets.controlparking.save');
 
 Route::resource('tickets','TicketController');
 //checkuser
@@ -78,6 +77,7 @@ Route::resource('spacereservations','SpacesReservationsController');
 
 Route::get('/infringements/cancel/{infringementId?}','InfringementsController@cancel')->name('infringements.cancel.index');
 Route::post('/infringements/cancel','InfringementsController@cancelUpdate')->name('infringements.cancel.save');
+Route::post('/infringements/img','InfringementsController@uploadImage')->name('infringements.img.upload');
 
 Route::get('infringements/control','InfringementsController@control')->name('infringements.control');
 

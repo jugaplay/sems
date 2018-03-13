@@ -9,6 +9,11 @@ use App\InfringementDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon; // Clase para manejar fechas de laravel
+// Para manejar los archivos
+use App\Http\Controllers\Controller;
+//use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class InfringementsController extends Controller
@@ -226,5 +231,49 @@ class InfringementsController extends Controller
         echo($infringement->plate.'  '.$infringement->block_id.'  '.$dateCreated.' fecha Control => '.$fecha2.' Difer=>'.$difference.'</br>');
       } // End foreach
     }// Fin de la rutina control
+    public function uploadImage(Request $request){
+      //return response()->json($request);
 
+      $infringementId=$request->input('infringementId');
+      /*$this->validate($request, [
+          'infringementImg' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+      ]);*/
+      if ($infringementId>0) {
+          // $path = $request->file('infringementImg')->store('public/infractions/'.$infringementId);
+          $data = explode( ',', $request->input('infringementImg') );
+          $img = str_replace(' ', '+', $data[1]);
+          // $img = Image::make('foo.jpg')->orientate();
+          $image = base64_decode($img);
+          $file = 'public/infractions/'.$infringementId.'/'. uniqid() . '.jpg';
+          //$success = file_put_contents($file, $image);
+          Storage::put($file, $image);
+          //$path = $success->store('public/infractions/'.$infringementId);
+          Storage::setVisibility($file, 'public');
+          $url = Storage::url($file);
+          //rotateIfNecesary($file);
+          return response()->json(['path'=>$file,'$url'=>$url]);
+      }else{
+          return response()->json(['error'=>"error"]);
+      }
+    }
+}
+function rotateIfNecesary($file){
+  $image=Storage::get($file);
+  dd($image);
+  try {
+    $orientation = $image->exif('Orientation');
+    if ( ! empty($orientation)) {
+      switch ($orientation) {
+        case 8:
+          $image->rotate(90);
+          break;
+        case 3:
+          $image->rotate(180);
+          break;
+        case 6:
+          $image->rotate(-90);
+          break;
+      }
+    }
+  } catch (\Exception $e) {}
 }

@@ -180,7 +180,6 @@ return [
         // Para el español
         Laraveles\Spanish\SpanishServiceProvider::class,
 
-
     ],
 
     /*

@@ -6,7 +6,7 @@
               <img class="media-object img-circle" src="images/dummy/uifaces20.jpg" alt="photo profile">
             </a>
           </div>
-          <div class="media-body"><a href="login.html">
+          <div class="media-body"><a href="{{ route('login') }}">
             <h4 class="media-heading">Anonimo</h4>
             <p class="text-muted">
               <small><i class="fa fa fa-sign-in fa-fw"></i> Ingresar</small>
@@ -56,7 +56,7 @@
             </a>
           </li>
           <li class="nav-item" role="presentation">
-            <a href="login.html">
+            <a href="{{ route('login') }}">
               <span class="nav-icon"><i class="fa fa-sign-in"></i></span>
               <span class="nav-text">Ingresar</span>
             </a>

@@ -191,29 +191,35 @@ class TicketController
     }
   } // Fin de localCreditAdd
 
-  public function controlParking()
+  public function controlParking(Request $request)
   {
-      return view('tickets.controlparking');
-  }
-
-  public function controlParkingDo(Request $request)
-  {
-      echo "Grabar control ==> ".$request->input('plate').' ==> '.$request->input('latlng').'</br>';
-      $generalFunctions = new generalFunctions(); // Instancamos la clase
-      // Busar el ticket dentro del horario establecido
-      $ticket = $generalFunctions->controlTicket($request->input('plate'));
-      if(!$ticket){
-        echo "No Tiene tiket vigente".'</br>';
-        // Generar infraccion
-        $ticket = $generalFunctions->preInfringement($request->input('plate'),$request->input('latlng'));
-      }else {
-        echo "Tiene ticket Vigente hasta las ".$ticket->end_time.'</br>';
-        // averiguar el blocke
-        $block = $generalFunctions->returnBlockFromLatLng(json_decode($request->input('latlng')));
-        //Actualizar latitud y block
-        $ticket->update(['latlng'=>$request->input('latlng'),'block_id'=>$block->id]);
-        //dd($ticket->end_time);
+    $data = (object) $request->json()->all();// {"plate":plate,"latlng":latlng}
+    $generalFunctions = new generalFunctions(); // Instancamos la clase
+    if(Auth::check()){
+      if(Auth::user()->type=="inspector" && Auth::user()->account_status!="B" ){
+        $block=$generalFunctions->returnBlockFromLatLng($data->latlng);
+        if($block==NULL){
+          return response()->json(["error"=>"El lugar en donde se encuentra no pertenece a  la zona habilitada para controlar estacionamiento. "],400);// 400 Bad Request
+        }
+        $ticket = $generalFunctions->controlTicket($data->plate);
+        if(!$ticket){// Ticket solo no se puede
+          if($block->timePriceNow()>0){// Revisa que tenga que cobrar algo
+              $infringement= $generalFunctions->preInfringement($data->plate,$data->latlng);
+              return response()->json(['infringement'=>$infringement]);
+          }else{
+            return response()->json(["error"=>"El costo actual de esta cuadra es de $0 "],400);
+          }
+        }else {
+          $ticket->update(['latlng'=>json_encode($data->latlng),'block_id'=>$block->id,'check'=>Auth::user()->id]);
+          return response()->json(['ticket'=>$ticket]);
+        }
+      }else{
+        // No tiene permiso para esta accion
+        return response()->json(["error"=>"Sin permiso para comprobar una patente"],403);
       }
+    }else{// Tiene que hacer el login primero
+      return response()->json(["error"=>"Tiene que estar logueado"],401);
+    }
   }
 
 }

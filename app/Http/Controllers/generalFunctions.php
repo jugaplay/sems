@@ -213,16 +213,9 @@ class generalFunctions extends Controller
  *** Controlar horario ticket ***
  *******************************/
  function controlTicket($plate){
-   // desde ==> 2018-02-15 19:18:39
-   // Hasta ==> 2018-02-16 09:18:00
-   // $endTime = $endTime->format('Y-m-d H:i:s');
-   //$startTime = $start->format('Y-m-d H:i:s');
    $carbon = new Carbon();
    $start = Carbon::now('America/Argentina/Buenos_Aires');
-   $fin = Carbon::now('America/Argentina/Buenos_Aires');
-   $end = $fin->addMinute(10); // Le agrego 10 minutoa al final por la tolerancia
-   $date = date('Y-m-d H:i:s');
-   $date = '2018-02-15 19:30:39';
+   $end = Carbon::now('America/Argentina/Buenos_Aires');
    $ticket = Ticket::where('plate',$plate)
                      ->where('start_time','<=',$start)
                      ->where('end_time','>=',$end)
@@ -241,10 +234,9 @@ class generalFunctions extends Controller
    $fin = Carbon::now('America/Argentina/Buenos_Aires');
    $end = $fin->addDay(30); // Le agrego 30dias para el pago voluntario
    $end =  $end->format('Y-m-d');
-   $infringementCause = InfringementCause::where('id',1)->first();
-   $block = $generalFunctions->returnBlockFromLatLng(json_decode($latlng));
+   $infringementCause = InfringementCause::where('name',"Sin ticket")->first();// Ver como hacer esta bus
+   $block = $generalFunctions->returnBlockFromLatLng($latlng);
    // Verificar que no tenga infracciones del dia de hoy en la misma cuadra.
-   echo "control ==> ".$plate.' ==> '.$block->id.' ==> '. $dateControl.'</br>';
    $infringementExist =Infringement::where('plate',$plate)
                                    ->where('block_id',$block->id)
                                    ->where('date','=', $dateControl)->first();
@@ -256,20 +248,22 @@ class generalFunctions extends Controller
         'user_id'                  => Auth::user()->id,
         'date'                     => $date,
         'situation'                => 'before', //(before/saved/voluntary/judge/close)
-        'infringement_cause_id'    => '1',
+        'infringement_cause_id'    => $infringementCause->id,
         'cost'                     => $infringementCause->cost,
         'voluntary_cost'           => $infringementCause->voluntary_cost,
         'voluntary_end_date'       => $end,
-        'latlng'                   => $latlng,
+        'latlng'                   => json_encode($latlng),
         'block_id'                 => $block->id,
       ]);
       $infringementDetail=InfringementDetail::create([
         'user_id'          => Auth::user()->id,
         'infringement_id'  => $infringement->id,
-        'detail'           => 'No tiene ticket. Controlado por inspector',
+        'detail'           => 'No tiene ticket. Controlado por el inspector: '.Auth::user()->id.'- '.Auth::user()->name,
       ]);
-      echo "Infraccion generada";
-    }else{echo "Ya tiene infraccion para el dia de hoy y esta cuadra";}
+      return $infringement;
+    }else{// ya tiene una infraccion en esta cuada
+          return (object) ['alert' => 'Ya tiene infracción para el día de hoy y esta cuadra'];
+    }
  }
 
  // Actualizar las infracciones

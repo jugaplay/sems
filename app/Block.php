@@ -29,14 +29,30 @@ class Block extends Model
       }
       return $colection->get();// Trae toda la coleccion de costos
     }
-
-    /*public function  priceBlock($type){
-      $FindPrice = $this->belongsToMany('App\Area',$table='areas_blocks')->get()->transform(function($objet,$key) use($type){
-        return $objet->price($type);
-      })->filter()->sortByDesc('priority');
-
-      return $FindPrice;
-    }*/
+    public function  timePriceNow(){
+      $startDate = Carbon::now('America/Argentina/Buenos_Aires');
+      $end = Carbon::now('America/Argentina/Buenos_Aires');
+      $time = $startDate->toTimeString();
+      $day = $startDate->dayOfWeek;
+      $DateString = $startDate->toDateString();
+      $colection=$this->costs();
+      $price=$colection->where('start_date', '<=', $DateString)
+                        ->where('end_date', '>=', $DateString)
+                        ->where('time_zone_start','<=',$time)
+                        ->where('time_zone_end','>=',$time)
+                        ->filter(function ($objet) use ($day) {
+                              if($objet->day_start<$objet->day_end){
+                                return ($objet->day_start<=$day && $day<=$objet->day_end);
+                              }else{
+                                return ($objet->day_end>=$day || $day>=$objet->day_start);
+                              }
+                        })
+                        ->where('type','=','time')
+                        ->sortByDesc('priority')
+                        ->first();
+      $price=($price==null) ? 0 : $price->cost;
+      return $price;
+    }
 
     public function  priceBlock($type){
       if($type == 'time'){
@@ -45,9 +61,7 @@ class Block extends Model
         $endDate = $end->addHour(24);
         $time = $startDate->toTimeString();
         $day = $startDate->dayOfWeek;
-
       //----------------------------------//
-
         $arr=array();
         $lastPrice=null;
         $objetPrice= (object) array();
