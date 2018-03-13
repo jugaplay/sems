@@ -77,8 +77,16 @@ Route::post('/infringements/cancel','InfringementsController@cancelUpdate')->nam
 
 Route::get('infringements/control','InfringementsController@control')->name('infringements.control');
 
-
-
 Route::resource('infringements','InfringementsController');
 
 Route::resource('infringementcauses','InfringementCausesController');
+
+// Estadisticas
+Route::get('/statistics/ticketsStatistics','StatisticsController@ticketsStatistics');
+Route::get('/statistics/ticketsFiltros','StatisticsController@ticketsFiltros');
+Route::get('/statistics/ticketsBlock','StatisticsController@ticketsBlock');
+Route::get('/statistics/infringementsBlock','StatisticsController@infringementsBlock');
+Route::get('/statistics/operationsStatistics','StatisticsController@operationsStatistics');
+
+
+Route::resource('statistics','StatisticsController');
