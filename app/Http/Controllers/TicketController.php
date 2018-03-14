@@ -205,9 +205,9 @@ class TicketController
         if(!$ticket){// Ticket solo no se puede
           if($block->timePriceNow()>0){// Revisa que tenga que cobrar algo
               $infringement= $generalFunctions->preInfringement($data->plate,$data->latlng);
-              return response()->json(['infringement'=>$infringement]);
+              return response()->json($infringement);
           }else{
-            return response()->json(["error"=>"El costo actual de esta cuadra es de $0 "],400);
+            return response()->json(["error"=>"El costo actual de esta cuadra es de $0 "]);
           }
         }else {
           $ticket->update(['latlng'=>json_encode($data->latlng),'block_id'=>$block->id,'check'=>Auth::user()->id]);

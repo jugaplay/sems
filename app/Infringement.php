@@ -40,7 +40,7 @@ class Infringement extends Model
     }
 
     public function viewImage(){
-      return $this->morphMany('App\Imagen','visible_type');
+      return $this->morphMany('App\Image','visible');
     }
 
     public function infringementdetail(){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Infringement;
 use App\InfringementCause;
 use App\InfringementDetail;
+use App\Image;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -232,48 +233,47 @@ class InfringementsController extends Controller
       } // End foreach
     }// Fin de la rutina control
     public function uploadImage(Request $request){
-      //return response()->json($request);
+      if(Auth::check()){
+        if(Auth::user()->type=="inspector" && Auth::user()->account_status!="B" ){
+          $infringementId=$request->input('infringementId');
+          if ($infringementId>0 && strpos($request->input('infringementImg'), 'image/jpeg;base64')) {
+              $data = explode( ',', $request->input('infringementImg') );
+              $img = str_replace(' ', '+', $data[1]);
+              $image = base64_decode($img);
+              $exif = exif_read_data($data[0]."," . $img);
+              if (!empty($exif['Orientation'])) {// Si tiene una orientacion la roto!
+        				switch ($exif['Orientation']) {
+            			case 3:
+            				$image = imagerotate($image, 180, 0);
+            				break;
+            			case 6:
+            				$image = imagerotate($image, -90, 0);
+            				break;
+            			case 8:
+            				$image = imagerotate($image, 90, 0);
+            				break;
+        				}
+              }
+              $file = 'public/infractions/'.$infringementId.'/'. uniqid() . '.jpg';
+              Storage::put($file, $image);
+              Storage::setVisibility($file, 'public');
+              $url = Storage::url($file);
+              $infringement = Infringement::where('id',$infringementId)->first();
+              // Add image to relation
+              $img = new Image();
+              $img->url = $file;
+              $infringement->viewImage()->save($img);
+              return response()->json(['infringement_id'=>$infringementId,'path'=>$file,'$url'=>$url]);
+          }else{
+              return response()->json(['error'=>"Datos mal enviados"],400);
+          }
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para subir una imagen de una multa "],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      }
 
-      $infringementId=$request->input('infringementId');
-      /*$this->validate($request, [
-          'infringementImg' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-      ]);*/
-      if ($infringementId>0) {
-          // $path = $request->file('infringementImg')->store('public/infractions/'.$infringementId);
-          $data = explode( ',', $request->input('infringementImg') );
-          $img = str_replace(' ', '+', $data[1]);
-          // $img = Image::make('foo.jpg')->orientate();
-          $image = base64_decode($img);
-          $file = 'public/infractions/'.$infringementId.'/'. uniqid() . '.jpg';
-          //$success = file_put_contents($file, $image);
-          Storage::put($file, $image);
-          //$path = $success->store('public/infractions/'.$infringementId);
-          Storage::setVisibility($file, 'public');
-          $url = Storage::url($file);
-          //rotateIfNecesary($file);
-          return response()->json(['path'=>$file,'$url'=>$url]);
-      }else{
-          return response()->json(['error'=>"error"]);
-      }
     }
-}
-function rotateIfNecesary($file){
-  $image=Storage::get($file);
-  dd($image);
-  try {
-    $orientation = $image->exif('Orientation');
-    if ( ! empty($orientation)) {
-      switch ($orientation) {
-        case 8:
-          $image->rotate(90);
-          break;
-        case 3:
-          $image->rotate(180);
-          break;
-        case 6:
-          $image->rotate(-90);
-          break;
-      }
-    }
-  } catch (\Exception $e) {}
 }
