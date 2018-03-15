@@ -39,7 +39,9 @@
                                 </div>
                                 <!--/form-group-->
                                 <div class="form-group form-group-lg">
-                                    <input type="submit" class="btn btn-primary btn-lg" value="Verificar" />
+                                    <button type="submit" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Procesando" class="btn btn-primary btn-lg">
+                                      Verificar
+                                    </button>
                                 </div>
                             </form>
                             <!--/form-->
@@ -64,6 +66,7 @@
 @push('scripts')
 <!-- COMPONENTS -->
   <script src="scripts/sems/check-tickets.js"></script>
+  <script src="scripts/sems/infringements-images.js"></script>
   <script src="scripts/jic.min.js"></script>
   <script src="scripts/image_tool.js"></script>
 

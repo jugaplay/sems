@@ -39,7 +39,19 @@ class InfringementsController extends Controller
         $infragmentCauses = InfringementCause::all();
          return view('infringements.create',['infragmentCauses'=>$infragmentCauses]);
     }
-
+    public function showAll(){
+      if(Auth::check()){
+        if(Auth::user()->type=="inspector" && Auth::user()->account_status!="B" ){
+          $infragmentCauses = InfringementCause::where('name',"!=","Sin ticket")->get();
+          return response()->json($infragmentCauses);
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para ver los datos"],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      }
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -49,31 +61,39 @@ class InfringementsController extends Controller
     public function store(Request $request)
     {
       if(Auth::check()){
-        if(Auth::user()->type=="admsuper" && Auth::user()->account_status!="B" ){
-
+        if(Auth::user()->type=="inspector" && Auth::user()->account_status!="B" ){
+          //return response()->json($request);
           $generalFunctions = new generalFunctions(); // Instancamos la clase
-          echo "LatLng = ".$request->input('latlng').'</br>';
-          // Obtener el block donde se produjo la infraccion
           $block = $generalFunctions->returnBlockFromLatLng(json_decode($request->input('latlng')));
-          if(!$block){echo "No existe el block";return;}
-          // Obtener el costo de la infraccion
-          $infringementCause = InfringementCause::where('id',$request->input('infragmentCausesId'))->first();
-
+          $infringementCause = InfringementCause::where('id',$request->input('infringementCausesId'))->first();
+          $now = Carbon::now('America/Argentina/Buenos_Aires');
+          $today= $now->format('Y-m-d H:i:s');
+          $endVoluntary = $now->addMonths(3)->format('Y-m-d H:i:s');
           $infringement=Infringement::create([
-            'plate'                    => $request->input('plate'),
+            'plate'                    => $request->input('infringementPlate'),
             'user_id'                  => Auth::user()->id,
-            'date'                     => $request->input('date'),
+            'date'                     => $today,
             'situation'                => 'saved', //(before/saved/voluntary/judge/close)
-            'infringement_cause_id'    => $request->input('infragmentCausesId'),
+            'infringement_cause_id'    => $request->input('infringementCausesId'),
             'cost'                     => $infringementCause->cost,
             'voluntary_cost'           => $infringementCause->voluntary_cost,
-            'voluntary_end_date'       => $request->input('voluntary_end_date'),
+            'voluntary_end_date'       => $endVoluntary,
             'latlng'                   => $request->input('latlng'),
             'block_id'                 => $block->id,
             ]);
-            echo "Infraccion grabada";
-        } // Auth::user()
-      } // Auth::check()
+            // Add image to relation
+            $infringementDetail = new InfringementDetail();
+            $infringementDetail->user_id = Auth::user()->id;
+            $infringementDetail->detail = $request->input('infringementDetail');
+            $infringement->infringementdetail()->save($infringementDetail);
+            return response()->json($infringement);
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para realizar una multa "],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      } // Auth::user()
     } // Fin store
 
     /**

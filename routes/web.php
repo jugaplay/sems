@@ -73,6 +73,7 @@ Route::resource('exeptuatedvehicles','ExeptuatedVehiclesController');
 Route::resource('exeptuatedvehiclesblock','ExeptuatedVehiclesBlocksController');
 
 Route::get('spacereservations/all','SpacesReservationsController@showAll')->name('spacereservations.showall');
+Route::get('spacereservations/active','SpacesReservationsController@showActive')->name('spacereservations.active');
 Route::resource('spacereservations','SpacesReservationsController');
 
 Route::get('/infringements/cancel/{infringementId?}','InfringementsController@cancel')->name('infringements.cancel.index');
@@ -80,8 +81,7 @@ Route::post('/infringements/cancel','InfringementsController@cancelUpdate')->nam
 Route::post('/infringements/img','InfringementsController@uploadImage')->name('infringements.img.upload');
 
 Route::get('infringements/control','InfringementsController@control')->name('infringements.control');
-
-
+Route::get('infringements/all','InfringementsController@showAll')->name('infringements.all');
 
 Route::resource('infringements','InfringementsController');
 

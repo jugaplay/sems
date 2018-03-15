@@ -10,6 +10,9 @@ function simpleAlert(title,message){
     }
   });
 }
+function parseSqlDate(date){
+  return parseDate(new Date(date));
+}
 function parseDate(jsDate){
     return parse0LessThan10(jsDate.getHours())+':'+parse0LessThan10(jsDate.getMinutes())+' Hs '+parse0LessThan10(jsDate.getDate())+'/'+lettersOfMonth(jsDate.getMonth());
 }
@@ -24,4 +27,13 @@ function lettersOfMonth(nro){
 function returnFullMonthName(month){
 	var months=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Ocutbre","Noviembre","Diciembre"];
 	return months[nro];
+}
+function parseTemplate(props, template){
+	var result = template;
+	for (var key in props) {
+  	while(result.indexOf(key) >= 0) {
+    	result = result.replace(key,String(props[key]));
+    }
+  }
+  return result;
 }

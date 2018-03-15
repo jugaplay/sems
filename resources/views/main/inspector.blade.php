@@ -96,7 +96,7 @@
                 <!-- /.cols -->
 
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="infractions.html" style="color: inherit;">
+                    <a href="{{ route('infringements.index') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
@@ -129,7 +129,7 @@
                 <!-- /.cols -->
 
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="containers.html" style="color: inherit;">
+                    <a href="{{ route('spacereservations.index') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">

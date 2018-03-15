@@ -11,6 +11,7 @@ use App\CompanySale;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon; // Clase para manejar fechas de laravel
 
 function parseSpacesType($type){
   switch ($type) {
@@ -142,6 +143,25 @@ class SpacesReservationsController extends Controller
       return response()->json([
           'aaData' => $arrOfSpaces
       ]);
+    }
+    public function showActive(){
+      if(Auth::check()){
+        if(Auth::user()->type=="inspector" && Auth::user()->account_status!="B" ){
+          $now = Carbon::now('America/Argentina/Buenos_Aires');
+          $spaces = SpaceReservation::where('start_time','<=',$now)
+                                    ->where('end_time','>=',$now)
+                                   ->get()
+                                   ->map(function ($item) {
+            return ['latlng' => $item->latlng, 'type' => parseSpacesType($item->type),'identifier' => $item->identifier,'company' => $item->company,'size' => $item->size,'end_time' => $item->end_time];
+        });
+          return response()->json($spaces);
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para ver los datos"],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      }
     }
     /**
      * Show the form for editing the specified resource.
