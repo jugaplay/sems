@@ -156,6 +156,7 @@ class InfringementsController extends Controller
     public function show(Infringement $infringement)
     {
         //
+        return view('infringements.show');
     }
 
     /**

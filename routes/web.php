@@ -82,7 +82,7 @@ Route::post('/infringements/img','InfringementsController@uploadImage')->name('i
 
 Route::get('infringements/control','InfringementsController@control')->name('infringements.control');
 Route::get('infringements/all','InfringementsController@showAll')->name('infringements.all');
-Route::get('infringements_filter','InfringementsController@filter')->name('infringements.filter');
+Route::get('infringements/filter','InfringementsController@filter')->name('infringements.filter');
 
 Route::resource('infringements','InfringementsController');
 

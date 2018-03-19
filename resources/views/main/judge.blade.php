@@ -11,7 +11,7 @@
                         <div class="float-bar clearfix">
                             <div class="float-bar-brand">
                                 <a class="kit-avatar kit-avatar-128 no-padding border-white" href="#">
-                                    <img alt="cover" src="images/dummy/uifaces16.jpg">
+                                    <img alt="cover" src="{{URL::to('images/dummy/uifaces16.jpg')}}">
                                 </a>
                             </div>
                             <div class="col-sm-8">

@@ -4,7 +4,7 @@
 <section class="content-wrapper" role="main" data-init-content="true">
     <div class="content">
         <div id="content-hero" class="content-hero">
-            <img class="content-hero-embed" src="images/dummy/people4.jpg" alt="cover">
+            <img class="content-hero-embed" src="{{URL::to('images/dummy/people4.jpg')}}" alt="cover">
             <div class="content-hero-overlay bg-grd-blue"></div>
             <div class="content-hero-body">
                 <!-- /.content-bar -->
@@ -87,7 +87,7 @@
                                 <div class="search-result-item">
                                     <div class="media">
                                         <div class="media-left">
-                                            <a class="kit-avatar kit-avatar-128 kit-avatar-square" href="infraction.html">
+                                            <a class="kit-avatar kit-avatar-128 kit-avatar-square" href="{{ route('infringements.index') }}/{{ $infringement->id }}">
                                                 <img class="media-object" src="{{ $infringement->img() }}">
                                             </a>
                                         </div>
@@ -107,7 +107,7 @@
                                                       <!-- Un estado no contemplado, ojo con el estado judge -->
                                               @endswitch
                                             </div>
-                                            <p class="media-heading"><a href="infraction.html">{{ $infringement->plate }} -- {{ $infringement->cause->name }}</a></p>
+                                            <p class="media-heading"><a href="{{ route('infringements.index') }}/{{ $infringement->id }}">{{ $infringement->plate }} -- {{ $infringement->cause->name }}</a></p>
                                             <p class="text-muted"><small>{{ parseDateString($infringement->date) }} <b>Costo: ${{ $infringement->cost }}</b></small></p>
                                               <p><b>Detalle:</b> {{ $infringement->details->first()->detail }}</p>
                                         </div>
@@ -135,9 +135,9 @@
 @endsection
 
 @push('scripts')
-<link rel="stylesheet" href="styles/components.css">
-<script src="scripts/moment.js"></script>
-<script src="scripts/daterangepicker.js"></script>
+<link rel="stylesheet" href="{{URL::to('styles/components.css')}}">
+<script src="{{URL::to('scripts/moment.js')}}"></script>
+<script src="{{URL::to('scripts/daterangepicker.js')}}"></script>
 <!-- END COMPONENTS -->
-<script src="scripts/sems/judge-infractions.js"></script>
+<script src="{{URL::to('scripts/sems/judge-infractions.js')}}"></script>
 @endpush
