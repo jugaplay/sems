@@ -29,7 +29,7 @@
           <li class="nav-header" role="presentation">OPERATIVOS</li>
 
 <li class="nav-item" role="presentation">
-            <a href="infractions.html">
+            <a href="{{ route('infringements.index') }}">
               <span class="nav-icon"><i class="fa fa-search"></i></span>
               <span class="nav-text">Infracciones</span>
             </a>

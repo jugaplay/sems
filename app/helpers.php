@@ -3,6 +3,14 @@ function currentUser()
 {
     return auth()->user();
 }
+function parseDateString($date){
+  // De esto: 2018-03-15 a esto : 15/03/2018
+  return substr($date, 8, 2)."/".substr($date, 5, 2)."/".substr($date, 0, 4);
+}
+
+
+
+
 
 /*
 Descripción: El algoritmo del punto en un polígono permite comprobar mediante

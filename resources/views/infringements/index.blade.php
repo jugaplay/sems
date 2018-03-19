@@ -2,6 +2,9 @@
     @case("inspector")
         @include('infringements.inspector')
         @break
+    @case("judge")
+        @include('infringements.judge')
+        @break
     @default
         @include('error.index')
 @endswitch

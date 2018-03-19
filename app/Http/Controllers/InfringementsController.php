@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Infringement;
 use App\InfringementCause;
 use App\InfringementDetail;
+use App\Owner;
 use App\Image;
 
 use Illuminate\Http\Request;
@@ -26,6 +27,56 @@ class InfringementsController extends Controller
      */
     public function index()
     {
+      if(Auth::check()){
+        if(Auth::user()->type=="judge" && Auth::user()->account_status!="B" ){
+          $infringements=Infringement::where('situation',"!=","before")->orderBy('updated_at','desc')->paginate(3);
+          return view('infringements.index',['infringements'=>$infringements]);
+        }
+      }
+        return view('infringements.index');
+    }
+    public function filter(Request $request)
+    {
+      $infringementStarts=$request->input('infringementStarts');
+      $infringementEnds=$request->input('infringementEnds');
+      $infringementText=$request->input('infringementText');
+      $infringementFilter=$request->input('infringementFilter');// Dominio Dni
+      $infringementType=$request->input('infringementType');// open
+      if(Auth::check()){
+        if(Auth::user()->type=="judge" && Auth::user()->account_status!="B" ){
+          $infringements=Infringement::where('situation',"!=","before");
+          if($infringementType!=""){
+            $infringements=($infringementType=="open")?$infringements->where('situation',"!=","close"):$infringements->where('situation',$infringementType);
+          }
+          if($infringementStarts!="" && $infringementEnds!="" ){
+            $infringements=$infringements->where('date',">=",$infringementStarts)->where('date',"<=",$infringementEnds);
+          }
+          if($infringementText!=""){// Eventualmente agregar lo del dni
+            switch ($infringementFilter) {
+              case 'Dominio':// Filtra por dominio
+                  $infringements=$infringements->where('plate',"like","%".$infringementText."%");
+                break;
+              case 'Dni':
+                  $plates = Owner::where('document_type',"DNI")->where('document_number',"like","%".$infringementText."%")->get()->transform(function ($objet){
+                    return $objet->vehicle->plate;
+                  });
+                  $infringements=$infringements->whereIn('plate',$plates);
+                break;
+              default:// Combino Dominio y Dni
+                $plates = Owner::where('document_type',"DNI")->where('document_number',"like","%".$infringementText."%")->get()->transform(function ($objet){
+                  return $objet->vehicle->plate;
+                });
+                $infringements=$infringements->where(function ($query) use($plates,$infringementText){ // Alguna de las dos opciones
+                                                $query->whereIn('plate',$plates)
+                                                      ->orWhere('plate',"like","%".$infringementText."%");
+                                            });
+                break;
+            }
+          }
+          $infringements=$infringements->orderBy('updated_at','desc')->paginate(3);// ->appends($request::except('page'))
+          return view('infringements.index',['infringements'=>$infringements])->with('values', $request);;
+        }
+      }
         return view('infringements.index');
     }
 
@@ -67,13 +118,13 @@ class InfringementsController extends Controller
           $block = $generalFunctions->returnBlockFromLatLng(json_decode($request->input('latlng')));
           $infringementCause = InfringementCause::where('id',$request->input('infringementCausesId'))->first();
           $now = Carbon::now('America/Argentina/Buenos_Aires');
-          $today= $now->format('Y-m-d H:i:s');
-          $endVoluntary = $now->addMonths(3)->format('Y-m-d H:i:s');
+          $today= $now->format('Y-m-d');
+          $endVoluntary = $now->addMonths(3)->format('Y-m-d');
           $infringement=Infringement::create([
             'plate'                    => $request->input('infringementPlate'),
             'user_id'                  => Auth::user()->id,
             'date'                     => $today,
-            'situation'                => 'saved', //(before/saved/voluntary/judge/close)
+            'situation'                => 'voluntary', // Empieza como un pago voluntario
             'infringement_cause_id'    => $request->input('infringementCausesId'),
             'cost'                     => $infringementCause->cost,
             'voluntary_cost'           => $infringementCause->voluntary_cost,
@@ -85,7 +136,7 @@ class InfringementsController extends Controller
             $infringementDetail = new InfringementDetail();
             $infringementDetail->user_id = Auth::user()->id;
             $infringementDetail->detail = $request->input('infringementDetail');
-            $infringement->infringementdetail()->save($infringementDetail);
+            $infringement->details()->save($infringementDetail);
             return response()->json($infringement);
         }else{
           // No tiene permiso para esta accion
@@ -282,7 +333,7 @@ class InfringementsController extends Controller
               // Add image to relation
               $img = new Image();
               $img->url = $file;
-              $infringement->viewImage()->save($img);
+              $infringement->images()->save($img);
               return response()->json(['infringement_id'=>$infringementId,'path'=>$file,'$url'=>$url]);
           }else{
               return response()->json(['error'=>"Datos mal enviados"],400);

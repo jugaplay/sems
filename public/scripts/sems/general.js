@@ -16,6 +16,10 @@ function parseSqlDate(date){
 function parseDate(jsDate){
     return parse0LessThan10(jsDate.getHours())+':'+parse0LessThan10(jsDate.getMinutes())+' Hs '+parse0LessThan10(jsDate.getDate())+'/'+lettersOfMonth(jsDate.getMonth());
 }
+function parseSimpleDate(jsDate){
+  // 2018-03-08
+  return jsDate.substring(8, 10)+"/"+jsDate.substring(5, 7)+"/"+jsDate.substring(0, 4);
+}
 function parse0LessThan10(int){
 	var int=parseInt(int);
 	if(int<10){return"0"+int;}else{return int;}

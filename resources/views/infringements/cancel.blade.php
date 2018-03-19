@@ -3,7 +3,7 @@
 <form method="post" action="{{ route('infringements.cancel.save',[$infringement->id]) }}" >
             {{csrf_field()}}
 <br>
-Causa de Infraccion : {{$infringement->infringement_cause()->first()->name}}<br>
+Causa de Infraccion : {{$infringement->cause()->first()->name}}<br>
 
 date : {{$infringement->date}}<br>
 voluntary_end_date : {{$infringement->voluntary_end_date}}<br>
