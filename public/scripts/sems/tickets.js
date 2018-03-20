@@ -178,7 +178,7 @@ function buyTicketWithCredit(datas){
   $button.button('loading')
   var jqxhr = $.ajax({
                   method: "POST",
-                  url: "tickets/localticket",
+                  url: window.apiUrl+"tickets/localticket",
                   data: datas
                 })
                 .done(function(xhr) {

@@ -18,5 +18,8 @@ class Vehicle extends Model
       return $this->hasOne('App\ExeptuatedVehicle');
     }
 
+    public function owner(){
+      return $this->hasOne('App\Owner');
+    }
 
 }

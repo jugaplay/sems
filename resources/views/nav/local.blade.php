@@ -7,7 +7,7 @@
             <i class="fa fa-bars"></i>
 
           </button><a class="navbar-brand"  href="#" role="logo" aria-label="Logo">
-            <img class="logo" src="images/logo/brand-text-color.png" alt="Brand 3">
+            <img class="logo" src="{{URL::to('images/logo/brand-text-color.png')}}" alt="Brand 3">
           </a>
         </div>
 
@@ -33,7 +33,7 @@
                   <li class="media" style="opacity: 1; display: list-item; transform: translateY(0px);">
                     <a href="#">
                       <div class="media-left">
-                        <img class="media-object img-circle" width="32" src="images/dummy/unknown-profile.jpg" alt="user">
+                        <img class="media-object img-circle" width="32" src="{{URL::to('images/dummy/unknown-profile.jpg')}}" alt="user">
                       </div>
                       <div class="media-body">
                         <p class="pull-right"><small>18/12/2017 11:41</small></p>
@@ -48,7 +48,7 @@
                   <li class="media" style="opacity: 1; display: list-item; transform: translateY(0px);">
                     <a href="#">
                       <div class="media-left">
-                        <img class="media-object img-circle" width="32" src="images/dummy/unknown-profile.jpg" alt="user">
+                        <img class="media-object img-circle" width="32" src="{{URL::to('images/dummy/unknown-profile.jpg')}}" alt="user">
                       </div>
                       <div class="media-body">
                         <p class="pull-right"><small>16/12/2017 11:41</small></p>
@@ -63,7 +63,7 @@
                   <li class="media unread" style="opacity: 1; display: list-item; transform: translateY(0px);">
                     <a href="#">
                       <div class="media-left">
-                        <img class="media-object img-circle" width="32" src="images/dummy/unknown-profile.jpg" alt="user">
+                        <img class="media-object img-circle" width="32" src="{{URL::to('images/dummy/unknown-profile.jpg')}}" alt="user">
                       </div>
                       <div class="media-body">
                         <p class="pull-right"><small>13/12/2017 11:41</small></p>
@@ -78,7 +78,7 @@
                   <li class="media unread" style="opacity: 1; display: list-item; transform: translateY(0px);">
                     <a href="#">
                       <div class="media-left">
-                        <img class="media-object img-circle" width="32" src="images/dummy/unknown-profile.jpg" alt="user">
+                        <img class="media-object img-circle" width="32" src="{{URL::to('images/dummy/unknown-profile.jpg')}}" alt="user">
                       </div>
                       <div class="media-body">
                         <p class="pull-right"><small>12/12/2017 11:41</small></p>

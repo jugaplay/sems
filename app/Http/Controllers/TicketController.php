@@ -66,7 +66,7 @@ class TicketController
             *** Grabar todas las operaciones ***
             ***********************************/
            // Grabar el ticket
-            $ticket = $generalFunctions->ticketSave(Auth::user()->id,$request->input('ticketPlate'),$dataTicket->hours,$dataTicket->start,
+            $ticket = $generalFunctions->ticketSave(Auth::user()->id,strtoupper($request->input('ticketPlate')),$dataTicket->hours,$dataTicket->start,
                                                       $dataTicket->endTime,$block_id,$latlng,
                                                       $dataTicket->token,$ticketType);
             // grabar operacion
@@ -194,6 +194,7 @@ class TicketController
   public function controlParking(Request $request)
   {
     $data = (object) $request->json()->all();// {"plate":plate,"latlng":latlng}
+    $data->plate=strtoupper($data->plate);
     $generalFunctions = new generalFunctions(); // Instancamos la clase
     if(Auth::check()){
       if(Auth::user()->type=="inspector" && Auth::user()->account_status!="B" ){
@@ -204,10 +205,11 @@ class TicketController
         $ticket = $generalFunctions->controlTicket($data->plate);
         if(!$ticket){// Ticket solo no se puede
           if($block->timePriceNow()>0){// Revisa que tenga que cobrar algo
+              registerVehicle($data->plate);// Si no existe el vehiculo lo creo
               $infringement= $generalFunctions->preInfringement($data->plate,$data->latlng);
-              return response()->json(['infringement'=>$infringement]);
+              return response()->json($infringement);
           }else{
-            return response()->json(["error"=>"El costo actual de esta cuadra es de $0 "],400);
+            return response()->json(["error"=>"El costo actual de esta cuadra es de $0 "]);
           }
         }else {
           $ticket->update(['latlng'=>json_encode($data->latlng),'block_id'=>$block->id,'check'=>Auth::user()->id]);

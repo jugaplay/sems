@@ -209,7 +209,7 @@
     $button.button('loading')
     var jqxhr = $.ajax({
                     method: "POST",
-                    url: "exeptuatedvehicles",
+                    url: window.apiUrl+"exeptuatedvehicles",
                     data: datas
                   })
                   .done(function(xhr) {
@@ -270,7 +270,7 @@
     $button.button('loading')
     var jqxhr = $.ajax({
                     method: "PUT",
-                    url: "exeptuatedvehicles/"+datas[1].value,
+                    url: window.apiUrl+"exeptuatedvehicles/"+datas[1].value,
                     data: datas
                   })
                   .done(function(xhr) {

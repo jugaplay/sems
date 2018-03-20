@@ -11,27 +11,34 @@
                         <div class="float-bar clearfix">
                             <div class="float-bar-brand">
                                 <a class="kit-avatar kit-avatar-128 no-padding border-white" href="#">
-                                    <img alt="cover" src="images/dummy/uifaces16.jpg">
+                                    <img alt="cover" src="{{URL::to('images/dummy/uifaces16.jpg')}}">
                                 </a>
                             </div>
                             <div class="col-sm-8">
                                 <div class="visible-xs">
-                                    <h2 class="display-name media-heading text-teal">Pedro Gonzales</h2>
+                                    <h2 class="display-name media-heading text-teal">{{Auth::user()->name}}</h2>
                                     <p class="text-muted mb-4x">
                                         <i class="fa fa fa-balance-scale fa-fw"></i> Juez</span>
                                     </p>
                                 </div>
                                 <div class="hidden-xs">
-                                    <h2 class="media-heading text-light">Pedro Gonzales</h2>
+                                    <h2 class="media-heading text-light">{{Auth::user()->name}}</h2>
                                     <p class="mb-4x text-light">
                                         <span>
                                             <i class="fa fa fa-balance-scale fa-fw"></i> Juez</span>
                                     </p>
                                 </div>
                                 <div class="mt-4x">
-
-                                    <p>
-                                        <i class="fa fa-check-square-o" aria-hidden="true"></i> Habilitado</p>
+                                  @switch(Auth::user()->account_status)
+                                    @case("C")
+                                        <p><i class="fa fa-check-square-o" aria-hidden="true"></i> Habilitado</p>
+                                        @break
+                                    @case("N")
+                                        <p><i class="fa fa-share-square-o" aria-hidden="true"></i> Falta confirmar mail</p>
+                                        @break
+                                    @default
+                                        <p><i class="fa fa-times" aria-hidden="true"></i> No habilitado</p>
+                                @endswitch
 
                                 </div>
                             </div>
@@ -54,7 +61,7 @@
             <div class="row">
 
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="infractions.html" id="bootbox-search-voucher" style="color: inherit;">
+                    <a href="{{ route('infringements.index') }}" id="bootbox-search-voucher" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">

@@ -13,8 +13,8 @@
 date <input type="text" name="date" id="date" value="{{$infringement->date}}"><br>
 voluntary_end_date <input type="text" name="voluntary_end_date" id="voluntary_end_date" value="{{$infringement->date}}"><br>
 plate <input type="text" name="plate" id="plate" value="{{$infringement->date}}"><br>
-detail <textarea name="detail" id="detail" rows="8" cols="80">{{$infringement->infringementdetail()->first()->detail}}</textarea> <br>
+detail <textarea name="detail" id="detail" rows="8" cols="80">{{$infringement->details()->first()->detail}}</textarea> <br>
 latlng <input type="text" name="latlng" id="latlng" value="{{$infringement->latlng}}"><br>
-<input type="hidden" name="infringementDetailId" value="{{$infringement->infringementdetail()->first()->id}}">
+<input type="hidden" name="infringementDetailId" value="{{$infringement->details()->first()->id}}">
 <input type="submit" name="enviar" value="Enviar">
 </form>

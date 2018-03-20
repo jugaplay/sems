@@ -16,17 +16,22 @@ $( document ).on( 'submit', '#ticketFormControl', function(e){
                   headers: {
                       'X-CSRF-TOKEN': window.ajax_token
                   },
-                  url: "tickets/controlparking",
+                  url: window.apiUrl+"tickets/controlparking",
                   dataType: "json",
                   data: datas
                 })
                 .done(function(xhr) {
-                  //toastr.success( 'Usuario: <b> '+xhr.name+' </b> encontrado' );
                   console.log(JSON.stringify(xhr));
-                  // Puede recibir un:
-                  // alert ( Ya tiene infracción para el día de hoy y esta cuadra )
-                  // Objeto Infringement -- con el id, para mandarle foto y detalle
-                  //
+                  if(xhr.hasOwnProperty('alert')){
+                    hasInfringement(xhr.infringement);
+                  }else if (xhr.hasOwnProperty('infringement')) {
+                    newInfringement(xhr.infringement);
+                  }else if (xhr.hasOwnProperty('error')) {
+                    simpleAlert("Cuadra sin costo",xhr.error);
+                  }else{// tiene ticket
+                    hasTicket(xhr.ticket);
+                  }
+                  $( '#ticketFormControl' )[0].reset();
                 })
                 .fail(function(xhr) {
                   if(xhr.status==419){toastr.error('Error: Refresque la pagina y vuelva a intentar');}
@@ -42,3 +47,13 @@ $( document ).on( 'submit', '#ticketFormControl', function(e){
 function preVerifiedPlate(plate){
   return plate.length>=6;
 }
+function hasTicket(ticket){
+  // plate end_time 'type', //(time/day)
+  var end_time=parseDate(new Date(ticket.end_time));
+  if(ticket.type=='day'){// e
+    toastr.success( 'Patente <b>' + ticket.plate + '</b> tiene una estadia' );
+  }else{
+    toastr.success( 'Patente <b>' + ticket.plate + '</b> tiene reservado hasta '+end_time );
+  }
+}
+// dialog.modal('hide') // Para esconder todos

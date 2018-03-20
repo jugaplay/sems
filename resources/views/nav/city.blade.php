@@ -7,7 +7,7 @@
         <i class="fa fa-bars"></i>
 
       </button><a class="navbar-brand"  href="#" role="logo" aria-label="Logo">
-        <img class="logo" src="images/logo/brand-text-color.png" alt="Brand 3">
+        <img class="logo" src="{{URL::to('images/logo/brand-text-color.png')}}" alt="Brand 3">
       </a>
     </div>
 

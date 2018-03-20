@@ -209,7 +209,7 @@
     $button.button('loading')
     var jqxhr = $.ajax({
                     method: "POST",
-                    url: "spacereservations",
+                    url: window.apiUrl+"spacereservations",
                     data: datas
                   })
                   .done(function(xhr) {
@@ -269,7 +269,7 @@
     $button.button('loading')
     var jqxhr = $.ajax({
                     method: "PUT",
-                    url: "spacereservations/"+datas[1].value,
+                    url: window.apiUrl+"spacereservations/"+datas[1].value,
                     data: datas
                   })
                   .done(function(xhr) {

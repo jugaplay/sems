@@ -8,7 +8,7 @@
         <div class="media">
           <div class="media-left">
             <a href="{{ route('home') }}">
-              <img class="media-object img-circle" src="images/dummy/uifaces16.jpg" alt="photo profile">
+              <img class="media-object img-circle" src="{{URL::to('images/dummy/uifaces16.jpg')}}" alt="photo profile">
             </a>
           </div>
           <div class="media-body">
@@ -29,7 +29,7 @@
           <li class="nav-header" role="presentation">OPERATIVOS</li>
 
 <li class="nav-item" role="presentation">
-            <a href="infractions.html">
+            <a href="{{ route('infringements.index') }}">
               <span class="nav-icon"><i class="fa fa-search"></i></span>
               <span class="nav-text">Infracciones</span>
             </a>

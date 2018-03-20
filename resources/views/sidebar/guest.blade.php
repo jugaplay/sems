@@ -3,7 +3,7 @@
         <div class="media">
           <div class="media-left">
             <a href="page-profile.html">
-              <img class="media-object img-circle" src="images/dummy/uifaces20.jpg" alt="photo profile">
+              <img class="media-object img-circle" src="{{URL::to('images/dummy/uifaces20.jpg')}}" alt="photo profile">
             </a>
           </div>
           <div class="media-body"><a href="{{ route('login') }}">

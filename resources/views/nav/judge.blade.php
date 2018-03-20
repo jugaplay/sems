@@ -7,7 +7,7 @@
             <i class="fa fa-bars"></i>
 
           </button><a class="navbar-brand"  href="#" role="logo" aria-label="Logo">
-            <img class="logo" src="images/logo/brand-text-color.png" alt="Brand 3">
+            <img class="logo" src="{{URL::to('images/logo/brand-text-color.png')}}" alt="Brand 3">
           </a>
         </div>
 
@@ -33,7 +33,7 @@
                   <li class="media" style="opacity: 1; display: list-item; transform: translateY(0px);">
                     <a href="#">
                       <div class="media-left">
-                        <img class="media-object img-circle" width="32" src="images/dummy/uifaces7.jpg" alt="user">
+                        <img class="media-object img-circle" width="32" src="{{URL::to('images/dummy/unknown-profile.jpg')}}" alt="user">
                       </div>
                       <div class="media-body">
                         <p class="pull-right"><small>18/12/2017 11:41</small></p>
@@ -48,7 +48,7 @@
                   <li class="media" style="opacity: 1; display: list-item; transform: translateY(0px);">
                     <a href="#">
                       <div class="media-left">
-                        <img class="media-object img-circle" width="32" src="images/dummy/uifaces4.jpg" alt="user">
+                        <img class="media-object img-circle" width="32" src="{{URL::to('images/dummy/unknown-profile.jpg')}}" alt="user">
                       </div>
                       <div class="media-body">
                         <p class="pull-right"><small>16/12/2017 11:41</small></p>
@@ -63,7 +63,7 @@
                   <li class="media unread" style="opacity: 1; display: list-item; transform: translateY(0px);">
                     <a href="#">
                       <div class="media-left">
-                        <img class="media-object img-circle" width="32" src="images/dummy/unknown-profile.jpg" alt="user">
+                        <img class="media-object img-circle" width="32" src="{{URL::to('images/dummy/unknown-profile.jpg')}}" alt="user">
                       </div>
                       <div class="media-body">
                         <p class="pull-right"><small>13/12/2017 11:41</small></p>
@@ -78,7 +78,7 @@
                   <li class="media unread" style="opacity: 1; display: list-item; transform: translateY(0px);">
                     <a href="#">
                       <div class="media-left">
-                        <img class="media-object img-circle" width="32" src="images/dummy/uifaces3.jpg" alt="user">
+                        <img class="media-object img-circle" width="32" src="{{URL::to('images/dummy/unknown-profile.jpg')}}" alt="user">
                       </div>
                       <div class="media-body">
                         <p class="pull-right"><small>12/12/2017 11:41</small></p>
@@ -103,8 +103,7 @@
               <i class="fa fa-ellipsis-v"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-right" role="menu" style="opacity: 0; display: none; transform: scaleX(1) scaleY(1) translateY(0px); transform-origin: 50% 50% 0px;">
-              <li role="presentation" class="" style="opacity: 1; display: list-item; transform: translateY(0px);"><a role="menuitem" tabindex="-1" href="main.html"><span class="pull-right"><i class="fa fa-user text-muted"></i></span>Inicio</a></li>
-              <li role="presentation" class="" style="opacity: 1; display: list-item; transform: translateY(0px);"><a role="menuitem" tabindex="-1" href="load_credit.html"><span class="pull-right"><i class="fa fa-usd text-muted"></i></span>Saldo</a></li>
+              <li role="presentation" class="" style="opacity: 1; display: list-item; transform: translateY(0px);"><a role="menuitem" tabindex="-1" href="{{ route('home') }}"><span class="pull-right"><i class="fa fa-user text-muted"></i></span>Inicio</a></li>
               <li class="divider" style="opacity: 1; display: list-item; transform: translateY(0px);"></li>
               <li role="presentation" class="" style="opacity: 1; display: list-item; transform: translateY(0px);"><a role="menuitem" tabindex="-1" href="ayuda.html"><span class="pull-right"><i class="fa fa-question-circle text-muted"></i></span>Ayuda</a></li>
               <li class="divider" style="opacity: 1; display: list-item; transform: translateY(0px);"></li>

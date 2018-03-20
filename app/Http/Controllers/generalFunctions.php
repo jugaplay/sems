@@ -95,6 +95,7 @@ class generalFunctions extends Controller
   function registerVehicle($plate)
   {
     //Verificar si el vehiculo existe en la base.
+    $plate=strtoupper($plate);
     $VehicleExist = Vehicle::where('plate', $plate)->first();
     if (!$VehicleExist) {
       # grabar el vehiculo en la tabla
@@ -260,9 +261,9 @@ class generalFunctions extends Controller
         'infringement_id'  => $infringement->id,
         'detail'           => 'No tiene ticket. Controlado por el inspector: '.Auth::user()->id.'- '.Auth::user()->name,
       ]);
-      return $infringement;
+      return ['infringement'=>$infringement];
     }else{// ya tiene una infraccion en esta cuada
-          return (object) ['alert' => 'Ya tiene infracción para el día de hoy y esta cuadra'];
+          return (object) ['alert' => 'Ya tiene infracción para el día de hoy y esta cuadra','infringement' => $infringementExist];
     }
  }
 

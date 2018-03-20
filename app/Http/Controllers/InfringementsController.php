@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Infringement;
 use App\InfringementCause;
 use App\InfringementDetail;
+use App\Owner;
+use App\Image;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +27,56 @@ class InfringementsController extends Controller
      */
     public function index()
     {
+      if(Auth::check()){
+        if(Auth::user()->type=="judge" && Auth::user()->account_status!="B" ){
+          $infringements=Infringement::where('situation',"!=","before")->orderBy('updated_at','desc')->paginate(3);
+          return view('infringements.index',['infringements'=>$infringements]);
+        }
+      }
+        return view('infringements.index');
+    }
+    public function filter(Request $request)
+    {
+      $infringementStarts=$request->input('infringementStarts');
+      $infringementEnds=$request->input('infringementEnds');
+      $infringementText=$request->input('infringementText');
+      $infringementFilter=$request->input('infringementFilter');// Dominio Dni
+      $infringementType=$request->input('infringementType');// open
+      if(Auth::check()){
+        if(Auth::user()->type=="judge" && Auth::user()->account_status!="B" ){
+          $infringements=Infringement::where('situation',"!=","before");
+          if($infringementType!=""){
+            $infringements=($infringementType=="open")?$infringements->where('situation',"!=","close"):$infringements->where('situation',$infringementType);
+          }
+          if($infringementStarts!="" && $infringementEnds!="" ){
+            $infringements=$infringements->where('date',">=",$infringementStarts)->where('date',"<=",$infringementEnds);
+          }
+          if($infringementText!=""){// Eventualmente agregar lo del dni
+            switch ($infringementFilter) {
+              case 'Dominio':// Filtra por dominio
+                  $infringements=$infringements->where('plate',"like","%".$infringementText."%");
+                break;
+              case 'Dni':
+                  $plates = Owner::where('document_type',"DNI")->where('document_number',"like","%".$infringementText."%")->get()->transform(function ($objet){
+                    return $objet->vehicle->plate;
+                  });
+                  $infringements=$infringements->whereIn('plate',$plates);
+                break;
+              default:// Combino Dominio y Dni
+                $plates = Owner::where('document_type',"DNI")->where('document_number',"like","%".$infringementText."%")->get()->transform(function ($objet){
+                  return $objet->vehicle->plate;
+                });
+                $infringements=$infringements->where(function ($query) use($plates,$infringementText){ // Alguna de las dos opciones
+                                                $query->whereIn('plate',$plates)
+                                                      ->orWhere('plate',"like","%".$infringementText."%");
+                                            });
+                break;
+            }
+          }
+          $infringements=$infringements->orderBy('updated_at','desc')->paginate(3);// ->appends($request::except('page'))
+          return view('infringements.index',['infringements'=>$infringements])->with('values', $request);;
+        }
+      }
         return view('infringements.index');
     }
 
@@ -38,7 +90,19 @@ class InfringementsController extends Controller
         $infragmentCauses = InfringementCause::all();
          return view('infringements.create',['infragmentCauses'=>$infragmentCauses]);
     }
-
+    public function showAll(){
+      if(Auth::check()){
+        if(Auth::user()->type=="inspector" && Auth::user()->account_status!="B" ){
+          $infragmentCauses = InfringementCause::where('name',"!=","Sin ticket")->get();
+          return response()->json($infragmentCauses);
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para ver los datos"],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      }
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -48,31 +112,40 @@ class InfringementsController extends Controller
     public function store(Request $request)
     {
       if(Auth::check()){
-        if(Auth::user()->type=="admsuper" && Auth::user()->account_status!="B" ){
-
+        if(Auth::user()->type=="inspector" && Auth::user()->account_status!="B" ){
+          //return response()->json($request);
           $generalFunctions = new generalFunctions(); // Instancamos la clase
-          echo "LatLng = ".$request->input('latlng').'</br>';
-          // Obtener el block donde se produjo la infraccion
           $block = $generalFunctions->returnBlockFromLatLng(json_decode($request->input('latlng')));
-          if(!$block){echo "No existe el block";return;}
-          // Obtener el costo de la infraccion
-          $infringementCause = InfringementCause::where('id',$request->input('infragmentCausesId'))->first();
-
+          $infringementCause = InfringementCause::where('id',$request->input('infringementCausesId'))->first();
+          registerVehicle(strtoupper($request->input('infringementPlate')));// Si no existe el vehiculo lo creo
+          $now = Carbon::now('America/Argentina/Buenos_Aires');
+          $today= $now->format('Y-m-d');
+          $endVoluntary = $now->addMonths(3)->format('Y-m-d');
           $infringement=Infringement::create([
-            'plate'                    => $request->input('plate'),
+            'plate'                    => strtoupper($request->input('infringementPlate')),
             'user_id'                  => Auth::user()->id,
-            'date'                     => $request->input('date'),
-            'situation'                => 'saved', //(before/saved/voluntary/judge/close)
-            'infringement_cause_id'    => $request->input('infragmentCausesId'),
+            'date'                     => $today,
+            'situation'                => 'voluntary', // Empieza como un pago voluntario
+            'infringement_cause_id'    => $request->input('infringementCausesId'),
             'cost'                     => $infringementCause->cost,
             'voluntary_cost'           => $infringementCause->voluntary_cost,
-            'voluntary_end_date'       => $request->input('voluntary_end_date'),
+            'voluntary_end_date'       => $endVoluntary,
             'latlng'                   => $request->input('latlng'),
             'block_id'                 => $block->id,
             ]);
-            echo "Infraccion grabada";
-        } // Auth::user()
-      } // Auth::check()
+            // Add image to relation
+            $infringementDetail = new InfringementDetail();
+            $infringementDetail->user_id = Auth::user()->id;
+            $infringementDetail->detail = $request->input('infringementDetail');
+            $infringement->details()->save($infringementDetail);
+            return response()->json($infringement);
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para realizar una multa "],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      } // Auth::user()
     } // Fin store
 
     /**
@@ -84,6 +157,13 @@ class InfringementsController extends Controller
     public function show(Infringement $infringement)
     {
         //
+        if(Auth::check()){
+          if(Auth::user()->type=="judge" && Auth::user()->account_status!="B" ){
+            return view('infringements.show',['infringement'=>$infringement]);
+          }
+        }
+          return view('error.index');
+
     }
 
     /**
@@ -232,48 +312,105 @@ class InfringementsController extends Controller
       } // End foreach
     }// Fin de la rutina control
     public function uploadImage(Request $request){
-      //return response()->json($request);
+      if(Auth::check()){
+        if(Auth::user()->type=="inspector" && Auth::user()->account_status!="B" ){
+          $infringementId=$request->input('infringementId');
+          if ($infringementId>0 && strpos($request->input('infringementImg'), 'image/jpeg;base64')) {
+              $data = explode( ',', $request->input('infringementImg') );
+              $img = str_replace(' ', '+', $data[1]);
+              $image = base64_decode($img);
+              $exif = exif_read_data($data[0]."," . $img);
+              if (!empty($exif['Orientation'])) {// Si tiene una orientacion la roto!
+        				switch ($exif['Orientation']) {
+            			case 3:
+            				$image = imagerotate($image, 180, 0);
+            				break;
+            			case 6:
+            				$image = imagerotate($image, -90, 0);
+            				break;
+            			case 8:
+            				$image = imagerotate($image, 90, 0);
+            				break;
+        				}
+              }
+              $file = 'public/infractions/'.$infringementId.'/'. uniqid() . '.jpg';
+              Storage::put($file, $image);
+              Storage::setVisibility($file, 'public');
+              $url = Storage::url($file);
+              $infringement = Infringement::where('id',$infringementId)->first();
+              // Add image to relation
+              $img = new Image();
+              $img->url = $file;
+              $infringement->images()->save($img);
+              return response()->json(['infringement_id'=>$infringementId,'path'=>$file,'$url'=>$url]);
+          }else{
+              return response()->json(['error'=>"Datos mal enviados"],400);
+          }
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para subir una imagen de una multa "],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      }
 
-      $infringementId=$request->input('infringementId');
-      /*$this->validate($request, [
-          'infringementImg' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-      ]);*/
-      if ($infringementId>0) {
-          // $path = $request->file('infringementImg')->store('public/infractions/'.$infringementId);
-          $data = explode( ',', $request->input('infringementImg') );
-          $img = str_replace(' ', '+', $data[1]);
-          // $img = Image::make('foo.jpg')->orientate();
-          $image = base64_decode($img);
-          $file = 'public/infractions/'.$infringementId.'/'. uniqid() . '.jpg';
-          //$success = file_put_contents($file, $image);
-          Storage::put($file, $image);
-          //$path = $success->store('public/infractions/'.$infringementId);
-          Storage::setVisibility($file, 'public');
-          $url = Storage::url($file);
-          //rotateIfNecesary($file);
-          return response()->json(['path'=>$file,'$url'=>$url]);
-      }else{
-          return response()->json(['error'=>"error"]);
+    }
+    public function uploadComments(Request $request){
+      if(Auth::check()){
+        if(Auth::user()->type=="judge" && Auth::user()->account_status!="B" ){
+              $infringementId=$request->input('infringementId');
+              $infringementComment=$request->input('infringementComment');
+              $infringement=Infringement::where('id',$infringementId)->first();
+              $detail = new InfringementDetail();
+              $detail->detail = $infringementComment;
+              $detail->user_id = Auth::user()->id;
+              $infringement->details()->save($detail);
+              return response()->json(['detail'=>$infringementComment,'user_name'=>Auth::user()->name,'user_img'=>imgOfTypeOfUser(Auth::user()->type)]);
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para subir una imagen de una multa "],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      }
+
+    }
+    public function close(Request $request){
+      if(Auth::check()){
+        if(Auth::user()->type=="judge" && Auth::user()->account_status!="B" ){
+          $generalFunctions = new generalFunctions(); // Instancamos la clase
+          $infringementId=$request->input('infringementId');
+          $infringementComment=$request->input('closeDetail');
+          $closePrice=$request->input('closePrice');
+          $infringement=Infringement::where('id',$infringementId)->first();
+          // Le agrego el detalle del cierre
+          $detail = new InfringementDetail();
+          $detail->detail = $infringementComment;
+          $detail->user_id = Auth::user()->id;
+          $infringement->details()->save($detail);
+          // Hago lo necesario para cerrarlo
+          // grabar operacion
+          $saveOperationId = $generalFunctions->operationSave('infringement',$infringementId,$closePrice);
+          // Actualizar el ticket con el id de la operacion.
+              $infringement->update([
+                'situation'    => 'close', //(before/saved/voluntary/judge/close/preclose)
+                'close_date'   => date('Y-m-d'),
+                'close_cost'   => $closePrice,
+                'operation_id' => $saveOperationId,
+                ]);
+          // generar venta de la compania (company_sales)
+          if($closePrice>0){
+            $companySale = $generalFunctions->companySalesSave(Auth::user()->id,$saveOperationId,'infringement');
+            // generar la factura (bills) y la realcion con la operacion
+            $Bill = $generalFunctions->billSave($closePrice,'infringement',$saveOperationId);
+          }
+          return response()->json($infringement);
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para cerrar una infracción"],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
       }
     }
-}
-function rotateIfNecesary($file){
-  $image=Storage::get($file);
-  dd($image);
-  try {
-    $orientation = $image->exif('Orientation');
-    if ( ! empty($orientation)) {
-      switch ($orientation) {
-        case 8:
-          $image->rotate(90);
-          break;
-        case 3:
-          $image->rotate(180);
-          break;
-        case 6:
-          $image->rotate(-90);
-          break;
-      }
-    }
-  } catch (\Exception $e) {}
 }
