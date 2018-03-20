@@ -1,3 +1,5 @@
+window.apiUrl="http://127.0.0.1:8000/";
+window.baseUrl="http://127.0.0.1:8000/";
 function simpleAlert(title,message){
   bootbox.dialog({
     message: message,
@@ -15,6 +17,9 @@ function parseSqlDate(date){
 }
 function parseDate(jsDate){
     return parse0LessThan10(jsDate.getHours())+':'+parse0LessThan10(jsDate.getMinutes())+' Hs '+parse0LessThan10(jsDate.getDate())+'/'+lettersOfMonth(jsDate.getMonth());
+}
+function parseDateFull(jsDate){
+    return parse0LessThan10(jsDate.getHours())+':'+parse0LessThan10(jsDate.getMinutes())+' Hs '+parse0LessThan10(jsDate.getDate())+'/'+parse0LessThan10(jsDate.getMonth()+1)+'/'+jsDate.getFullYear();
 }
 function parseSimpleDate(jsDate){
   // 2018-03-08

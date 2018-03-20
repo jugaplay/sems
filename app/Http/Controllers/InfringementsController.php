@@ -117,11 +117,12 @@ class InfringementsController extends Controller
           $generalFunctions = new generalFunctions(); // Instancamos la clase
           $block = $generalFunctions->returnBlockFromLatLng(json_decode($request->input('latlng')));
           $infringementCause = InfringementCause::where('id',$request->input('infringementCausesId'))->first();
+          registerVehicle(strtoupper($request->input('infringementPlate')));// Si no existe el vehiculo lo creo
           $now = Carbon::now('America/Argentina/Buenos_Aires');
           $today= $now->format('Y-m-d');
           $endVoluntary = $now->addMonths(3)->format('Y-m-d');
           $infringement=Infringement::create([
-            'plate'                    => $request->input('infringementPlate'),
+            'plate'                    => strtoupper($request->input('infringementPlate')),
             'user_id'                  => Auth::user()->id,
             'date'                     => $today,
             'situation'                => 'voluntary', // Empieza como un pago voluntario
@@ -156,7 +157,13 @@ class InfringementsController extends Controller
     public function show(Infringement $infringement)
     {
         //
-        return view('infringements.show');
+        if(Auth::check()){
+          if(Auth::user()->type=="judge" && Auth::user()->account_status!="B" ){
+            return view('infringements.show',['infringement'=>$infringement]);
+          }
+        }
+          return view('error.index');
+
     }
 
     /**
@@ -347,5 +354,63 @@ class InfringementsController extends Controller
         return response()->json(["error"=>"Tiene que estar logueado"],401);
       }
 
+    }
+    public function uploadComments(Request $request){
+      if(Auth::check()){
+        if(Auth::user()->type=="judge" && Auth::user()->account_status!="B" ){
+              $infringementId=$request->input('infringementId');
+              $infringementComment=$request->input('infringementComment');
+              $infringement=Infringement::where('id',$infringementId)->first();
+              $detail = new InfringementDetail();
+              $detail->detail = $infringementComment;
+              $detail->user_id = Auth::user()->id;
+              $infringement->details()->save($detail);
+              return response()->json(['detail'=>$infringementComment,'user_name'=>Auth::user()->name,'user_img'=>imgOfTypeOfUser(Auth::user()->type)]);
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para subir una imagen de una multa "],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      }
+
+    }
+    public function close(Request $request){
+      if(Auth::check()){
+        if(Auth::user()->type=="judge" && Auth::user()->account_status!="B" ){
+          $generalFunctions = new generalFunctions(); // Instancamos la clase
+          $infringementId=$request->input('infringementId');
+          $infringementComment=$request->input('closeDetail');
+          $closePrice=$request->input('closePrice');
+          $infringement=Infringement::where('id',$infringementId)->first();
+          // Le agrego el detalle del cierre
+          $detail = new InfringementDetail();
+          $detail->detail = $infringementComment;
+          $detail->user_id = Auth::user()->id;
+          $infringement->details()->save($detail);
+          // Hago lo necesario para cerrarlo
+          // grabar operacion
+          $saveOperationId = $generalFunctions->operationSave('infringement',$infringementId,$closePrice);
+          // Actualizar el ticket con el id de la operacion.
+              $infringement->update([
+                'situation'    => 'close', //(before/saved/voluntary/judge/close/preclose)
+                'close_date'   => date('Y-m-d'),
+                'close_cost'   => $closePrice,
+                'operation_id' => $saveOperationId,
+                ]);
+          // generar venta de la compania (company_sales)
+          if($closePrice>0){
+            $companySale = $generalFunctions->companySalesSave(Auth::user()->id,$saveOperationId,'infringement');
+            // generar la factura (bills) y la realcion con la operacion
+            $Bill = $generalFunctions->billSave($closePrice,'infringement',$saveOperationId);
+          }
+          return response()->json($infringement);
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para cerrar una infracción"],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      }
     }
 }

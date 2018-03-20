@@ -5,7 +5,7 @@
 	//Marco en el mapa los puntos previos
     var jqxhr = $.ajax({
                     method: "GET",
-                    url: "infringements/all"
+                    url: window.apiUrl+"infringements/all"
                   })
                   .done(function(xhr) {
                     //console.log(JSON.stringify(xhr));
@@ -53,7 +53,7 @@ $( document ).on( 'submit', '#inspectorInfringementForm', function(e){
   $button.button('loading')
   var jqxhr = $.ajax({
                   method: "POST",
-                  url: "infringements",
+                  url: window.apiUrl+"infringements",
                   data: datas
                 })
                 .done(function(xhr) {

@@ -22,113 +22,72 @@
                     <div class="panel fade in panel-default panel-fill" data-fill-color="true" data-init-panel="true">
                         <div class="panel-body">
                             <div class="text-center">
-                                <a class="kit-avatar kit-avatar-64 kit-avatar-square mt-2x mb-2x mr-1x" href="#">
-                                    <img alt="avatar" onclick="openPhotoSwipe()" title="username" src="../images/dummy/mal.jpg">
-                                </a>
-                                <a class="kit-avatar kit-avatar-64 kit-avatar-square mt-2x mb-2x mr-1x" href="#">
-                                    <img alt="avatar" onclick="openPhotoSwipe()" title="username" src="../images/dummy/mal2.jpg">
-                                </a>
-                                <a class="kit-avatar kit-avatar-64 kit-avatar-square mt-2x mb-2x mr-1x" href="#">
-                                    <img alt="avatar" onclick="openPhotoSwipe()" title="username" src="../images/dummy/mal3.jpg">
-                                </a>
-                                <a class="kit-avatar kit-avatar-64 kit-avatar-square mt-2x mb-2x mr-1x" href="#">
-                                    <img alt="avatar" onclick="openPhotoSwipe()" title="username" src="../images/dummy/mal.jpg">
-                                </a>
-                                <a class="kit-avatar kit-avatar-64 kit-avatar-square mt-2x mb-2x mr-1x" href="#">
-                                    <img alt="avatar" onclick="openPhotoSwipe()" title="username" src="../images/dummy/mal2.jpg">
-                                </a>
-                                <a class="kit-avatar kit-avatar-64 kit-avatar-square mt-2x mb-2x mr-1x" href="#">
-                                    <img alt="avatar" onclick="openPhotoSwipe()" title="username" src="../images/dummy/mal3.jpg">
-                                </a>
+                              @foreach ($infringement->images as $image)
+                                  <a class="kit-avatar kit-avatar-64 kit-avatar-square mt-2x mb-2x mr-1x" href="#">
+                                      <img onclick="openPhotoSwipe('{{ $image->publicUrl() }}')" name="kit-avatar-gallery" src="{{ $image->publicUrl() }}">
+                                  </a>
+                              @endforeach
                             </div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
                     <h2>Comentarios</h2>
                     <div class="timeline-panel panel fade in panel-default panel-fill" data-fill-color="true" data-init-panel="true">
-                        <div class="panel-body">
-                            <div class="media mb-2x">
-                                <div class="media-left">
-                                    <a href="#" class="timeline-avatar kit-avatar kit-avatar-36">
-                                        <img class="media-object" src="../images/dummy/uifaces18.jpg" alt="">
-                                    </a>
-                                </div>
-                                <!-- /.media-left -->
-                                <div class="media-body">
-                                    <p class="media-heading">
-                                        <strong>Angela Fowler</strong>
-                                        <br>
-                                        <small class="text-muted">30 minutes</small>
-                                    </p>
-                                </div>
-                                <!-- /.media-body -->
-                            </div>
-                            <!-- /.media -->
-                            <p>Assumenda, pariatur repellendus voluptatum eaque sint, quibusdam voluptatem nulla nesciunt placeat sunt tempore ad reiciendis ducimus dicta neque minima debitis delectus ab!</p>
-                        </div>
+                        @foreach ($infringement->details as $detail)
+                            @if ($loop->first)
+                              <div class="panel-body">
+                                  <div class="media mb-2x">
+                                      <div class="media-left">
+                                          <a class="timeline-avatar kit-avatar kit-avatar-36">
+                                              <img class="media-object" src="{{URL::to(imgOfTypeOfUser($detail->user->type))}}" alt="">
+                                          </a>
+                                      </div>
+                                      <!-- /.media-left -->
+                                      <div class="media-body">
+                                          <p class="media-heading">
+                                              <strong>{{$detail->user->name}}</strong>
+                                              <br>
+                                              <small class="text-muted">{{parseDateTimeString($detail->created_at)}}</small>
+                                          </p>
+                                      </div>
+                                      <!-- /.media-body -->
+                                  </div>
+                                  <!-- /.media -->
+                                  <p>{{$detail->detail}}</p>
+                              </div>
+                              <div class="panel-body timeline-livelines" id="comments-of-users">
+                            @else
+                              <div class="media">
+                                  <div class="media-left">
+                                      <a class="kit-avatar kit-avatar-32" href="#">
+                                          <img class="media-object" src="{{URL::to(imgOfTypeOfUser($detail->user->type))}}">
+                                      </a>
+                                  </div>
+                                  <div class="media-body bordered-bottom">
+                                      <p class="media-heading">
+                                          <strong>{{$detail->user->name}}</strong> {{$detail->detail}}</p>
+                                      <p class="text-muted">
+                                          <small>{{parseDateTimeString($detail->created_at)}}</small>
+                                      </p>
+                                  </div>
+                              </div>
+                            @endif
+                          @endforeach
                         <!-- /.panel-body -->
-
-                        <div class="panel-body timeline-resume">
-                            <div class="pull-right" data-toggle="tooltip" title="" data-original-title="in this post">
-                                <a class="kit-avatar kit-avatar-28 align-middle no-border" href="#">
-                                    <img alt="avatar" title="friend name" src="../images/dummy/uifaces16.jpg">
-                                </a>
-                                <a class="kit-avatar kit-avatar-28 align-middle no-border" href="#">
-                                    <img alt="avatar" title="friend name" src="../images/dummy/uifaces16.jpg">
-                                </a>
-                                <a class="kit-avatar kit-avatar-28 align-middle no-border" href="#">
-                                    <img alt="avatar" title="friend name" src="../images/dummy/uifaces18.jpg">
-                                </a>
-
-                            </div>
-
-                        </div>
-                        <!-- /.panel-body -->
-
-                        <div class="panel-body timeline-livelines">
-                            <div class="media">
-                                <div class="media-left">
-                                    <a class="kit-avatar kit-avatar-32" href="#">
-                                        <img class="media-object" src="../images/dummy/uifaces16.jpg">
-                                    </a>
-                                </div>
-                                <div class="media-body bordered-bottom">
-                                    <p class="media-heading">
-                                        <strong>Arina Rosetti</strong> Consequuntur illo accusantium, expedita ratione dolorem fuga minima!</p>
-                                    <p class="text-muted">
-                                        <small>22 minutes</small>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- /.media -->
-                            <div class="media">
-                                <div class="media-left">
-                                    <a class="kit-avatar kit-avatar-32" href="#">
-                                        <img class="media-object" src="../images/dummy/uifaces16.jpg">
-                                    </a>
-                                </div>
-                                <div class="media-body">
-                                    <p class="media-heading">
-                                        <strong>Felix Koller</strong> Molestias ipsum hic voluptas soluta expedita, ab, dolorum aperiam neque nesciunt.</p>
-                                    <p class="text-muted">
-                                        <small>10 minutes</small>
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- /.media -->
                         </div>
                         <!-- /.panel-body -->
 
                         <div class="panel-footer timeline-livelines">
-                            <form action="#">
+                            <form action="POST" id="addCommentForm" url="http://127.0.0.1:8000/infringements/comments">
                                 <a class="kit-avatar kit-avatar-28 no-border pull-left" href="#">
-                                    <img class="media-object" src="../images/dummy/uifaces16.jpg">
+                                    <img class="media-object" src="{{URL::to(imgOfTypeOfUser(Auth::user()->type))}}">
                                 </a>
                                 <div class="input-group input-group-in no-border">
-                                    <input class="form-control" placeholder="write comment...">
+                                    <input  type="hidden" name="infringementId" value="{{$infringement->id}}" >
+                                    <input class="form-control" id="infringementComment" name="infringementComment" placeholder="Escribir un comentario ...">
+                                    {{csrf_field()}}
                                     <div class="input-group-btn">
-                                        <button type="submit" class="btn">
+                                        <button type="submit" class="btn" data-loading-text="<i class='fa fa-spinner fa-spin'></i>">
                                             <i class="fa fa-chevron-circle-right"></i>
                                         </button>
                                     </div>
@@ -142,9 +101,15 @@
                 <div class="col-lg-8 col-sm-12">
                     <h2>Datos</h2>
                     <div class="panel fade in panel-default panel-fill" data-fill-color="true" data-init-panel="true">
+                        @if(is_null($infringement->vehicle->owner))
                         <div class="panel-heading">
                             <h3 class="panel-title">
-                              <i class="fa fa-user fa-fw" aria-hidden="true"></i> Datos del dueño</h3>
+                              <i class="fa fa-user fa-fw" aria-hidden="true"></i> No se encontraron datos del dueño del vehículo </h3>
+                        </div>
+                        @else
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                              <i class="fa fa-user fa-fw" aria-hidden="true"></i> Datos del dueño del vehículo</h3>
                         </div>
                         <div class="panel-body">
                             <div class="form-group form-group-lg">
@@ -153,29 +118,18 @@
                                     <span class="input-group-addon">
                                       <i class="fa fa-user"></i>
                                   </span>
-                                    <input type="text" class="form-control input-lg" value="Juan Martinez" disabled="disabled">
+                                    <input type="text" class="form-control input-lg" value="{{$infringement->vehicle->owner->name}}" disabled="disabled">
                                 </div>
                                 <!-- /input-group-in -->
                             </div>
                             <!--/form-group-->
                             <div class="form-group form-group-lg">
-                                <label class="control-label" for="mask-date">Nacimiento</label>
-                                <div class="input-group input-group-in">
-                                    <span class="input-group-addon">
-                                      <i class="fa fa fa-calendar"></i>
-                                  </span>
-                                    <input type="text" class="form-control input-lg" value="23/05/1985" disabled="disabled">
-                                </div>
-                                <!-- /input-group-in -->
-                            </div>
-                            <!--/form-group-->
-                            <div class="form-group form-group-lg">
-                                <label class="control-label" for="mask-date">DNI:</label>
+                                <label class="control-label" for="mask-date">{{$infringement->vehicle->owner->document_type}}:</label>
                                 <div class="input-group input-group-in">
                                     <span class="input-group-addon">
                                       <i class="fa fa-file"></i>
                                   </span>
-                                    <input type="text" class="form-control input-lg" value="28135685" disabled="disabled">
+                                    <input type="text" class="form-control input-lg" value="{{$infringement->vehicle->owner->document_number}}" disabled="disabled">
                                 </div>
                                 <!-- /input-group-in -->
                             </div>
@@ -186,12 +140,13 @@
                                     <span class="input-group-addon">
                                       <i class="fa fa-map-marker"></i>
                                   </span>
-                                    <input type="text" class="form-control input-lg" value="Luis Costa 150" disabled="disabled">
+                                    <input type="text" class="form-control input-lg" value="{{$infringement->vehicle->owner->address}}, {{$infringement->vehicle->owner->city}}, {{$infringement->vehicle->owner->state}}" disabled="disabled">
                                 </div>
                                 <!-- /input-group-in -->
                             </div>
                             <!--/form-group-->
                         </div>
+                        @endif
                         <!-- /panel-body -->
                     </div>
                     <!-- /panel fade in panel-default panel-fill -->
@@ -199,6 +154,7 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">
                               <i class="fa fa-warning fa-fw" aria-hidden="true"></i> Datos de la infracción</h3>
+                              <input  type="hidden" name="infringementId" id="infringementId" value="{{$infringement->id}}" >
                         </div>
                         <div class="panel-body">
                             <div class="form-group form-group-lg">
@@ -207,7 +163,7 @@
                                     <span class="input-group-addon">
                                       <i class="fa fa-car"></i>
                                   </span>
-                                    <input type="text" class="form-control input-lg" value="MMD 879" disabled="disabled">
+                                    <input type="text" class="form-control input-lg" value="{{$infringement->plate}}" disabled="disabled">
                                 </div>
                                 <!-- /input-group-in -->
                             </div>
@@ -218,7 +174,7 @@
                                     <span class="input-group-addon">
                                       <i class="fa fa fa-calendar"></i>
                                   </span>
-                                    <input type="text" class="form-control input-lg" value="15/01/18 - 3:35 PM" disabled="disabled">
+                                    <input type="text" class="form-control input-lg" value="{{parseDateString($infringement->date)}}" disabled="disabled">
                                 </div>
                                 <!-- /input-group-in -->
                             </div>
@@ -229,9 +185,9 @@
                                     <span class="input-group-addon">
                                       <i class="fa fa-map-marker"></i>
                                   </span>
-                                    <input type="text" class="form-control input-lg" value="Luis Costa 150" disabled="disabled">
+                                    <input type="text" class="form-control input-lg" value="{{$infringement->block->street}} {{$infringement->block->numeration_min}} - {{$infringement->block->numeration_max}}" disabled="disabled">
                                     <span class="input-group-btn">
-                                      <a rel="tooltip" data-container="body" title="" onclick="showInMap()" class="btn" data-original-title="Ver en mapa">
+                                      <a rel="tooltip" data-container="body" title="" onclick="showPointInMap({{json_decode($infringement->latlng)[0]}},{{json_decode($infringement->latlng)[1]}})" class="btn" data-original-title="Ver en mapa">
                                           <i class="fa fa fa-map-o" aria-hidden="true"></i>
                                       </a>
                                   </span>
@@ -240,14 +196,14 @@
                             </div>
                             <!--/form-group-->
                             <div class="form-group form-group-lg">
-                                <label class="control-label" for="mask-date">Infraccion:</label>
+                                <label class="control-label" for="mask-date">Infracción:</label>
                                 <div class="input-group input-group-in">
                                     <span class="input-group-addon">
                                       <i class="fa fa-file"></i>
                                   </span>
-                                    <input type="text" class="form-control input-lg" value="Mal estacionado" disabled="disabled">
+                                    <input type="text" class="form-control input-lg" value="{{$infringement->cause->name}}" disabled="disabled">
                                     <span class="input-group-btn">
-                                      <a rel="tooltip" data-container="body" title="" onclick="showInfringementDetail()" class="btn" data-original-title="Ver datos de la infración">
+                                      <a rel="tooltip" data-container="body" title="" onclick="simpleAlert('{{$infringement->cause->name}}','{{$infringement->cause->detail}}')" class="btn" data-original-title="Ver datos de la infración">
                                           <i class="fa fa-info-circle" aria-hidden="true"></i>
                                       </a>
                                   </span>
@@ -255,27 +211,55 @@
                                 <!-- /input-group-in -->
                             </div>
                             <!--/form-group-->
+                            @if($infringement->situation!="close")
                             <div class="form-group form-group-lg">
                                 <label class="control-label" for="mask-date">Costo:</label>
                                 <div class="input-group input-group-in">
                                     <span class="input-group-addon">
                                       <i class="fa fa-usd"></i>
                                   </span>
-                                    <input type="text" class="form-control input-lg" value="1200" disabled="disabled">
+                                    <input type="text" class="form-control input-lg" value="{{$infringement->cost}}" disabled="disabled">
                                 </div>
                                 <!-- /input-group-in -->
                             </div>
                             <!--/form-group-->
                             <div class="form-group form-group-lg">
-                                <label class="control-label" for="mask-date">Costo voluntario: (02/02/18)</label>
+                                <label class="control-label" for="mask-date">Costo voluntario: ({{parseDateString($infringement->voluntary_end_date)}})</label>
                                 <div class="input-group input-group-in">
                                     <span class="input-group-addon">
                                       <i class="fa fa-usd"></i>
                                   </span>
-                                    <input type="text" class="form-control input-lg" value="600" disabled="disabled">
+                                    <input type="text" class="form-control input-lg" value="{{$infringement->voluntary_cost}}" disabled="disabled">
                                 </div>
                                 <!-- /input-group-in -->
                             </div>
+                            @else
+                            <div class="form-group form-group-lg">
+                                <label class="control-label" for="mask-date">Costo pagado:</label>
+                                <div class="input-group input-group-in">
+                                    <span class="input-group-addon">
+                                      <i class="fa fa-usd"></i>
+                                  </span>
+                                    @if($infringement->close_cost!=0)
+                                      <input type="text" class="form-control input-lg" value="{{$infringement->close_cost}}" disabled="disabled">
+                                    @else
+                                      <input type="text" class="form-control input-lg" value="Perdonada" disabled="disabled">
+                                    @endif
+                                </div>
+                                <!-- /input-group-in -->
+                            </div>
+                            <!--/form-group-->
+                            <div class="form-group form-group-lg">
+                                <label class="control-label" for="mask-date">Fecha de cierre:</label>
+                                <div class="input-group input-group-in">
+                                    <span class="input-group-addon">
+                                      <i class="fa fa-usd"></i>
+                                  </span>
+                                    <input type="text" class="form-control input-lg" value="{{parseDateString($infringement->close_date)}}" disabled="disabled">
+                                </div>
+                                <!-- /input-group-in -->
+                            </div>
+                            @endif
                             <!--/form-group-->
                         </div>
                         <!-- /panel-body -->
@@ -287,15 +271,17 @@
                 </div>
             </div>
             <!-- /.row -->
+            @if($infringement->situation!="close")
             <div class="row">
                 <div class="col-xs-12 text-center">
                     <div class="btn-divider mr-2x mb-1x" role="divider">
                         <button type="button" class="btn btn-lg btn-default" onclick="dontChargeInfraction()">Perdonar</button>
                         <span class="label-divider">o</span>
-                        <button type="button" class="btn btn-lg btn-success" onclick="chargeInfraction()">Cobrar</button>
+                        <button type="button" class="btn btn-lg btn-success" onclick="chargeInfraction({'voluntary_cost':{{$infringement->voluntary_cost}},'voluntary_end_date':'{{$infringement->voluntary_end_date}}','cost':'{{$infringement->cost}}'})">Cobrar</button>
                     </div>
                 </div>
             </div>
+            @endif
         </div>
         <!-- /.content-body -->
     </div>
@@ -368,4 +354,7 @@
 <script src="{{URL::to('scripts/photoswipe.pkgd.js')}}"></script>
 <!-- END COMPONENTS -->
 <script src="{{URL::to('scripts/sems/judge-infraction.js')}}"></script>
+<link rel="stylesheet" href="{{URL::to('styles/leaflet.css')}}">
+<script src="{{URL::to('scripts/sems/leaflet.js')}}"></script>
+<script src="{{URL::to('scripts/sems/points-in-maps.js')}}"></script>
 @endpush

@@ -23,7 +23,7 @@ class User extends Authenticatable
         'account_status',
     ];
 
-    public function vehicles(){
+    public function vehicles(){ /* Esto no deberia ser un hasMany? */
       return $this->belongsToMany('App\Vehicle',$table='vehicle_users')->withTimestamps();
     }
 

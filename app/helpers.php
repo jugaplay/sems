@@ -7,9 +7,134 @@ function parseDateString($date){
   // De esto: 2018-03-15 a esto : 15/03/2018
   return substr($date, 8, 2)."/".substr($date, 5, 2)."/".substr($date, 0, 4);
 }
-
-
-
+function parseDateTimeString($date){
+  // De esto: 2018-03-15 15:03:20 a esto : 15:03 Hs, 15/03/2018
+  return substr($date, 11, 2).":".substr($date, 14, 2)." Hs,".substr($date, 8, 2)."/".substr($date, 5, 2)."/".substr($date, 0, 4);
+}
+function imgOfTypeOfUser($type){
+  switch ($type) {
+    case 'admsuper':
+        return "images/dummy/uifaces13.jpg";
+      break;
+    case 'adm':
+        return "images/dummy/uifaces15.jpg";
+      break;
+    case 'city':
+        return "images/dummy/uifaces15.jpg";
+      break;
+    case 'judge':
+        return "images/dummy/uifaces16.jpg";
+      break;
+    case 'driver':
+        return "images/dummy/uifaces19.jpg";
+      break;
+    case 'local':
+        return "images/dummy/uifaces14.jpg";
+      break;
+    case 'inspector':
+        return "images/dummy/uifaces18.jpg";
+      break;
+    case 'assistant':
+        return "images/dummy/uifaces17.jpg";
+      break;
+    default:
+        return "images/dummy/unknown-profile.jpg";
+      break;
+  }
+}
+function parseAccountStatus($status){
+  switch ($status) {
+    case "C":
+      return "Confirmada";
+      break;
+    case "N":
+      return "No confirmada";
+      break;
+    case "B":
+      return "Baja";
+      break;
+    default:
+      return "Otro";
+      break;
+  }
+}
+function parseInverseAccountStatus($status){
+  switch ($status) {
+    case "Confirmada":
+      return "C";
+      break;
+    case 'No confirmada':
+      return "N";
+      break;
+    case 'Baja':
+      return "B";
+      break;
+    default:
+      return "O";
+      break;
+  }
+}
+function parseAccountType($type){
+  switch ($type) {
+    case "inspector":
+      return "Inspector";
+      break;
+    case "judge":
+      return "Juez";
+      break;
+    case "admin":
+      return "Administrador";
+      break;
+    case "admsuper":
+      return "Super admin";
+      break;
+    case "city":
+      return "Municipalidad";
+      break;
+    case "driver":
+      return "Conductor";
+      break;
+    case "local":
+      return "Local";
+    case "assistant":
+      return "Asistente";
+      break;
+    default:
+      return "Otro";
+      break;
+  }
+}
+function parseInverseAccountType($type){
+  switch ($type) {
+    case "Inspector":
+      return "inspector";
+      break;
+    case "Local":
+      return "local";
+      break;
+    case "Juez":
+      return "judge";
+      break;
+    case "Administrador":
+      return "admin";
+      break;
+    case "Super admin":
+      return "admsuper";
+      break;// Asistente
+    case "Municipalidad":
+      return "city";
+      break;
+    case "Asistente":
+      return "assistant";
+      break;
+    case "Conductor":
+      return "driver";
+      break;
+    default:
+      return "other";
+      break;
+  }
+}
 
 
 /*

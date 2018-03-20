@@ -79,7 +79,8 @@ Route::resource('spacereservations','SpacesReservationsController');
 Route::get('/infringements/cancel/{infringementId?}','InfringementsController@cancel')->name('infringements.cancel.index');
 Route::post('/infringements/cancel','InfringementsController@cancelUpdate')->name('infringements.cancel.save');
 Route::post('/infringements/img','InfringementsController@uploadImage')->name('infringements.img.upload');
-
+Route::post('/infringements/comments','InfringementsController@uploadComments')->name('infringements.comments.upload');
+Route::post('/infringements/close','InfringementsController@close')->name('infringements.close');
 Route::get('infringements/control','InfringementsController@control')->name('infringements.control');
 Route::get('infringements/all','InfringementsController@showAll')->name('infringements.all');
 Route::get('infringements/filter','InfringementsController@filter')->name('infringements.filter');

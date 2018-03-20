@@ -95,6 +95,7 @@ class generalFunctions extends Controller
   function registerVehicle($plate)
   {
     //Verificar si el vehiculo existe en la base.
+    $plate=strtoupper($plate);
     $VehicleExist = Vehicle::where('plate', $plate)->first();
     if (!$VehicleExist) {
       # grabar el vehiculo en la tabla

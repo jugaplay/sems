@@ -16,5 +16,8 @@ class InfringementDetail extends Model
     public function infringement(){
       return $this->belongsTo('App\Infringement');
     }
+    public function user(){
+      return $this->belongsTo('App\User');
+    }
 
 }

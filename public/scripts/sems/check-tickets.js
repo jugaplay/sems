@@ -16,7 +16,7 @@ $( document ).on( 'submit', '#ticketFormControl', function(e){
                   headers: {
                       'X-CSRF-TOKEN': window.ajax_token
                   },
-                  url: "tickets/controlparking",
+                  url: window.apiUrl+"tickets/controlparking",
                   dataType: "json",
                   data: datas
                 })

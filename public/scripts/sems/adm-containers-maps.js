@@ -18,7 +18,7 @@
 	//Marco en el mapa los puntos previos
     var jqxhr = $.ajax({
                     method: "GET",
-                    url: "spacereservations/active"
+                    url: window.apiUrl+"spacereservations/active"
                   })
                   .done(function(xhr) {
                     console.log(JSON.stringify(xhr));

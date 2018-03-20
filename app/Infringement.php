@@ -49,8 +49,7 @@ class Infringement extends Model
       $img = $this->images()->get()->first();
       return ($img!=NULL)?$img->publicUrl():"images/dummy/no-image.jpg";
     }
-    public function owner(){
-      $vehicle=Vehicle::where('plate',$this->plate)->first();
-      return ($vehicle!=NULL)?$vehicle->owner->first():NULL;
+    public function vehicle(){
+      return $this->hasOne('App\Vehicle','plate', 'plate');// Lo busco a partir de la patente que es unica 
     }
 }

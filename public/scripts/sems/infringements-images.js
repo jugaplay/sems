@@ -35,7 +35,7 @@ function uploadInfractionImage(datas,infringementId){
   toastr.info('Cargando imagen <i class="fa fa-spin fa-spin-2x fa-spinner fa-fw"></i>');
   var jqxhr = $.ajax({
                   method: "POST",
-                  url: "infringements/img",
+                  url: window.apiUrl+"infringements/img",
                   data: datas
                 })
                 .done(function(xhr) {
