@@ -97,6 +97,34 @@ class pointLocation {
       }
       return $pointSearched;
     }
+    function mtsFromPolygon($latlng, $blockLatlngs) {
+      // Si los angulos de un triangulo son menores a 90 grados hay un camino mas corto
+      foreach ($polygon as $vertex) {
+          $vertices[] = $this->pointStringToCoordinates($vertex);// Convierte en cordenadas x e y
+      }
+    }
+    function haversineGreatCircleDistance($point1, $point2){
+      $earthRadius = 6371000;// En metros, devuelve distancia en metros
+      // convert from degrees to radians
+      $latFrom = deg2rad($point1[0]);
+      $lonFrom = deg2rad($point1[1]);
+      $latTo = deg2rad($point2[0]);
+      $lonTo = deg2rad($point2[1]);
+      $latDelta = $latTo - $latFrom;
+      $lonDelta = $lonTo - $lonFrom;
+      $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+      return $angle * $earthRadius;
+    }
+    function shorterDistanceBeetweenAPointAndALine($point,$line){ // En metros
+      // Line [[lat,lng],[lat,lng]] point [lat,lng]
+      // Armo triangulo A y B la recta y C el punto, Si A y B menores a 90, El mas corto es : Sin(A)XB, sino la distancia a uno de los puntos.
+      // Letras enfretadas a los angulos: cos(A) =  b2 + c2 − a2 / 2bc, cos(B) =  c2 + a2 − b2 / 2ca
+      $C=$this->haversineGreatCircleDistance($line[0], $line[1]);
+      $B=$this->haversineGreatCircleDistance($line[0], $point);
+      $A=$this->haversineGreatCircleDistance($line[1], $point);
+      $G=1.5708;// 90 grados son 1.57 radianes
+      return (acos((pow($B, 2)+pow($C, 2)-pow($A,2))/(2*$B*$C))<$G && acos((pow($A, 2)+pow($C, 2)-pow($B,2))/(2*$A*$C))<$G)?sin(acos((pow($B, 2)+pow($C, 2)-pow($A,2))/(2*$B*$C)))*$B:min($B,$A);
+    }
 
 }
 ?>

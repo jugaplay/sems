@@ -27,20 +27,26 @@
 
           <li class="divider"></li>
           <li class="nav-header credit" role="presentation">SALDO</li>
-          <li class="nav-item credit plus" role="presentation">
-            <a href="load_credit.html">
-              <span class="nav-text"><i class="fa fa-usd"></i> 400.27</span>
+          <li class="nav-item credit
+          @if (Auth::user()->wallet->balance > 0)
+              plus
+          @else
+              less
+          @endif
+                                        " role="presentation">
+            <a href="{{ route('credit.self') }}">
+              <span class="nav-text"><i class="fa fa-usd"></i> {{abs(intval(Auth::user()->wallet->balance))}}</span>
             </a>
           </li>
           <li class="divider"></li>
           <li class="nav-header" role="presentation">Comprar</li>
           <li class="nav-item" role="presentation">
-            <a href="buy_tickets.html">
+            <a href="javascript:openBuyTickets()">
               <span class="nav-icon"><i class="fa fa-ticket"></i></span>
               <span class="nav-text">Tickets</span>
             </a>
           </li><li class="nav-item" role="presentation">
-            <a href="load_credit.html">
+            <a href="{{ route('credit.self') }}">
               <span class="nav-icon"><i class="fa fa-money"></i></span>
               <span class="nav-text">Saldo</span>
             </a>
@@ -88,3 +94,10 @@
         </ul>
       </div>
     </aside><!-- /.SIDEBAR -->
+    @push('scripts')
+    <!-- COMPONENTES GRALES de Drivers -->
+      <script>
+        window.ajax_token = '{{ csrf_token() }}';
+      </script>
+      <script src="{{URL::to('scripts/sems/general_driver.js')}}"></script>
+    @endpush

@@ -16,21 +16,32 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="visible-xs">
-                                    <h2 class="display-name media-heading text-teal">Juan Perez</h2>
+                                    <h2 class="display-name media-heading text-teal">{{Auth::user()->name}}</h2>
                                     <p class="text-muted mb-4x">
-                                        <i class="fa fa-envelope-o fa-fw"></i> juan.perez.probando@hotmail.com</span>
+                                        <i class="fa fa-envelope-o fa-fw"></i> {{Auth::user()->email}}</span>
                                     </p>
                                 </div>
                                 <div class="hidden-xs">
-                                    <h2 class="media-heading text-light">Juan Perez</h2>
+                                    <h2 class="media-heading text-light">{{Auth::user()->name}}</h2>
                                     <p class="mb-4x text-light">
                                         <span>
-                                            <i class="fa fa-envelope-o fa-fw"></i> juan.perez.probando@hotmail.com</span>
+                                            <i class="fa fa-envelope-o fa-fw"></i> {{Auth::user()->email}}</span>
                                     </p>
                                 </div>
                                 <div class="mt-4x">
-                                    <p>
-                                        <i class="fa fa-phone" aria-hidden="true"></i> 0263 428-0448</p>
+                                  @switch(Auth::user()->account_status)
+                                    @case("C")
+                                        <p><i class="fa fa-check-square-o" aria-hidden="true"></i> Mail confimado</p>
+                                        @break
+                                    @case("N")
+                                        <p><i class="fa fa-share-square-o" aria-hidden="true"></i> Falta confirmar mail</p>
+                                        @break
+                                    @default
+                                        <p><i class="fa fa-times" aria-hidden="true"></i> No habilitado</p>
+                                @endswitch
+                                  @if(strlen (Auth::user()->phone)>3)
+                                    <p> <i class="fa fa-phone" aria-hidden="true"></i> {{Auth::user()->phone}}</p>
+                                  @endif
                                 </div>
                             </div>
                             <!-- /.media-body -->
@@ -43,8 +54,14 @@
                         <h4 class="text-muted">Billetera</h4>
                         <div class="row">
                             <div class="col-xs-6">
-                                <span class="headline credit plus" style="background: transparent;">
-                                    <strong>$ 400,27</strong>
+                              <span class="headline credit
+                              @if (Auth::user()->wallet->balance > 0)
+                                  plus
+                              @else
+                                  less
+                              @endif
+                              " style="background: transparent;">
+                                    <strong>$ {{abs(intval(Auth::user()->wallet->balance))}}</strong>
                                 </span>
                                 <p>SALDO</p>
                             </div>
@@ -67,7 +84,7 @@
         <div class="content-body">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="buy_tickets.html" style="color: inherit;">
+                    <a href="javascript:openBuyTickets()" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
@@ -100,7 +117,7 @@
                 <!-- /.cols -->
 
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="load_credit.html" style="color: inherit;">
+                    <a href="{{ route('credit.self') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
@@ -112,7 +129,7 @@
                                     </div>
                                     <div class="media-body">
                                         <h3 class="media-heading">Recargar Saldo</h3>
-                                        <p class="help-block">Consumidos $600 de $1.000</p>
+                                        <p class="help-block">Le quedan ${{intval(Auth::user()->wallet->balance)}} disponibles</p>
                                     </div>
                                     <!-- /.media -body-->
                                 </div>
@@ -121,9 +138,11 @@
                             <!-- /.panel-body -->
 
                             <div class="progress progress-xs no-radius no-margin">
-                                <div class="progress-bar bg-grd-cyan" role="progressbar" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100" style="width: 89%">
-                                    <span class="sr-only">89% Complete</span>
-                                </div>
+                                @if (Auth::user()->wallet->balance > 1000)
+                                <div class="progress-bar bg-grd-cyan" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                                @else
+                                    <div class="progress-bar bg-grd-cyan" role="progressbar" aria-valuenow="{{abs(intval(Auth::user()->wallet->balance/10))}}" aria-valuemin="0" aria-valuemax="100" style="width: {{abs(intval(Auth::user()->wallet->balance/10))}}%"></div>
+                                @endif
                             </div>
                             <!-- /.progress -->
                         </div>
@@ -139,8 +158,7 @@
                                     <div class="media-left">
                                         <span class="fa-stack fa-2x">
                                             <i class="fa fa-circle fa-stack-2x text-violet"></i>
-                                            <i class="fa fa fa-search
-fa-stack-1x fa-inverse"></i>
+                                            <i class="fa fa fa-search fa-stack-1x fa-inverse"></i>
                                         </span>
                                     </div>
                                     <div class="media-body">

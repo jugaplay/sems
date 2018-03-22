@@ -31,11 +31,11 @@ $( document ).on( 'submit', '#ticketFormContainer', function(e){
     if(price>(walletBalance+walletCredit)){ // No le da el CREDITO
       simpleAlert("Crédito insuficiente","No tiene suficiente crédito como para realizar la compra.");
     }else {
-      buyTicketWithCredit(datas);
+      checkIfSavedPlate(datas);
     }
   }else{
     console.log("Procesador de pago");
-    alert("Procesador de pago");
+    alert("Procesador de pago");// No olvidar de que hacer al guardar la patente!
   }
 });
 // ticketDay
@@ -153,27 +153,28 @@ function checkCreditPayment(){
 
 function finalPrice(price){
 	var walletBalance=parseFloat($("#wallet-balance").val());
-	var walletCredit=parseFloat($("#wallet-credit").val());
+  var walletCredit=parseFloat($("#wallet-credit").val());
 	$("#ticket-cost input").val(price);
 	var credito = ($("#ticketPayment").val()=="EF");
 	if(credito && (price>(walletBalance+walletCredit))){
 		// No le da el credito para hacer la venta
 		$("#ticket-cost").addClass("no-credit");
-    $( "#ticket-cost a" ).attr( "data-original-title","No tiene crédito suficiente para realizar la venta");
+    $( "#ticket-cost a" ).attr( "data-original-title","No tiene crédito suficiente para realizar la compra");
 		$("#ticket-cost a i").attr('class', 'fa fa-remove');
 	}else{
 		// si le da el credito para hacer la venta
 		$("#ticket-cost").removeClass("no-credit");
-    $( "#ticket-cost a" ).attr( "data-original-title","Puede realizar la venta");
+    $( "#ticket-cost a" ).attr( "data-original-title","Puede realizar la compra");
 		$("#ticket-cost a i").attr('class', 'fa fa-check');
 	}
 }
 function buyTicketWithCredit(datas){
   var $button = $("#ticketFormContainer [type=submit]");
+  datas.push({name: "latlng", value: JSON.stringify(window.userLocation)});
   $button.button('loading')
   var jqxhr = $.ajax({
                   method: "POST",
-                  url: window.apiUrl+"tickets/localticket",
+                  url: window.apiUrl+"tickets/driverticket/create",
                   data: datas
                 })
                 .done(function(xhr) {
@@ -190,6 +191,38 @@ function buyTicketWithCredit(datas){
                 .always(function(){
                   $button.button('reset');
                 });
+}
+function checkIfSavedPlate(datas) {
+  var plate = $("#ticketPlate").val();
+  if(jQuery.inArray( plate, cars )==-1){
+    bootbox.confirm({
+      title: '<i class="fa fa fa-car fa-fw" aria-hidden="true"></i> Guardar vehiculo',
+      message: "¿Desea agregar "+plate+" a sus vehiculos guardados?",
+      buttons: {
+          confirm: {
+              label: 'Guardar',
+              className: 'btn-success'
+          },
+          cancel: {
+              label: 'No, gracias',
+              className: 'btn-danger'
+          }
+      },
+      callback: function(result){
+        if(result){
+          datas.push({name: "saveCar", value: "true"});
+          buyTicketWithCredit(datas);
+        }else{
+          datas.push({name: "saveCar", value: "false"});
+          buyTicketWithCredit(datas);
+        }
+
+    }
+    });
+  }else{
+    datas.push({name: "saveCar", value: "false"});
+    buyTicketWithCredit(datas);
+  }
 }
 function alertSuccessTicket(id,plate,type,time,start_time,end_time,token,bill){
   // bill -- total, -- detail, -- id

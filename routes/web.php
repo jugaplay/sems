@@ -38,8 +38,8 @@ Route::post('/tickets/localticket','TicketController@localTicketCreate')->name('
 Route::get('/tickets/localcredit','TicketController@localCredit')->name('tickets.localcredit.index');
 Route::post('/tickets/localcredit','TicketController@localCreditAdd')->name('tickets.localcredit.save');
 
-Route::get('/tickets/driverticket','TicketController@driverTicket')->name('tickets.driverticket.index');
-Route::post('/tickets/driverticket','TicketController@driverTicketCreate')->name('tickets.driverticket.save');
+Route::post('/tickets/driverticket','TicketController@driverTicket')->name('tickets.driverticket.index');
+Route::post('/tickets/driverticket/create','TicketController@driverTicketCreate')->name('tickets.driverticket.save');
 
 Route::get('/tickets/drivercredit','TicketController@driverCredit')->name('tickets.drivercredit.index');
 Route::post('/tickets/drivercredit','TicketController@driverCreditAdd')->name('tickets.drivercredit.save');

@@ -33,7 +33,7 @@
               less
           @endif
                                         " role="presentation">
-            <a href="load_credit.html">
+            <a href="{{ route('credit.self') }}">
               <span class="nav-text"><i class="fa fa-usd"></i> {{abs(intval(Auth::user()->wallet->balance))}}</span>
             </a>
           </li>

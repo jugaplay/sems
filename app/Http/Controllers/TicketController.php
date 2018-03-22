@@ -131,41 +131,84 @@ class TicketController
     }
   } // Fin de localCreditAdd
 
-  public function driverTicket()
+  public function driverTicket(Request $request)
   {
-      return view('tickets.driverticket',['user'=>Auth::user()]);
+    // En el request le tengo que mandar el LatLng
+    // Busca el bloque, sino busca el mas cercano!
+    // Lo llamo strong search
+    if(Auth::check()){
+      if(Auth::user()->type=='driver'){
+        $generalFunctions = new generalFunctions();
+        $block=$generalFunctions->returnForcedBlockFromLatLng(json_decode($request->input('latlng')));// Si o si devuelve un bloque
+        $priceTime = $block->priceBlock('time');
+        $priceDay = $block->priceBlock('day');
+        $ownedCars=Auth::user()->vehicles()->get()->transform(function($objet,$key){
+          return $objet->plate;
+        });
+        return view('tickets.index',['priceTime'=>$priceTime,'priceDay'=>$priceDay,'ownedCars'=>$ownedCars,'block_id'=>$block->id]);
+      }else{
+        return view('tickets.index');
+      }
+    }else{// No esta logeado
+      return view('auth.login');
+    }
+      //return view('tickets.driverticket',['user'=>Auth::user()]);
   }
 
   public function driverTicketCreate(Request $request){
-
+    // Verifico si es con credito y en caso de serlo, si tiene, el otro lo genera por detras?
+    if(Auth::check()){
+      if(Auth::user()->type=="driver" && Auth::user()->account_status!="B" ){
+        $block_id=$request->input('blockId');
+        $latlng=$request->input('latlng');
         $generalFunctions = new generalFunctions(); // Instancamos la clase
-        echo "LatLng = ".$request->input('latlng').'</br>';
-        $block = $generalFunctions->returnBlockFromLatLng(json_decode($request->input('latlng')));
-        if(!$block){echo "No existe el block";return;}
-        //dd($block);
+        $ticketPayment=($request->input('ticketPayment') == "EF")?"credit":"other";
         // Generar el costo y los dartos del ticket o la estadia
-        $dataTicket = $generalFunctions->dataTicket($request->input('plate'),$request->input('type'),$request->input('time'),$block->id);
+        $ticketType=($request->input('ticketDay') == 'true')?"day":"time";
+        $minutes=$request->input('ticketHours')*60;
+        $dataTicket = $generalFunctions->dataTicket($request->input('ticketPlate'),$ticketType,$minutes,$block_id);
+        //return response()->json($dataTicket->amount);
+        if($ticketPayment== "credit" && ($dataTicket->amount > (Auth::user()->wallet->balance + Auth::user()->wallet->credit))){// Chequear si tiene credito
+          return response()->json(["error"=>"No tiene suficiente crédito como para realizar la compra "],400);// 400 Bad Request
+        }
         //dd($dataTicket);
         /***********************************
         *** Grabar todas las operaciones ***
         ***********************************/
        // Grabar el ticket
-        $ticketId = $generalFunctions->ticketSave(Auth::user()->id,$request->input('plate'),$dataTicket->hours,$dataTicket->start,
-                                                  $dataTicket->endTime,$block->id,$request->input('latlng'),
-                                                  $dataTicket->token,$request->input('type'));
+        $ticket = $generalFunctions->ticketSave(Auth::user()->id,strtoupper($request->input('ticketPlate')),$dataTicket->hours,$dataTicket->start,
+                                                  $dataTicket->endTime,$block_id,$latlng,
+                                                  $dataTicket->token,$ticketType);
         // grabar operacion
-        $saveOperationId = $generalFunctions->operationSave('Ticket',$ticketId,($dataTicket->amount *-1));
+        $saveOperationId = $generalFunctions->operationSave('Ticket',$ticket->id,($dataTicket->amount *-1));
         // Actualizar el ticket con el id de la operacion.
-        Ticket::where('id', $ticketId)->update(['operation_id' => $saveOperationId]);
-        // generar venta de la compania (company_sales)
-        $saveBill = $generalFunctions->companySalesSave(Auth::user()->id,$saveOperationId,$dataTicket->detail);
+        //Ticket::where('id', $ticketId)->update(['operation_id' => $saveOperationId]);
+        $ticket->update(['operation_id' => $saveOperationId]);
         // generar la factura (bills) y la realcion con la operacion
         $saveBill = $generalFunctions->billSave($dataTicket->amount,$dataTicket->detail,$saveOperationId);
-        // restar el saldo a la billetera (wallet) del conductor
-        $balance = $generalFunctions->modifyBalanceWallet(Auth::user()->id,($dataTicket->amount * -1));
+        // restar el saldo a la billetera (wallet) del local
+        if($ticketPayment== "credit"){
+          Auth::user()->wallet->decrement('balance',$dataTicket->amount);
+          // Tengo que dejar asentado que descuento de la billetera, grabar operacion
+          $walletOperationId = $generalFunctions->operationSave('Wallet',Auth::user()->wallet->id,($dataTicket->amount* -1));
+        }else{
+          // generar venta de la compania (company_sales)
+          $companySales = $generalFunctions->companySalesSave(Auth::user()->id,$saveOperationId,$dataTicket->detail);
+        }
         // Registrar la patente si no existe
-        $vehicle_id = $generalFunctions->registerVehicle($request->input('plate'));
-
+        $vehicle_id = $generalFunctions->registerVehicle($request->input('ticketPlate'));
+        if($request->input('saveCar')=="true"){// Si lo tiene para gurdar como propio
+          Auth::user()->vehicles()->attach($vehicle_id); // El contrario es $user->roles()->detach(1);
+        }
+        $ticket['bill']=$saveBill;
+        return response()->json($ticket);
+      }else{
+        // No tiene permiso para esta accion
+        return response()->json(["error"=>"Sin permiso para crear un ticket"],403);
+      }
+    }else{// Tiene que hacer el login primero
+      return response()->json(["error"=>"Tiene que estar logueado"],401);
+    }
   }// fin funcion de driverTicketCreate
 
   public function driverCredit()

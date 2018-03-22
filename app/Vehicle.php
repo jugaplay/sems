@@ -11,7 +11,7 @@ class Vehicle extends Model
       'plate',
 ];
     public function users(){
-      return $this->belongsToMany('App\User',$table='vehicle_users');
+      return $this->belongsToMany('App\User',$table='vehicle_users');// Relacion many to many
     }
 
     public function exeptuatedvehicles(){

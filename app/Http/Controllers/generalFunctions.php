@@ -41,6 +41,27 @@ class generalFunctions extends Controller
        }
        return NULL;
   }
+  function returnForcedBlockFromLatLng($latLng){
+    // Busca un punto dentro de los bloques sino lo encuentra busca el bloque mas cercano
+    $pointLocation = new pointLocation();
+    $block= $this->returnBlockFromLatLng($latLng);// Me fijo si esta dentro de un bloque
+    if($block!=NULL){return $block;}else{
+      $temp=(object)["block"=>NULL,"distance"=>NULL];
+      $blocks = Block::all();
+      foreach($blocks as $block){
+        $blockLatLngs=json_decode($block->latlng);
+        while(count($blockLatLngs)>1){
+          $base = array_shift($blockLatLngs);
+          foreach($blockLatLngs as $point){
+            $line = [$base,$point];
+            $mts=$pointLocation->shorterDistanceBeetweenAPointAndALine($latLng,$line);
+            $temp = ($temp->distance==NULL || $temp->distance>$mts)?(object)["block"=>$block,"distance"=>$mts]:$temp;
+          }
+        }
+      }
+      return $temp->block;
+    }
+  }
   /***********************************
   *** Generar los datos del ticket ***
   ***********************************/
