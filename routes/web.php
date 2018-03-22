@@ -82,9 +82,22 @@ Route::post('/infringements/img','InfringementsController@uploadImage')->name('i
 Route::post('/infringements/comments','InfringementsController@uploadComments')->name('infringements.comments.upload');
 Route::post('/infringements/close','InfringementsController@close')->name('infringements.close');
 Route::get('infringements/control','InfringementsController@control')->name('infringements.control');
+
 Route::get('infringements/all','InfringementsController@showAll')->name('infringements.all');
 Route::get('infringements/filter','InfringementsController@filter')->name('infringements.filter');
+
+
 
 Route::resource('infringements','InfringementsController');
 
 Route::resource('infringementcauses','InfringementCausesController');
+
+// Estadisticas
+Route::get('/statistics/ticketsStatistics','StatisticsController@ticketsStatistics');
+Route::get('/statistics/ticketsFiltros','StatisticsController@ticketsFiltros');
+Route::get('/statistics/ticketsBlock','StatisticsController@ticketsBlock');
+Route::get('/statistics/infringementsBlock','StatisticsController@infringementsBlock');
+Route::get('/statistics/operationsStatistics','StatisticsController@operationsStatistics');
+
+
+Route::resource('statistics','StatisticsController');
