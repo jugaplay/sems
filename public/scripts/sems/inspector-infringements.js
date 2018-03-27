@@ -42,7 +42,7 @@ $( document ).on( 'submit', '#inspectorInfringementForm', function(e){
   e.preventDefault();
   var plate = $("#infringementPlate").val();
   if(!preVerifiedPlate(plate)){
-    simpleAlert("Patente incorrecta","La patente <b>"+plate+"</b> está mal ingresada por favor verifique la misma ");
+    
     return false;
   }
   // controlPlate
@@ -72,9 +72,6 @@ $( document ).on( 'submit', '#inspectorInfringementForm', function(e){
                   $button.button('reset');
                 });
 });
-function preVerifiedPlate(plate){
-  return plate.length>=6;
-}
 var INFRINGMENT_INSPECTOR_HTML=''
 +'<div class="content-body">'
 +'    <div class="row">'

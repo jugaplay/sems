@@ -112,6 +112,6 @@
 <!-- COMPONENTS -->
 <link rel="stylesheet" href="{{URL::to('styles/components.css')}}">
 <script src="{{URL::to('scripts/typeahead.bundle.js')}}"></script>
-  <script src="{{URL::to('scripts/sems/tickets_drivers.js')}}"></script>
+  <script src="{{URL::to('scripts/sems/tickets-drivers.js')}}"></script>
   <script src="{{URL::to('scripts/sems/ul-buy-tickets.js')}}"></script>
 @endpush

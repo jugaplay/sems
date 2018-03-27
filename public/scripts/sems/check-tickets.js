@@ -4,7 +4,7 @@ $( document ).on( 'submit', '#ticketFormControl', function(e){
   // controlPlate
   var plate = $("#controlPlate").val();
   if(!preVerifiedPlate(plate)){
-    simpleAlert("Patente incorrecta","La patente <b>"+plate+"</b> está mal ingresada por favor verifique la misma ");
+    
     return false;
   }
   var latlng=[-43.30036707711908,-65.10553647527931];// va en la cuadra del quiosco
@@ -44,9 +44,6 @@ $( document ).on( 'submit', '#ticketFormControl', function(e){
                   $button.button('reset');
                 });
 });
-function preVerifiedPlate(plate){
-  return plate.length>=6;
-}
 function hasTicket(ticket){
   // plate end_time 'type', //(time/day)
   var end_time=parseDate(new Date(ticket.end_time));

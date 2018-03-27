@@ -17,7 +17,7 @@ class Notification extends Model
       return $this->belongsTo('App\User');
     }
 
-    public function notification_type(){
+    public function type(){
       return $this->belongsTo('App\notificationType');
     }
 

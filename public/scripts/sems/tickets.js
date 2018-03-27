@@ -21,7 +21,11 @@ $( document ).on( 'submit', '#ticketFormContainer', function(e){
   $.each( datas, function( i, data ){
     console.log( data.name + ' = ' + data.value );
   });
+  var plate = $("#ticketPlate").val();
+  if(!preVerifiedPlate(plate)){
 
+    return false;
+  }
   if($("#ticketPayment").val()=="EF"){ // Lo compra con credito
     // Verifico previo que tenga credito
     console.log("En Efectivo");

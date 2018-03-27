@@ -6,8 +6,11 @@ use App\User;
 use App\Wallet;
 use App\Vehicle;
 use App\VehicleUser;
+use App\Notification;
+use App\NotificationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Hash;
 
 
 class UserController extends Controller
@@ -21,6 +24,18 @@ class UserController extends Controller
     {
       //
       //$companies = Company::all();
+      if(Auth::check()){
+        if(Auth::user()->type=="driver" && Auth::user()->account_status!="B" ){
+          $notifications = NotificationType::all();
+          $notificationChannelsIds = Auth::user()->notificationChannels()->get()->transform(function($objet,$key){
+            return $objet->notification_type_id;
+          })->toArray();
+          foreach ($notifications as $notification) {
+            $notification->active=in_array($notification->id, $notificationChannelsIds);
+          }
+          return view('users.index',['notifications'=>$notifications]);
+        }
+      }
       return view('users.index');
     }
 
@@ -136,8 +151,7 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
-    {
+    public function update(Request $request, User $user) {
       if(Auth::check()){
         if(Auth::user()->type=="admsuper" && Auth::user()->account_status!="B" ){
           // Por alguna razon no me trae el usuario
@@ -165,10 +179,9 @@ class UserController extends Controller
             return response()->json(["error"=>"Error actualizando los datos del usuario en la base de datos"],422);
           }
           if($changePassword){ // Si cambio la contraseña
-            $userUpdate = User::where('id', $user->id)
-                        ->update([
-                          'password' => bcrypt($request->input('password')),
-                        ]);
+            $userUpdate = User::where('id', $user->id)->first();
+            $userUpdate->password=bcrypt($request->input('password'));
+            $userUpdate->save();
             if(!$userUpdate){
               return response()->json(["error"=>"Error actualizando la contraseña del local en la base de datos"],422);
             }
@@ -179,6 +192,132 @@ class UserController extends Controller
         }else{
           // No tiene permiso para esta accion
           return response()->json(["error"=>"Sin permiso para editar un local"],403);
+        }
+      }else{// Tiene que hacer el login primero
+        return response()->json(["error"=>"Tiene que estar logueado"],401);
+      }
+    }
+    public function profileConfiguration(Request $request){
+      if(Auth::check()){
+        if(Auth::user()->type=="driver" && Auth::user()->account_status!="B" ){
+          // Primero es a validar si tiene la password lo que necesita password
+          // Si actualiza el celular, o el mail deberia actualizar los campos de los mensajes
+          $configurationName=$request->input('configurationName');
+          $configurationMail=$request->input('configurationMail');
+          $configurationPhone=$request->input('configurationPhone');
+          $configurationPassword=$request->input('configurationPassword');
+          if($configurationMail!=Auth::user()->email || $configurationPhone!=Auth::user()->phone || $configurationPassword!="" && $request->has('configurationActualPassword')){
+            // Si cambia algo sensible tiene que pedir la contraseña viejs
+            if (!(Hash::check($request->input('configurationActualPassword'), Auth::user()->password))) { // valida contra la contraseña con hash
+                // Not valid
+                return response()->json(["error"=>"La contraseña ingresada es incorrecta"],400);
+            }
+          }
+          if($configurationMail!=Auth::user()->email){
+            if (count(User::where('email', $configurationMail)->get()) > 0) {
+                return response()->json(["error"=>"El mail ingresado ya se encuentra en uso"],400);
+            }else{
+              $userUpdate = Auth::user()->update([
+                            'email' => $configurationMail,
+                            'account_status' => 'N'
+                          ]);
+              if(!$userUpdate){
+                return response()->json(["error"=>"Error actualizando el mail del usuario en la base de datos"],422);
+              }
+                // Pendiente enviar mail para confirmar la cuenta
+              // Actualizo las notificaciones que tengan mails Mail
+              $notification_types=NotificationType::where('name','Mail')->first();
+              $channel=Auth::user()->notificationChannels()->where('notification_type_id',$notification_types->id)->first();
+              if($channel){// Si existe un canal
+                $userUpdate = $channel->update(['address' => $configurationMail]);
+                if(!$userUpdate){
+                  return response()->json(["error"=>"Error actualizando el mail de los mensajes en la base de datos"],422);
+                }
+              }
+            }
+          }
+          if($configurationPhone!=Auth::user()->phone){
+            $phoneVariables=["Whatsapp","SMS"];
+            foreach ($phoneVariables as $value) {
+              $notification_types=NotificationType::where('name',$value)->first();
+              $channel=Auth::user()->notificationChannels()->where('notification_type_id',$notification_types->id)->first();
+              if($channel){// Si existe un canal
+                $userUpdate = $channel->update(['address' => $configurationPhone]);
+                if(!$userUpdate){
+                  return response()->json(["error"=>"Error actualizando el ".$value." de los mensajes en la base de datos"],422);
+                }
+              }
+            }
+          }
+          // $request->has('configurationActualPassword') Whatsapp
+          if($configurationPassword!=""){ // Si cambio la contraseña, ya cheque arriba que haya ingresado la vieja
+            Auth::user()->password=bcrypt($configurationPassword);
+            if(!Auth::user()->save()){// Lo guarda y lo revisa
+              return response()->json(["error"=>"Error actualizando la contraseña del usuario en la base de datos"],422);
+            }
+          }
+          $notification_types=NotificationType::all();
+          foreach ($notification_types as $notification_type) {
+            if($request->has('notification'.$notification_type->id)){// tendria que trader_cdleveningstar
+              if(!Auth::user()->notificationChannels()->where('notification_type_id',$notification_type->id)->first()){// Si no tiene
+                $notification=new Notification;
+                $notification->notification_type_id=$notification_type->id;
+                switch ($notification_type->name) {
+                  case 'SMS':
+                      $notification->address=$configurationPhone;
+                    break;
+                  case 'Whatsapp':
+                      $notification->address=$configurationPhone;
+                    break;
+                  case 'Mail':
+                      $notification->address=$configurationMail;
+                    break;
+                  case 'App / Notificación interna':
+                      $notification->address="Pendiente";
+                    break;
+                  default:
+                    $notification->address="Error";
+                    break;
+                }
+                Auth::user()->notificationChannels()->save($notification);
+              }
+            }else{
+              $notification=Auth::user()->notificationChannels()->where('notification_type_id',$notification_type->id)->first();
+              if($notification){// Si tiene
+                $notification->delete();
+              }
+            }
+          }
+          // Si cambio el mail, verificar que el mail no exista
+          $userUpdate = Auth::user()->update([
+                        'name' => $configurationName,
+                        'email' => $configurationMail,
+                        'phone' => $configurationPhone
+                      ]);
+          if(!$userUpdate){
+            return response()->json(["error"=>"Error actualizando los datos del usuario en la base de datos"],422);
+          }
+          // Me falta lo de los autos
+          $submitedVehicles = explode(",", $request->input('domain-input'));
+          $actualVehicles=Auth::user()->vehicles()->get()->transform(function($objet,$key){
+            return $objet->plate;
+          })->toArray();
+          $addVehicles=array_diff($submitedVehicles,$actualVehicles);
+          $removeVehicles=array_diff($actualVehicles,$submitedVehicles);
+          $generalFunctions = new generalFunctions();
+          foreach ($addVehicles as $plate) {
+              $vehicle_id = $generalFunctions->registerVehicle($plate);
+              Auth::user()->vehicles()->attach($vehicle_id); // El contrario es $user->roles()->detach(1);
+            }
+          foreach ($removeVehicles as $plate) {
+              $vehicle_id = $generalFunctions->registerVehicle($plate);
+              Auth::user()->vehicles()->detach($vehicle_id);
+            }
+          // Si cambia el mail, poner la cuenta en que no valido el nuevo mail y enviar un mail, ademas cambiar todos los inputs de mails
+          return response()->json(['user'=>Auth::user(),'vehicles'=>Auth::user()->vehicles()->get(),'notifications'=>Auth::user()->notificationChannels()->get()]);
+        }else{
+          // No tiene permiso para esta accion
+          return response()->json(["error"=>"Sin permiso para editar el perfil"],403);
         }
       }else{// Tiene que hacer el login primero
         return response()->json(["error"=>"Tiene que estar logueado"],401);

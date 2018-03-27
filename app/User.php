@@ -20,7 +20,7 @@ class User extends Authenticatable
         'password',
         'phone',
         'type',
-        'account_status',
+        'account_status', // B (baja) C (confirama) N(No confirmada)
     ];
 
     public function vehicles(){
@@ -37,6 +37,12 @@ class User extends Authenticatable
 
     public function userbillingdata(){
       return $this->hasOne('App\UsersBillingData');
+    }
+    public function notificationChannels(){
+      return $this->hasMany('App\Notification');
+    }
+    public function bills(){
+      $vehicles = $this->vehicles();
     }
     /**
      * The attributes that should be hidden for arrays.

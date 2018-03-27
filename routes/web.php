@@ -26,7 +26,8 @@ Route::post('/users/vehicles','UserController@associateVehicle')->name('user.veh
 
 Route::get('/users/vehiclesOff','UserController@userVehiclesOff')->name('user.vehiclesOff.index');
 Route::post('/users/vehiclesOff','UserController@disassociateVehicle')->name('user.vehiclesOff.save');
-
+// Esto seria como un segundo update
+Route::post('/users/edit','UserController@profileConfiguration')->name('user.configuration.save');
 // corre esta funcion (userVehicles) con este control (UserController)
 Route::get('users/all','UserController@showAll')->name('users.showall');
 Route::resource('users','UserController');

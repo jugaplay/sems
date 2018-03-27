@@ -51,7 +51,7 @@ class CreditController
   public function store(Request $request)
   {
     if(Auth::check()){
-      if(Auth::user()->type=='local'){
+      if(Auth::user()->type=='local' || (Auth::user()->type=='driver' && $request->input('creditType')=="load")){
         if($request->input('creditAmount') > 0){
           $creditAmount=floatval($request->input('creditAmount'));
           $user=($request->input('creditType')=="sell") ? User::where(['email' => $request->input('creditMail'), 'type' => 'driver'])->first() : Auth::user();// Si es una venta o una recarga

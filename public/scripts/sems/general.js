@@ -46,3 +46,7 @@ function parseTemplate(props, template){
   }
   return result;
 }
+function preVerifiedPlate(plate){
+  if(plate.length<6){simpleAlert("Patente incorrecta","La patente <b>"+plate+"</b> está mal ingresada por favor verifique la misma ");}
+  return plate.length>=6;
+}

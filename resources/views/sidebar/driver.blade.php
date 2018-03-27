@@ -61,7 +61,7 @@
             </a>
           </li>
 <li class="nav-item" role="presentation">
-            <a href="configuration.html">
+            <a href="{{ route('users.index') }}">
               <span class="nav-icon"><i class="fa fa-cog"></i></span>
               <span class="nav-text">Configuración</span>
             </a>
