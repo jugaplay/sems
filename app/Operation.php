@@ -8,13 +8,13 @@ class Operation extends Model
 {
     //
     protected $fillable = [
-      'type', //(wallet/ticket/infringement/spacereservation)
-      'type_id',
+      'operational_type', //(wallet/ticket/infringement/spacereservation)
+      'operational_id',
       'amount',
     ];
 
-    public function operational(){
-          return $this->morphTo();
+    public function bill(){// No se permite usar has one con un pivot table
+          return $this->belongsToMany('App\Bill',$table='operation_bills');
         }
 
 }

@@ -67,7 +67,7 @@
                             </div>
                             <div class="col-xs-6">
                                 <span class="headline credit" style="background: transparent;">
-                                    <strong>$ 0</strong>
+                                    <strong>$ {{Auth::user()->infringementsDebt()}}</strong>
                                 </span>
                                 <p>Multas</p>
                             </div>
@@ -151,7 +151,7 @@
                 </div>
                 <!-- /.cols -->
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="vouchers.html" id="bootbox-search-voucher" style="color: inherit;">
+                    <a href="{{ route('vouchers.index') }}" id="bootbox-search-voucher" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">

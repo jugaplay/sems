@@ -30,10 +30,10 @@ class Ticket extends Model
     }
 
     public function operation(){
-      return $this->belongsTo('App\User');
+      return $this->belongsTo('App\Operation');
     }
 
     public function operational(){
-          return $this->morphMany('App\Operation','type');
+          return $this->morphMany('App\Operation','operational');
     }
 }

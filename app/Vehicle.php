@@ -21,5 +21,8 @@ class Vehicle extends Model
     public function owner(){
       return $this->hasOne('App\Owner');
     }
+    public function infringements(){
+      return $this->hasMany('App\Infringement','plate', 'plate');
+    }
 
 }

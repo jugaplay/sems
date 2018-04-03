@@ -93,6 +93,8 @@ Route::resource('infringements','InfringementsController');
 
 Route::resource('infringementcauses','InfringementCausesController');
 
+Route::resource('vouchers','VouchersController');
+
 // Estadisticas
 Route::get('/statistics/ticketsStatistics','StatisticsController@ticketsStatistics');
 Route::get('/statistics/ticketsFiltros','StatisticsController@ticketsFiltros');

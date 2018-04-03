@@ -602,7 +602,7 @@ CREATE TABLE IF NOT EXISTS `operations` (
 
 -- Dumping data for table sems.operations: ~25 rows (approximately)
 /*!40000 ALTER TABLE `operations` DISABLE KEYS */;
-INSERT INTO `operations` (`id`, `type`, `type_id`, `amount`, `created_at`, `updated_at`) VALUES
+INSERT INTO `operations` (`id`, `operational_type`, `operational_id`, `amount`, `created_at`, `updated_at`) VALUES
 	(1, 'exeptuatedVehicle', 3, 960.00, '2018-02-02 17:45:13', '2018-02-02 17:45:13'),
 	(2, 'exeptuatedVehicle', 4, 960.00, '2018-02-02 17:49:35', '2018-02-02 17:49:35'),
 	(3, 'exeptuatedVehicle', 5, 0.00, '2018-02-05 07:57:43', '2018-02-05 07:57:43'),

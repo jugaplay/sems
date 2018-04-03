@@ -55,7 +55,7 @@
           <li class="nav-header" role="presentation">OTROS</li>
 
 <li class="nav-item" role="presentation">
-            <a href="vouchers.html">
+            <a href="{{ route('vouchers.index') }}">
               <span class="nav-icon"><i class="fa fa-search"></i></span>
               <span class="nav-text">Comprobantes</span>
             </a>

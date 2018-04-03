@@ -18,7 +18,7 @@ class Wallet extends Model
       return $this->belongsTo('App\User');
     }
 
-    public function operational(){
-          return $this->morphMany('App\Operation','type');
+    public function operations(){
+          return $this->morphMany('App\Operation','operational');
         }
 }

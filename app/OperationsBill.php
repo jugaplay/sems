@@ -13,8 +13,5 @@ class OperationsBill extends Model
       'bill_id',
     ];
 
-    public function operation(){
-      return $this->belongsTo('App\Operation');
-    }
 
 }

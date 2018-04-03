@@ -41,9 +41,26 @@ class User extends Authenticatable
     public function notificationChannels(){
       return $this->hasMany('App\Notification');
     }
-    public function bills(){
-      $vehicles = $this->vehicles();
+    public function tickets(){ // Ver que si no tiene deuda devuelva 0
+      return $this->hasMany('App\Ticket');
     }
+    public function infringements(){
+      $colection=NULL;
+      $arrInfringements=$this->vehicles()->get()->transform(function($objet,$key){
+        return $objet->infringements();
+      });
+      foreach($arrInfringements as $infringement){
+        $colection=($colection==NULL)?$infringement:$colection->union($infringement);
+      }
+      return ($colection)?$colection->get():collect();
+    }
+    public function infringementsDebt(){ // Ver que si no tiene deuda devuelva 0
+      return $this->infringements()->transform(function($objet,$key){
+        return $objet->actualDebtCost();
+      })->sum();
+    }
+
+    // Tickets Movements bills
     /**
      * The attributes that should be hidden for arrays.
      *

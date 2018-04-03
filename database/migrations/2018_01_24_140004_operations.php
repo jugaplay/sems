@@ -15,8 +15,8 @@ class Operations extends Migration
     {
         Schema::create('operations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type'); //(wallet/ticket/infringement)
-            $table->integer('type_id');
+            $table->string('operational_type'); //(wallet/ticket/infringement)
+            $table->integer('operational_id');
             $table->decimal('amount',13,2);
             $table->timestamps();
         });

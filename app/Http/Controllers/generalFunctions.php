@@ -148,8 +148,8 @@ class generalFunctions extends Controller
     *************************/
     function operationSave($type,$type_id,$amount){
     $operation = Operation::create([
-       'type'    => $type, //(wallet/ticket/infringement)
-       'type_id' => $type_id,
+       'operational_type'    => $type, //(wallet/ticket/infringement)
+       'operational_id' => $type_id,
        'amount'  => $amount,
      ]);
      return $operation->id;

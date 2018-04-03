@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-use App\Vehicle;
 use Illuminate\Database\Eloquent\Model;
 
 class Infringement extends Model
@@ -35,7 +34,7 @@ class Infringement extends Model
     }
 
     public function operational(){
-      return $this->morphMany('App\Operation','type');
+      return $this->morphMany('App\Operation','operational');
     }
 
     public function images(){
@@ -50,6 +49,16 @@ class Infringement extends Model
       return ($img!=NULL)?$img->publicUrl():"images/dummy/no-image.jpg";
     }
     public function vehicle(){
-      return $this->hasOne('App\Vehicle','plate', 'plate');// Lo busco a partir de la patente que es unica 
+      return $this->belongsTo('App\Vehicle','plate', 'plate');// Lo busco a partir de la patente que es unica
+    }
+    public function actualDebtCost(){// Devuelve el costo actual de una multa
+      if(in_array($this->situation, ["saved","voluntary","judge"])){
+        return ($this->situation=="voluntary")?$this->voluntary_cost:$this->cost;
+      }else{
+        return 0;
+      }
+    }
+    public function actualCost(){
+      return ($this->close_cost!=NULL)?$this->close_cost:$this->actualDebtCost();
     }
 }
