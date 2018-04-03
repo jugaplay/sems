@@ -66,13 +66,13 @@ class CreditController
           // Sumar el saldo a la billetera (wallet) al cliente
           $user->wallet->increment('balance',$creditAmount);
           // grabar operacion del driver
-          $saveDriverOperationId = $generalFunctions->operationSave('wallet',$user->id,$creditAmount);
+          $saveDriverOperationId = $generalFunctions->operationSave('App/Wallet',$user->id,$creditAmount);
           // generar la factura (bills) y la realcion con la operacion
           $saveBill = $generalFunctions->billSave($creditAmount,'Compra de credito',$saveDriverOperationId);
           if($creditPayment == "credit"){ // Si realiza la venta con credito
             Auth::user()->wallet->decrement('balance',$creditAmount);
             // Tengo que dejar asentado que descuento de la billetera, grabar operacion
-            $saveLocalOperationId = $generalFunctions->operationSave('Wallet',Auth::user()->wallet->id,($creditAmount * -1));
+            $saveLocalOperationId = $generalFunctions->operationSave('App/Wallet',Auth::user()->wallet->id,($creditAmount * -1));
             // Grabar operacion entre billeteras (operationBetwenWallets)
             $operationBetwenWallets = $generalFunctions->operationBetweenWalletsSave($saveDriverOperationId,$saveLocalOperationId);
           }else{
@@ -95,7 +95,7 @@ class CreditController
       // Sumar el saldo a la billetera (wallet) al cliente
       $balance = $generalFunctions->modifyBalanceWallet(Auth::user()->id,$request->input('amount'));
       // grabar operacion del driver
-      $saveDriverOperationId = $generalFunctions->operationSave('wallet',Auth::user()->id,$request->input('amount'));
+      $saveDriverOperationId = $generalFunctions->operationSave('App/Wallet',Auth::user()->id,$request->input('amount'));
       // generar la factura (bills) y la realcion con la operacion
       $saveBill = $generalFunctions->billSave($request->input('amount'),'Compra de credito',$saveDriverOperationId);
       // generar venta de la compania (company_sales)

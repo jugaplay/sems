@@ -54,7 +54,7 @@ class ExeptuatedVehiclesBlocksController extends Controller
                                                                 $request->input('end_time'),$request->input('latlng'),
                                                                 $request->input('exeptuated_cause_id'));
         // Grabar la operacion
-        $saveOperationId = $generalFunctions->operationSave('exeptuatedVehicleblock',$exeptuatedVehicleid,$request->input('amount'));
+        $saveOperationId = $generalFunctions->operationSave('App/ExeptuatedVehicleBlock',$exeptuatedVehicleid,$request->input('amount'));
         // Actualizar el exeptuated_vehicles con el id de la operacion.
         ExeptuatedVehicle::where('id', $exeptuatedVehicleid)->update(['operation_id' => $saveOperationId]);
         // generar venta de la compania (company_sales)

@@ -48,7 +48,7 @@ class StatisticsController extends Controller
         $query .= " from tickets,operations";
         $query .= " where ((start_time BETWEEN :start and :end  or end_time BETWEEN :start_end and :end_end)) ";
         //$query .= " and end_time <= :end ";
-        $query .= " and operations.operational_type = 'ticket'";
+        $query .= " and operations.operational_type = 'App/Ticket'";
         $query .= " and operations.operational_id = tickets.id";
         if($userId > 0 ){$query .= " and user_id = :userId";$filter['userId']=$userId; }
         if($blockId > 0 ){$query .= " and block_id = :blockId";$filter['blockId']=$blockId; }
