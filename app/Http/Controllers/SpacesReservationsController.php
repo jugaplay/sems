@@ -89,7 +89,7 @@ class SpacesReservationsController extends Controller
           *** Grabar la operacion  ***
           ***************************/
           // Grabar la operacion
-          $saveOperationId = $generalFunctions->operationSave('App/SpaceReservation',$exeptuatedVehicleid,$request->input('createCost'));
+          $saveOperationId = $generalFunctions->operationSave('App\SpaceReservation',$exeptuatedVehicleid,$request->input('createCost'));
            # Actualizar la tabla space_reservations con el ID de la operacion.
            SpaceReservation::where('id', $spacesreservation->id)->update(['operation_id' => $saveOperationId]);
            if ($request->input('createCost') > 0) {// Si el precio es mayor a 0 genera la venta de la compania y la factura

@@ -33,8 +33,8 @@ class Infringement extends Model
       return $this->belongsTo('App\Block');
     }
 
-    public function operational(){
-      return $this->morphMany('App\Operation','operational');
+    public function operation(){
+      return $this->belongsTo('App\Operation');
     }
 
     public function images(){

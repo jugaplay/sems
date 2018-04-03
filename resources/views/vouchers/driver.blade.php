@@ -162,7 +162,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (Auth::user()->infringements()->take(5) as $infringement)
+                                @foreach (Auth::user()->infringements()->sortByDesc('date')->take(5) as $infringement)
                                   <tr>
                                     <td>{{ parseDateString($infringement->date)}}</td>
                                     <td>{{ $infringement->cause->name}}</td>
@@ -205,9 +205,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              @foreach (Auth::user()->tickets->take(5) as $ticket)
+                              @foreach (Auth::user()->tickets->sortByDesc('start_time')->take(5) as $ticket)
                                 <tr>
-                                  <td>{{$ticket->type}}</td>
+                                  <td>{{parseTicketType($ticket->type)}}</td>
                                   <td>{{ parseDateString($ticket->start_time)}}</td>
                                   <td>{{ $ticket->plate}}</td>
                                   <td>$ {{ abs($ticket->operation->amount)}}</td>
@@ -247,9 +247,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              @foreach (Auth::user()->wallet->operations->take(5) as $operation)
+                              @foreach (Auth::user()->wallet->operations->sortByDesc('created_at')->take(5) as $operation)
                                 <tr>
-                                  <td>{{$operation->type}}</td>
+                                  <td>{{parseOperationalType($operation->operational_type)}}</td>
                                   <td>{{ parseDateString($operation->created_at)}}</td>
                                   <td>$ {{ $ticket->operation->amount}}</td>
                                 </tr>
@@ -287,12 +287,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              @foreach (Auth::user()->wallet->operations->take(5) as $operation)
-                                <tr>
-                                  <td>{{$operation->bill->detail}}</td>
-                                  <td>{{ parseDateString($operation->bill->date)}}</td>
-                                  <td>$ {{ $ticket->operation->bill->total}}</td>
-                                </tr>
+                              @foreach (Auth::user()->bills()->take(5) as $bill)
+                                  <tr>
+                                    <td>{{(strlen($bill->detail) > 35)?substr($bill->detail, 0, 32) . '...':$bill->detail}}</td>
+                                    <td>{{ parseDateString($bill->date)}}</td>
+                                    <td>$ {{ $bill->total}}</td>
+                                  </tr>
                              @endforeach
                             </tbody>
                         </table>

@@ -70,7 +70,7 @@ class TicketController
                                                       $dataTicket->endTime,$block_id,$latlng,
                                                       $dataTicket->token,$ticketType);
             // grabar operacion
-            $saveOperationId = $generalFunctions->operationSave('App/Ticket',$ticket->id,($dataTicket->amount *-1));
+            $saveOperationId = $generalFunctions->operationSave('App\Ticket',$ticket->id,($dataTicket->amount *-1));
             // Actualizar el ticket con el id de la operacion.
             //Ticket::where('id', $ticketId)->update(['operation_id' => $saveOperationId]);
             $ticket->update(['operation_id' => $saveOperationId]);
@@ -80,7 +80,7 @@ class TicketController
             if($ticketPayment== "credit"){
               Auth::user()->wallet->decrement('balance',$dataTicket->amount);
               // Tengo que dejar asentado que descuento de la billetera, grabar operacion
-              $walletOperationId = $generalFunctions->operationSave('App/Wallet',Auth::user()->wallet->id,($dataTicket->amount* -1));
+              $walletOperationId = $generalFunctions->operationSave('App\Wallet',Auth::user()->wallet->id,($dataTicket->amount* -1));
             }else{
               // generar venta de la compania (company_sales)
               $companySales = $generalFunctions->companySalesSave(Auth::user()->id,$saveOperationId,$dataTicket->detail);
@@ -117,11 +117,11 @@ class TicketController
       // Sumar el saldo a la billetera (wallet) al cliente
       $balance = $generalFunctions->modifyBalanceWallet($request->input('user_id'),$request->input('amount'));
       // grabar operacion del driver
-      $saveDriverOperationId = $generalFunctions->operationSave('App/Wallet',$request->input('user_id'),$request->input('amount'));
+      $saveDriverOperationId = $generalFunctions->operationSave('App\Wallet',$request->input('user_id'),$request->input('amount'));
       // restar el saldo a la billetera (wallet) del local
       $balance = $generalFunctions->modifyBalanceWallet(Auth::user()->id,($request->input('amount') * -1));
       // grabar operacion del local
-      $saveLocalOperationId = $generalFunctions->operationSave('App/Wallet',Auth::user()->id,($request->input('amount') * -1));
+      $saveLocalOperationId = $generalFunctions->operationSave('App\Wallet',Auth::user()->id,($request->input('amount') * -1));
       // Grabar operacion entre billeteras (operationBetwenWallets)
       $operationBetwenWallets = $generalFunctions->operationBetweenWalletsSave($saveDriverOperationId,$saveLocalOperationId);
       // generar la factura (bills) y la realcion con la operacion
@@ -180,7 +180,7 @@ class TicketController
                                                   $dataTicket->endTime,$block_id,$latlng,
                                                   $dataTicket->token,$ticketType);
         // grabar operacion
-        $saveOperationId = $generalFunctions->operationSave('App/Ticket',$ticket->id,($dataTicket->amount *-1));
+        $saveOperationId = $generalFunctions->operationSave('App\Ticket',$ticket->id,($dataTicket->amount *-1));
         // Actualizar el ticket con el id de la operacion.
         //Ticket::where('id', $ticketId)->update(['operation_id' => $saveOperationId]);
         $ticket->update(['operation_id' => $saveOperationId]);
@@ -190,7 +190,7 @@ class TicketController
         if($ticketPayment== "credit"){
           Auth::user()->wallet->decrement('balance',$dataTicket->amount);
           // Tengo que dejar asentado que descuento de la billetera, grabar operacion
-          $walletOperationId = $generalFunctions->operationSave('App/Wallet',Auth::user()->wallet->id,($dataTicket->amount* -1));
+          $walletOperationId = $generalFunctions->operationSave('App\Wallet',Auth::user()->wallet->id,($dataTicket->amount* -1));
         }else{
           // generar venta de la compania (company_sales)
           $companySales = $generalFunctions->companySalesSave(Auth::user()->id,$saveOperationId,$dataTicket->detail);
@@ -226,7 +226,7 @@ class TicketController
       // Sumar el saldo a la billetera (wallet) al cliente
       $balance = $generalFunctions->modifyBalanceWallet(Auth::user()->id,$request->input('amount'));
       // grabar operacion del driver
-      $saveDriverOperationId = $generalFunctions->operationSave('App/Wallet',Auth::user()->id,$request->input('amount'));
+      $saveDriverOperationId = $generalFunctions->operationSave('App\Wallet',Auth::user()->id,$request->input('amount'));
       // generar la factura (bills) y la realcion con la operacion
       $saveBill = $generalFunctions->billSave($request->input('amount'),'Compra de credito',$saveDriverOperationId);
       // generar venta de la compania (company_sales)

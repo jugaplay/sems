@@ -241,7 +241,7 @@ class InfringementsController extends Controller
                     ]);
               if ($request->input('payment') > 0) {
                   // grabar operacion
-                  $saveOperationId = $generalFunctions->operationSave('App/Infringement',$request->input('infringementId'),$request->input('payment'));
+                  $saveOperationId = $generalFunctions->operationSave('App\Infringement',$request->input('infringementId'),$request->input('payment'));
                   // Actualizar el ticket con el id de la operacion.
                   $Infringement = Infringement::where('id',$request->input('infringementId'))
                       ->update([
@@ -390,7 +390,7 @@ class InfringementsController extends Controller
           $infringement->details()->save($detail);
           // Hago lo necesario para cerrarlo
           // grabar operacion
-          $saveOperationId = $generalFunctions->operationSave('App/Infringement',$infringementId,$closePrice);
+          $saveOperationId = $generalFunctions->operationSave('App\Infringement',$infringementId,$closePrice);
           // Actualizar el ticket con el id de la operacion.
               $infringement->update([
                 'situation'    => 'close', //(before/saved/voluntary/judge/close/preclose)

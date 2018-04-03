@@ -135,8 +135,43 @@ function parseInverseAccountType($type){
       break;
   }
 }
-
-
+function parseOperationalType($type){
+  switch ($type) {
+    case "App\ExeptuatedVehicle":
+      return "Vehículo exceptuado";
+      break;
+    case "App\Ticket":
+      return "Ticket";
+      break;
+    case "App\Wallet":
+      return "Billetera";
+      break;
+    case "App\SpaceReservation":
+      return "Espacio reservado";
+      break;
+    case "App\ExeptuatedVehicleBlock":
+      return "Vehículo exceptuado";
+      break;// Asistente
+    case "App\Infringement":
+      return "Infracción";
+      break;
+    default:
+      return "otro";
+      break;
+  }
+}
+function parseTicketType($type){
+  switch ($type) {
+    case "time":
+      return "Tiempo";
+      break;
+    case "day":
+      return "Estadía";
+      break;
+      return "otro";
+      break;
+  }
+}
 /*
 Descripción: El algoritmo del punto en un polígono permite comprobar mediante
 programación si un punto está dentro de un polígono o fuera de ello.

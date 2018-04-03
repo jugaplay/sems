@@ -14,7 +14,7 @@ class Operation extends Model
     ];
 
     public function bill(){// No se permite usar has one con un pivot table
-          return $this->belongsToMany('App\Bill',$table='operation_bills');
+          return ($this->belongsToMany('App\Bill',$table='operation_bills')->count()>0)?$this->belongsToMany('App\Bill',$table='operation_bills')->first():NULL;
         }
 
 }

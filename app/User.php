@@ -59,6 +59,17 @@ class User extends Authenticatable
         return $objet->actualDebtCost();
       })->sum();
     }
+    public function bills(){
+      // Las wallets / tickets / billSave
+      $wallets = $this->wallet->operations->transform(function($objet){
+        return $objet->bill(); })->reject(function ($item) { return is_null($item); });
+      $tickets = $this->tickets->transform(function($objet){
+        return $objet->operation->bill(); })->reject(function ($item) { return is_null($item); });
+      $infringements = $this->infringements()->transform(function($objet){
+        return $objet->operation->bill(); })->reject(function ($item) { return is_null($item); });
+      $colection=$wallets->merge($infringements)->merge($tickets)->sortByDesc('date');
+      return $colection;
+    }
 
     // Tickets Movements bills
     /**

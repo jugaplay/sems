@@ -72,7 +72,7 @@ class ExeptuatedVehiclesController extends Controller
               return response()->json(["error"=>"Error creando el vehiculo exceptuado en la base de datos"],422);
             }
             // Grabar la operacion
-            $saveOperationId = $generalFunctions->operationSave('App/ExeptuatedVehicle',$exeptuatedVehicleid,$request->input('createCost'));
+            $saveOperationId = $generalFunctions->operationSave('App\ExeptuatedVehicle',$exeptuatedVehicleid,$request->input('createCost'));
             // Actualizar el exeptuated_vehicles con el id de la operacion.
             $vehicle = ExeptuatedVehicle::where('id', $exeptuatedVehicleid)->update(['operation_id' => $saveOperationId]);
             if ($request->input('createCost') > 0) {// Si el precio es mayor a 0 genera la venta de la compania y la factura
