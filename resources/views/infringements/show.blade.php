@@ -76,7 +76,7 @@
                         <!-- /.panel-body -->
                         </div>
                         <!-- /.panel-body -->
-
+                        @if(Auth::user()->type!="driver")
                         <div class="panel-footer timeline-livelines">
                             <form action="POST" id="addCommentForm" url="http://127.0.0.1:8000/infringements/comments">
                                 <a class="kit-avatar kit-avatar-28 no-border pull-left" href="#">
@@ -94,6 +94,7 @@
                                 </div>
                             </form>
                         </div>
+                        @endif
                         <!-- /.panel-footer -->
                     </div>
                     <!-- /.panel -->
@@ -271,7 +272,7 @@
                 </div>
             </div>
             <!-- /.row -->
-            @if($infringement->situation!="close")
+            @if($infringement->situation!="close" && Auth::user()->type!="driver")
             <div class="row">
                 <div class="col-xs-12 text-center">
                     <div class="btn-divider mr-2x mb-1x" role="divider">

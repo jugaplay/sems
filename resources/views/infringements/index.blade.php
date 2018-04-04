@@ -5,6 +5,9 @@
     @case("judge")
         @include('infringements.judge')
         @break
+    @case("driver")
+        @include('infringements.driver')
+        @break
     @default
         @include('error.index')
 @endswitch

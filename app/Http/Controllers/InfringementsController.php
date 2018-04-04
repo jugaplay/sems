@@ -32,6 +32,10 @@ class InfringementsController extends Controller
           $infringements=Infringement::where('situation',"!=","before")->orderBy('updated_at','desc')->paginate(3);
           return view('infringements.index',['infringements'=>$infringements]);
         }
+        if(Auth::user()->type=="driver" && Auth::user()->account_status!="B" ){
+          $infringements=Auth::user()->infringements()->sortByDesc('date');
+          return view('infringements.index',['infringements'=>$infringements]);
+        }
       }
         return view('infringements.index');
     }
@@ -161,6 +165,14 @@ class InfringementsController extends Controller
           if(Auth::user()->type=="judge" && Auth::user()->account_status!="B" ){
             return view('infringements.show',['infringement'=>$infringement]);
           }
+          if(Auth::user()->type=="driver" && Auth::user()->account_status!="B" ){
+            if(count(Auth::user()->infringements()->where('id',$infringement->id)->first())>0){
+                return view('infringements.show',['infringement'=>$infringement]);
+            }else{// No tiene permiso para ver esta multa
+              return view('error.index');
+            }
+          }
+          // Probar si esta dentro de las infrigments del usuario
         }
           return view('error.index');
 

@@ -141,9 +141,11 @@
                         <div class="panel-heading">
                             <div class="panel-control pull-right" id="demoBtn">
 
-                                <a href="#" class="btn btn-success btn-nofill">
+                              @if (count(Auth::user()->infringements())>0)
+                                <a href="{{ route('infringements.index') }}" class="btn btn-success btn-nofill">
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                 </a>
+                              @endif
                             </div>
                             <h3 class="panel-title">
                                 <i class="fa fa-minus-circle fa-fw"></i>Multas</h3>
@@ -184,10 +186,11 @@
                     <div class="panel-heading">
                         <div class="panel-heading">
                             <div class="panel-control pull-right" id="demoBtn">
-
-                                <a href="#" class="btn btn-success btn-nofill">
+                              @if (count(Auth::user()->infringements())>0)
+                                <a href="{{ route('infringements.index') }}" class="btn btn-success btn-nofill">
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                 </a>
+                              @endif
                             </div>
                             <h3 class="panel-title">
                                 <i class="fa fa-ticket fa-fw"></i>Tickets</h3>
