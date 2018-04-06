@@ -93,6 +93,12 @@ Route::resource('infringements','InfringementsController');
 
 Route::resource('infringementcauses','InfringementCausesController');
 
+Route::get('vouchers/operations','VouchersController@operations')->name('vouchers.operations');
+Route::get('vouchers/tickets','VouchersController@tickets')->name('vouchers.tickets');
+Route::get('vouchers/bills','VouchersController@bills')->name('vouchers.bills');
+Route::post('vouchers/tickets/search','VouchersController@ticketSearch')->name('vouchers.tickets.search');
+Route::post('vouchers/infringements/search','VouchersController@infringementsSearch')->name('vouchers.infringements.search');
+Route::get('vouchers/infringements/{infringement}{token?}','VouchersController@infringementShow')->name('vouchers.infringements.show');
 Route::resource('vouchers','VouchersController');
 
 // Estadisticas

@@ -38,7 +38,7 @@ class InfringementsController extends Controller
         }
       }
         return view('infringements.index');
-    }
+    }    
     public function filter(Request $request)
     {
       $infringementStarts=$request->input('infringementStarts');

@@ -16,10 +16,16 @@
         <!-- /.content-hero -->
 
         <div class="content-body">
+          <div class="row">
             <div class="col-xs-12">
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-6">
-                        <a href="sell_tickets.html" style="color: inherit;">
+                      <a href="sell_tickets.html" style="color: inherit;">
+                      @if (count(Auth::user()->infringements())>0)
+                        <a href="{{ route('infringements.index') }}" style="color: inherit;">
+                      @else
+                        <a href="#" style="color: inherit;">
+                      @endif
                             <div class="panel fade in panel-default" data-init-panel="true">
                                 <div class="panel-body">
                                   @if(Auth::user()->infringementsDebt()>0)
@@ -68,7 +74,7 @@
                     <!-- /.cols -->
 
                     <div class="col-lg-4 col-md-6 col-sm-6">
-                        <a href="#" id="bootbox-search-voucher" style="color: inherit;">
+                        <a href="#"  id="bootbox-search-voucher" style="color: inherit;">
                             <div class="panel fade in panel-default" data-init-panel="true">
                                 <div class="panel-body">
                                     <div class="media">
@@ -101,7 +107,7 @@
                     <!-- /.cols -->
 
                     <div class="col-lg-4 col-md-6 col-sm-6">
-                        <a href="#" id="bootbox-search-voucher" style="color: inherit;">
+                        <a href="#" id="bootbox-search-infraction" style="color: inherit;">
                             <div class="panel fade in panel-default" data-init-panel="true">
                                 <div class="panel-body">
                                     <div class="media">
@@ -134,25 +140,22 @@
                     <!-- /.cols -->
                 </div>
             </div>
-
+          </div>
+          <div class="row">
             <div class="col-md-6">
                 <div class="panel fade in panel-danger" data-context="info" data-init-panel="true">
                     <div class="panel-heading">
-                        <div class="panel-heading">
-                            <div class="panel-control pull-right" id="demoBtn">
-
-                              @if (count(Auth::user()->infringements())>0)
-                                <a href="{{ route('infringements.index') }}" class="btn btn-success btn-nofill">
-                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                </a>
-                              @endif
-                            </div>
-                            <h3 class="panel-title">
-                                <i class="fa fa-minus-circle fa-fw"></i>Multas</h3>
+                        <div class="panel-control pull-right">
+                          @if (count(Auth::user()->infringements())>0)
+                            <a href="{{ route('infringements.index') }}" class="btn btn-success btn-nofill">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                            </a>
+                          @endif
                         </div>
+                        <h3 class="panel-title"><i class="fa fa-minus-circle fa-fw"></i>Multas</h3>
                     </div>
                     <!-- /.panel-heading -->
-                    <div class="panel-body">
+                    <div class="panel-body" style="overflow-x: auto;">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -184,20 +187,17 @@
             <div class="col-md-6">
                 <div class="panel fade in panel-info" data-context="info" data-init-panel="true">
                     <div class="panel-heading">
-                        <div class="panel-heading">
-                            <div class="panel-control pull-right" id="demoBtn">
-                              @if (count(Auth::user()->infringements())>0)
-                                <a href="{{ route('infringements.index') }}" class="btn btn-success btn-nofill">
+                            <div class="panel-control pull-right">
+                              @if (Auth::user()->tickets->count()>0)
+                                <a href="{{ route('vouchers.tickets') }}" class="btn btn-success btn-nofill">
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                 </a>
                               @endif
                             </div>
-                            <h3 class="panel-title">
-                                <i class="fa fa-ticket fa-fw"></i>Tickets</h3>
-                        </div>
+                            <h3 class="panel-title"><i class="fa fa-ticket fa-fw"></i>Tickets</h3>
                     </div>
                     <!-- /.panel-heading -->
-                    <div class="panel-body">
+                    <div class="panel-body" style="overflow-x: auto;">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -228,19 +228,17 @@
             <div class="col-md-6">
                 <div class="panel fade in panel-info" data-context="info" data-init-panel="true">
                     <div class="panel-heading">
-                        <div class="panel-heading">
-                            <div class="panel-control pull-right" id="demoBtn">
-
-                                <a href="#" class="btn btn-success btn-nofill">
-                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                            <h3 class="panel-title">
-                                <i class="fa fa-money fa-fw"></i>Movimientos</h3>
+                        <div class="panel-control pull-right">
+                          @if (Auth::user()->wallet->operations->count()>0)
+                            <a href="{{ route('vouchers.operations') }}" class="btn btn-success btn-nofill">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                            </a>
+                          @endif
                         </div>
+                        <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>Movimientos</h3>
                     </div>
                     <!-- /.panel-heading -->
-                    <div class="panel-body">
+                    <div class="panel-body" style="overflow-x: auto;">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -252,9 +250,9 @@
                             <tbody>
                               @foreach (Auth::user()->wallet->operations->sortByDesc('created_at')->take(5) as $operation)
                                 <tr>
-                                  <td>{{parseOperationalType($operation->operational_type)}}</td>
+                                  <td>{{parseOperationalType($operation->operational_type, $operation->amount)}}</td>
                                   <td>{{ parseDateString($operation->created_at)}}</td>
-                                  <td>$ {{ $ticket->operation->amount}}</td>
+                                  <td>$ {{ $operation->amount}}</td>
                                 </tr>
                              @endforeach
                             </tbody>
@@ -268,19 +266,15 @@
             <div class="col-md-6">
                 <div class="panel fade in panel-info" data-context="info" data-init-panel="true">
                     <div class="panel-heading">
-                        <div class="panel-heading">
-                            <div class="panel-control pull-right" id="demoBtn">
-
-                                <a href="#" class="btn btn-success btn-nofill">
-                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                            <h3 class="panel-title">
-                                <i class="fa fa-pencil-square-o fa-fw"></i>Facturas</h3>
+                        <div class="panel-control pull-right">
+                              <a href="{{ route('vouchers.bills') }}" class="btn btn-success btn-nofill">
+                                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                              </a>
                         </div>
+                        <h3 class="panel-title"><i class="fa fa-pencil-square-o fa-fw"></i>Facturas</h3>
                     </div>
                     <!-- /.panel-heading -->
-                    <div class="panel-body">
+                    <div class="panel-body" style="overflow-x: auto;">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -305,6 +299,8 @@
                 <!-- /.panel -->
             </div>
             <!-- /.col-md-6 -->
+          </div>
+          <!-- /.row-->
         </div>
         <!-- /.content-body -->
     </div>
@@ -314,5 +310,5 @@
 
 @push('scripts')
 <!-- COMPONENTS -->
-
+<script src="{{URL::to('/scripts/sems/search-vouchers-infractions.js')}}"></script>
 @endpush

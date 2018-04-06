@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+//use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -48,7 +49,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return view('error.index');
-        //return parent::render($request, $exception);
+        //return view('error.index');
+        /*if($e instanceof NotFoundHttpException)
+         {
+             return view('error.index');
+         }*/
+        return parent::render($request, $exception);// Aca muestra el error por pantalla
     }
 }

@@ -64,3 +64,9 @@
         </ul>
       </div>
     </aside><!-- /.SIDEBAR -->
+    @push('scripts')
+    <!-- COMPONENTES GRALES de Drivers -->
+      <script>
+        window.ajax_token = '{{ csrf_token() }}';
+      </script>
+    @endpush

@@ -135,7 +135,7 @@ function parseInverseAccountType($type){
       break;
   }
 }
-function parseOperationalType($type){
+function parseOperationalType($type, $amount=null){
   switch ($type) {
     case "App\ExeptuatedVehicle":
       return "Vehículo exceptuado";
@@ -144,7 +144,11 @@ function parseOperationalType($type){
       return "Ticket";
       break;
     case "App\Wallet":
-      return "Billetera";
+      if($amount!=null){
+        return ($amount>0)?"Recarga":"Compra";
+      }else{
+        return "Billetera";
+      }
       break;
     case "App\SpaceReservation":
       return "Espacio reservado";

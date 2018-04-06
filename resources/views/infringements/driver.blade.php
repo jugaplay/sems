@@ -13,7 +13,7 @@
             <!-- /.content-hero-body -->
         </div>
         <!-- /.content-hero -->
-        <div class="content-body">            
+        <div class="content-body">
             <div class="row">
                 <div class="col-xs-12">
                     <h2><i>{{ count($infringements) }} </i>Resultados</i></h2>
@@ -71,5 +71,5 @@
 <script src="{{URL::to('scripts/moment.js')}}"></script>
 <script src="{{URL::to('scripts/daterangepicker.js')}}"></script>
 <!-- END COMPONENTS -->
-<script src="{{URL::to('scripts/sems/judge-infractions.js')}}"></script>
+
 @endpush

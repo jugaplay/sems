@@ -20,5 +20,7 @@ class Bill extends Model
       'date',
       'detail',
     ];
-
+    function pdf (){
+      return "/images/ejemplo/FACTURAC-0003-00000082.pdf";
+    }
 }

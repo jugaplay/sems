@@ -4,7 +4,7 @@
 <section class="content-wrapper" role="main" data-init-content="true">
     <div class="content">
         <div id="content-hero" class="content-hero">
-            <img class="content-hero-embed" src="../images/dummy/people4.jpg" alt="cover">
+            <img class="content-hero-embed" src="{{URL::to('images/dummy/people4.jpg')}}" alt="cover">
             <div class="content-hero-overlay bg-grd-blue"></div>
             <div class="content-hero-body">
                 <!-- /.content-bar -->
@@ -78,7 +78,7 @@
                         <!-- /.panel-body -->
                         @if(Auth::user()->type!="driver")
                         <div class="panel-footer timeline-livelines">
-                            <form action="POST" id="addCommentForm" url="http://127.0.0.1:8000/infringements/comments">
+                            <form action="POST" id="addCommentForm" url="/infringements/comments">
                                 <a class="kit-avatar kit-avatar-28 no-border pull-left" href="#">
                                     <img class="media-object" src="{{URL::to(imgOfTypeOfUser(Auth::user()->type))}}">
                                 </a>
