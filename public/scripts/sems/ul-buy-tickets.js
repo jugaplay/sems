@@ -11,11 +11,7 @@
     source: substringMatcher(cars)
   });
 })(window);
-function upperCaseF(a){
-    setTimeout(function(){
-        a.value = a.value.toUpperCase();
-    }, 1);
-}
+
 function substringMatcher(strs) {
   return function findMatches(q, cb) {
     var matches, substrRegex;

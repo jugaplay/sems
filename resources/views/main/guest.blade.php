@@ -15,7 +15,7 @@
                                 </a>
                             </div>
                             <div class="col-sm-8">
-                                <a href="login.html">
+                                <a href="{{ route('login') }}">
                                     <div class="visible-xs">
                                         <h2 class="display-name media-heading text-teal">Anonimo</h2>
                                         <p class="text-muted mb-4x">
@@ -39,16 +39,12 @@
                     <div class="col-lg-6">
                         <h4 class="text-muted">Billetera</h4>
                         <div class="row">
-
                             <div class="col-xs-6">
-                                <span class="headline credit less" style="
-      background: transparent;
-  ">
+                                <span class="headline credit less" style="background: transparent;">
                                     <strong>$ ....</strong>
                                 </span>
                                 <p>SALDO</p>
                             </div>
-
                         </div>
                     </div>
                     <!-- /.cols -->
@@ -62,7 +58,7 @@
         <div class="content-body">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="buy_tickets.html" style="color: inherit;">
+                    <a href="javascript:openBuyTickets()" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
@@ -102,8 +98,7 @@
                                     <div class="media-left">
                                         <span class="fa-stack fa-2x">
                                             <i class="fa fa-circle fa-stack-2x text-violet"></i>
-                                            <i class="fa fa fa-search
-fa-stack-1x fa-inverse"></i>
+                                            <i class="fa fa fa-search fa-stack-1x fa-inverse"></i>
                                         </span>
                                     </div>
                                     <div class="media-body">
@@ -128,15 +123,14 @@ fa-stack-1x fa-inverse"></i>
                 </div>
                 <!-- /.cols -->
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="#" id="bootbox-search-voucher" style="color: inherit;">
+                    <a href="#" id="bootbox-search-infraction" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
                                     <div class="media-left">
                                         <span class="fa-stack fa-2x">
                                             <i class="fa fa-circle fa-stack-2x text-grey"></i>
-                                            <i class="fa fa fa-search
-    fa-stack-1x fa-inverse"></i>
+                                            <i class="fa fa fa-search fa-stack-1x fa-inverse"></i>
                                         </span>
                                     </div>
                                     <div class="media-body">
@@ -161,7 +155,7 @@ fa-stack-1x fa-inverse"></i>
                 </div>
                 <!-- /.cols -->
                 <div class="col-lg-4 col-md-6 col-sm-6">
-                    <a href="load_credit.html" style="color: inherit;">
+                    <a href="{{ route('login') }}" style="color: inherit;">
                         <div class="panel fade in panel-default" data-init-panel="true">
                             <div class="panel-body">
                                 <div class="media">
@@ -199,3 +193,7 @@ fa-stack-1x fa-inverse"></i>
     </div>
     <!-- /.content -->
 </section>
+@push('scripts')
+<!-- COMPONENTS -->
+<script src="{{URL::to('/scripts/sems/search-vouchers-infractions.js')}}"></script>
+@endpush

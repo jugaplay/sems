@@ -76,24 +76,26 @@
                         <!-- /.panel-body -->
                         </div>
                         <!-- /.panel-body -->
-                        @if(Auth::user()->type!="driver")
-                        <div class="panel-footer timeline-livelines">
-                            <form action="POST" id="addCommentForm" url="/infringements/comments">
-                                <a class="kit-avatar kit-avatar-28 no-border pull-left" href="#">
-                                    <img class="media-object" src="{{URL::to(imgOfTypeOfUser(Auth::user()->type))}}">
-                                </a>
-                                <div class="input-group input-group-in no-border">
-                                    <input  type="hidden" name="infringementId" value="{{$infringement->id}}" >
-                                    <input class="form-control" id="infringementComment" name="infringementComment" placeholder="Escribir un comentario ...">
-                                    {{csrf_field()}}
-                                    <div class="input-group-btn">
-                                        <button type="submit" class="btn" data-loading-text="<i class='fa fa-spinner fa-spin'></i>">
-                                            <i class="fa fa-chevron-circle-right"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                        @if(Auth::check())
+                          @if(Auth::user()->type!="driver")
+                          <div class="panel-footer timeline-livelines">
+                              <form action="POST" id="addCommentForm" url="/infringements/comments">
+                                  <a class="kit-avatar kit-avatar-28 no-border pull-left" href="#">
+                                      <img class="media-object" src="{{URL::to(imgOfTypeOfUser(Auth::user()->type))}}">
+                                  </a>
+                                  <div class="input-group input-group-in no-border">
+                                      <input  type="hidden" name="infringementId" value="{{$infringement->id}}" >
+                                      <input class="form-control" id="infringementComment" name="infringementComment" placeholder="Escribir un comentario ...">
+                                      {{csrf_field()}}
+                                      <div class="input-group-btn">
+                                          <button type="submit" class="btn" data-loading-text="<i class='fa fa-spinner fa-spin'></i>">
+                                              <i class="fa fa-chevron-circle-right"></i>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </form>
+                          </div>
+                          @endif
                         @endif
                         <!-- /.panel-footer -->
                     </div>
@@ -272,16 +274,18 @@
                 </div>
             </div>
             <!-- /.row -->
-            @if($infringement->situation!="close" && Auth::user()->type!="driver")
-            <div class="row">
-                <div class="col-xs-12 text-center">
-                    <div class="btn-divider mr-2x mb-1x" role="divider">
-                        <button type="button" class="btn btn-lg btn-default" onclick="dontChargeInfraction()">Perdonar</button>
-                        <span class="label-divider">o</span>
-                        <button type="button" class="btn btn-lg btn-success" onclick="chargeInfraction({'voluntary_cost':{{$infringement->voluntary_cost}},'voluntary_end_date':'{{$infringement->voluntary_end_date}}','cost':'{{$infringement->cost}}'})">Cobrar</button>
-                    </div>
-                </div>
-            </div>
+            @if(Auth::check())
+              @if($infringement->situation!="close" && Auth::user()->type!="driver")
+              <div class="row">
+                  <div class="col-xs-12 text-center">
+                      <div class="btn-divider mr-2x mb-1x" role="divider">
+                          <button type="button" class="btn btn-lg btn-default" onclick="dontChargeInfraction()">Perdonar</button>
+                          <span class="label-divider">o</span>
+                          <button type="button" class="btn btn-lg btn-success" onclick="chargeInfraction({'voluntary_cost':{{$infringement->voluntary_cost}},'voluntary_end_date':'{{$infringement->voluntary_end_date}}','cost':'{{$infringement->cost}}'})">Cobrar</button>
+                      </div>
+                  </div>
+              </div>
+              @endif
             @endif
         </div>
         <!-- /.content-body -->

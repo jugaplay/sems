@@ -2,7 +2,7 @@
       <div class="sidebar-block" style="">
         <div class="media">
           <div class="media-left">
-            <a href="page-profile.html">
+            <a href="{{ route('home') }}">
               <img class="media-object img-circle" src="{{URL::to('images/dummy/uifaces20.jpg')}}" alt="photo profile">
             </a>
           </div>
@@ -22,14 +22,14 @@
           <li class="divider"></li>
           <li class="nav-header credit" role="presentation">SALDO</li>
           <li class="nav-item credit less" role="presentation">
-            <a href="login.html">
+            <a href="{{ route('login') }}">
               <span class="nav-text"><i class="fa fa-usd"></i> ...</span>
             </a>
           </li>
           <li class="divider"></li>
           <li class="nav-header" role="presentation">COMPRAR</li>
           <li class="nav-item" role="presentation">
-            <a href="buy_tickets.html">
+            <a href="javascript:openBuyTickets()">
               <span class="nav-icon"><i class="fa fa-ticket"></i></span>
               <span class="nav-text">Tickets</span>
             </a>
@@ -69,4 +69,5 @@
       <script>
         window.ajax_token = '{{ csrf_token() }}';
       </script>
+      <script src="{{URL::to('scripts/sems/general_driver.js')}}"></script>
     @endpush

@@ -20,14 +20,7 @@
             <ul class="dropdown-menu dropdown-menu-right" role="menu" style="opacity: 0; display: none; transform: scaleX(1) scaleY(1) translateY(0px); transform-origin: 50% 50% 0px;">
               <li role="presentation" class="" style="opacity: 1; display: list-item; transform: translateY(0px);"><a role="menuitem" tabindex="-1" href="ayuda.html"><span class="pull-right"><i class="fa fa-question-circle text-muted"></i></span>Ayuda</a></li>
               <li class="divider" style="opacity: 1; display: list-item; transform: translateY(0px);"></li>
-              <li role="presentation" class="" style="opacity: 1; display: list-item; transform: translateY(0px);"><a role="menuitem" tabindex="-1" href="login.html"><span class="pull-right"><i class="fa fa-sign-in text-muted"></i></span>Ingresar</a></li>
-              <li role="presentation" class="" style="opacity: 1; display: list-item; transform: translateY(0px);"><a role="menuitem" tabindex="-1" href="{{ route('logout') }}"
-                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <span class="pull-right"><i class="fa fa-sign-out text-muted"></i></span>Salir</a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    {{ csrf_field() }}
-                </form>
-              </li>
+              <li role="presentation" class="" style="opacity: 1; display: list-item; transform: translateY(0px);"><a role="menuitem" tabindex="-1" href="{{ route('login') }}"><span class="pull-right"><i class="fa fa-sign-in text-muted"></i></span>Ingresar</a></li>
             </ul>
           </div><!-- /.dropdown -->
         </div><!-- /navigation -->

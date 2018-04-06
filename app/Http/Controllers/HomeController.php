@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth'); // Lo saco por que puede entrar sin estar logueado
     }
 
     /**

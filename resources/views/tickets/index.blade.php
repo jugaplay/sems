@@ -1,13 +1,17 @@
-@switch(Auth::user()->type)
-    @case("driver")
-        @include('tickets.driver')
-        @break
-    @case("inspector")
-        @include('tickets.inspector')
-        @break
-    @case("local")
-        @include('tickets.local')
-        @break
-    @default
-        @include('error.index')
-@endswitch
+@if(Auth::check())
+  @switch(Auth::user()->type)
+      @case("driver")
+          @include('tickets.driver')
+          @break
+      @case("inspector")
+          @include('tickets.inspector')
+          @break
+      @case("local")
+          @include('tickets.local')
+          @break
+      @default
+          @include('error.index')
+  @endswitch
+@else
+  @include('tickets.guest')
+@endif

@@ -130,11 +130,6 @@
     });
   });
 })(window);
-function upperCaseF(a){
-    setTimeout(function(){
-        a.value = a.value.toUpperCase();
-    }, 1);
-}
 function searchForVoucher(plate,code){
   toastr.success( 'Cargando...' );
   var datas = JSON.stringify({"plate":plate,"code":code});

@@ -8,7 +8,7 @@
             <div class="content-hero-overlay bg-grd-blue"></div>
             <div class="content-hero-body">
                 <!-- /.content-bar -->
-                <h1 style="color: white;">VENDER TICKETS</h1>
+                <h1 style="color: white;">COMPRAR TICKETS</h1>
             </div>
             <!-- /.content-hero-body -->
         </div>
@@ -55,14 +55,7 @@
                                     <!--/input-group-in-->
                                 </div>
                                 <!--/form-group-->
-                                <div class="form-group form-group-lg">
-                                    <label for="sel1">Tipo de pago:</label>
-                                    <select class="form-control" name="ticketPayment" id="ticketPayment">
-                                        <option value="EF">Efectivo</option>
-                                        <option value="ON">Online</option>
-                                    </select>
-                                </div>
-                                <!--/form-group-->
+                                <input type="hidden" name="ticketPayment" id="ticketPayment" value="ON">
                                 <!--/form-group-->
                                 <div class="form-group form-group-lg">
                                     {{csrf_field()}}
@@ -93,8 +86,6 @@
                     <!-- /.col-md-6 col-md-offset-3 col-xs-12 -->
                     <input type="hidden" id="price-time" value="{{ $priceTime }}" />
                     <input type="hidden" id="price-day" value="{{ $priceDay }}" />
-                    <input type="hidden" id="wallet-balance" value="{{Auth::user()->wallet->balance}}" />
-                    <input type="hidden" id="wallet-credit" value="{{Auth::user()->wallet->credit}}" />
                 </div>
                 <!-- /.col-md-6 col-md-offset-3 col-xs-12 -->
             </div>
@@ -108,5 +99,5 @@
 
 @push('scripts')
 <!-- COMPONENTS -->
-  <script src="scripts/sems/tickets.js"></script>
+  <script src="{{URL::to('scripts/sems/tickets-guest.js')}}"></script>
 @endpush

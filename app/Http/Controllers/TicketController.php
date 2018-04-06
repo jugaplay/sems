@@ -136,12 +136,12 @@ class TicketController
     // En el request le tengo que mandar el LatLng
     // Busca el bloque, sino busca el mas cercano!
     // Lo llamo strong search
+    $generalFunctions = new generalFunctions();
+    $block=$generalFunctions->returnForcedBlockFromLatLng(json_decode($request->input('latlng')));// Si o si devuelve un bloque
+    $priceTime = $block->priceBlock('time');
+    $priceDay = $block->priceBlock('day');
     if(Auth::check()){
       if(Auth::user()->type=='driver'){
-        $generalFunctions = new generalFunctions();
-        $block=$generalFunctions->returnForcedBlockFromLatLng(json_decode($request->input('latlng')));// Si o si devuelve un bloque
-        $priceTime = $block->priceBlock('time');
-        $priceDay = $block->priceBlock('day');
         $ownedCars=Auth::user()->vehicles()->get()->transform(function($objet,$key){
           return $objet->plate;
         });
@@ -150,7 +150,7 @@ class TicketController
         return view('tickets.index');
       }
     }else{// No esta logeado
-      return view('auth.login');
+      return view('tickets.index',['priceTime'=>$priceTime,'priceDay'=>$priceDay,'block_id'=>$block->id]);
     }
       //return view('tickets.driverticket',['user'=>Auth::user()]);
   }
