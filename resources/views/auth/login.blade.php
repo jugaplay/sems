@@ -7,28 +7,28 @@
       <img src="/images/logo/brand-text-color.png" alt="wrapkit" height="28px">
     </p>
     <div class="tab-pane fade in active" id="signin">
-      <form id="signinForm"  method="POST" action="{{ route('login') }}">
+      <form id="signinForm"  method="POST">
         {{ csrf_field() }}
-        <p class="lead">Entra a tu cuenta</p>
+        <p class="lead">Entrá a tu cuenta</p>
         <div class="form-group">
           <div class="input-group input-group-in">
             <span class="input-group-addon"><i class="icon-user"></i></span>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="Mail">
+            <input id="loginEmail" type="email" name="loginEmail" value="{{ old('loginEmail') }}" class="form-control" placeholder="Mail" required="required">
           </div>
         </div><!-- /.form-group -->
         <div class="form-group">
           <div class="input-group input-group-in">
             <span class="input-group-addon"><i class="icon-lock"></i></span>
-            <input type="password" name="password"  id="password" class="form-control" placeholder="Contraseña">
+            <input type="password" name="loginPassword"  id="loginPassword" class="form-control" placeholder="Contraseña" required="required">
           </div>
         </div><!-- /.form-group -->
         <div class="form-group clearfix">
           <div class="animated-hue pull-right">
-            <button id="btnSignin" type="submit" class="btn btn-primary">Ingresar</button>
+            <button type="submit" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Procesando" class="btn btn-primary">Ingresar</button>
           </div>
           <div class="nice-checkbox nice-checkbox-inline">
-            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-            <label for="keepSignin">Recordar</label>
+              <input type="checkbox" name="loginRemember" id="loginRemember1" checked="checked">
+              <label for="loginRemember1">Recordar</label>
           </div>
         </div><!-- /.form-group -->
         <hr>
@@ -39,93 +39,63 @@
     </div><!-- /.tab-pane -->
 
     <div class="tab-pane fade" id="signup">
-      <form id="signupForm" action="main.html" role="form">
+      <form id="signupForm"  role="form">
         <p class="lead">Crear una cuenta</p>
         <p class="text-muted"><strong>Ingresa tus datos</strong></p>
         <div class="form-group has-feedback">
           <div class="input-group input-group-in">
-            <span class="input-group-addon"><i class="icon-tag"></i></span>
-            <input name="fullName" id="fullName" class="form-control" placeholder="Full Name">
+            <span class="input-group-addon"><i class="icon-user"></i></span>
+            <input name="registerName" id="registerName" class="form-control" placeholder="Nombre y apellido" required="required">
             <span class="form-control-feedback"></span>
           </div>
         </div><!-- /.form-group -->
         <div class="form-group has-feedback">
           <div class="input-group input-group-in">
             <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-            <input type="emailSignUp" name="emailSignUp" id="emailSignUp" class="form-control" placeholder="Email">
+            <input type="emailSignUp" name="registerEmail" id="registerEmail" class="form-control" placeholder="Email" required="required">
             <span class="form-control-feedback"></span>
           </div>
         </div><!-- /.form-group -->
         <div class="form-group has-feedback">
           <div class="input-group input-group-in">
-            <span class="input-group-addon"><i class="icon-direction"></i></span>
-            <input name="address" id="address" class="form-control" placeholder="Address">
+            <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+            <input type="text" name="registerPhone" id="registerPhone" class="form-control" placeholder="Celular">
             <span class="form-control-feedback"></span>
           </div>
-        </div><!-- /.form-group -->
-        <div class="form-group has-feedback">
-          <div class="input-group input-group-in">
-            <span class="input-group-addon"><i class="icon-location-pin"></i></span>
-            <input name="city" id="city" class="form-control" placeholder="City">
-            <span class="form-control-feedback"></span>
-          </div>
-        </div><!-- /.form-group -->
-        <div class="form-group has-feedback">
-          <div class="input-group input-group-in">
-            <span class="input-group-addon" title="unable to find any Country that match the current query!"><i class="icon-map"></i></span>
-            <input name="country" id="country" class="form-control" placeholder="Countries">
-            <span class="form-control-feedback"></span>
-          </div><!-- /input-group-in -->
-        </div><!-- /.form-group -->
-        <div class="form-group">
-          <label class="control-label" style="margin-right:15px">Gender</label>
-          <div class="nice-radio nice-radio-inline">
-            <input type="radio" name="gender" id="genderMale" value="male" checked="checked">
-            <label for="genderMale">Male</label>
-          </div><!-- /.radio -->
-          <div class="nice-radio nice-radio-inline">
-            <input type="radio" name="gender" id="genderFemale" value="female">
-            <label for="genderFemale">Female</label>
-          </div><!-- /.radio -->
-        </div><!-- /.form-group -->
-
-        <hr>
-
-        <p class="text-muted"><strong>Enter your account data</strong></p>
-        <div class="form-group has-feedback">
-          <div class="input-group input-group-in">
-            <span class="input-group-addon"><i class="icon-user"></i></span>
-            <input name="usrName" id="usrName" class="form-control" placeholder="Username">
-            <span class="form-control-feedback"></span>
-          </div>
-        </div><!-- /.form-group -->
+        </div>
         <div class="form-group has-feedback">
           <div class="input-group input-group-in">
             <span class="input-group-addon"><i class="icon-key"></i></span>
-            <input type="password" name="passwordSignUp" id="passwordSignUp" class="form-control" placeholder="Password">
+            <input type="password" name="registerPassword" id="passwordSignUp" class="form-control" placeholder="Contraseña" required="required">
             <span class="form-control-feedback"></span>
           </div>
         </div><!-- /.form-group -->
         <div class="form-group has-feedback">
           <div class="input-group input-group-in">
             <span class="input-group-addon"><i class="icon-check"></i></span>
-            <input type="password" name="cpassword" id="cpassword" class="form-control" placeholder="Enter Password Again">
+            <input type="password" name="cpassword" id="passwordSignUpRepeat" class="form-control" placeholder="Repetir contraseña" required="required">
             <span class="form-control-feedback"></span>
           </div>
         </div><!-- /.form-group -->
         <div class="form-group animated-hue clearfix">
-          <div class="pull-right">
-            <button type="submit" class="btn btn-primary">Create account</button>
-          </div>
           <div class="pull-left">
-            <a href="/#signin" class="btn btn-default" data-toggle="tab">Signin</a>
+            <div class="nice-checkbox nice-checkbox-inline">
+                <input type="checkbox" name="registerRemember" id="loginRemember2" checked="checked">
+                <label for="loginRemember2">Recordar</label>
+            </div>
+          </div>
+          <div class="pull-right">
+            {{ csrf_field() }}
+            <button type="submit" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Procesando" class="btn btn-primary">Crear cuenta</button>
           </div>
         </div><!-- /.form-group -->
       </form><!-- /#signupForm -->
 
       <hr>
 
-      <p>By creating an account you agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a></p>
+      <p>Creando una cuenta aceptas los <a href="#">términos y condiciones</a> y las <a href="#">políticas de privacidad</a></p>
+      <hr>
+      <p>¿Ya tenes una cuenta? <a href="/#signin" data-toggle="tab">Entra acá</a></p>
     </div><!-- /.tab-pane -->
   </div><!-- /.tab-content -->
 </main><!--/#wrapper-->
@@ -136,7 +106,7 @@
 <div class="modal fade" id="recoverAccount" tabindex="-1" role="dialog" aria-labelledby="recoverAccountLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form id="recoverForm" action="main.html">
+      <form id="recoverForm">
         <div class="modal-header">
           <h4 class="modal-title" id="recoverAccountLabel">Recuperar contraseña</h4>
         </div>
@@ -149,11 +119,17 @@
           </div><!-- /.form-group -->
         </div>
         <div class="modal-footer">
+          {{ csrf_field() }}
           <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn btn-primary">Enviar mail</button>
+          <button type="submit" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Procesando" class="btn btn-primary">Enviar mail</button>
         </div>
       </form><!-- /#recoverForm -->
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /#recoverAccount -->
 @endsection
+
+@push('scripts')
+<!-- COMPONENTS -->
+  <script src="{{URL::to('scripts/sems/login.js')}}"></script>
+@endpush

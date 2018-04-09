@@ -21,15 +21,18 @@ Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Rutas para dar de alta patentes dentro de usuarios
-Route::get('/users/vehicles','UserController@userVehicles')->name('user.vehicles.index');
-Route::post('/users/vehicles','UserController@associateVehicle')->name('user.vehicles.save');
+Route::get('/users/vehicles','UserController@userVehicles')->name('user.vehicles.index')->middleware('auth');
+Route::post('/users/vehicles','UserController@associateVehicle')->name('user.vehicles.save')->middleware('auth');
 
-Route::get('/users/vehiclesOff','UserController@userVehiclesOff')->name('user.vehiclesOff.index');
-Route::post('/users/vehiclesOff','UserController@disassociateVehicle')->name('user.vehiclesOff.save');
+Route::get('/users/vehiclesOff','UserController@userVehiclesOff')->name('user.vehiclesOff.index')->middleware('auth');
+Route::post('/users/vehiclesOff','UserController@disassociateVehicle')->name('user.vehiclesOff.save')->middleware('auth');
 // Esto seria como un segundo update
-Route::post('/users/edit','UserController@profileConfiguration')->name('user.configuration.save');
+Route::post('/users/edit','UserController@profileConfiguration')->name('user.configuration.save')->middleware('auth');
 // corre esta funcion (userVehicles) con este control (UserController)
-Route::get('users/all','UserController@showAll')->name('users.showall');
+Route::get('users/all','UserController@showAll')->name('users.showall')->middleware('auth');
+Route::post('/users/login','UserController@login')->name('user.login');
+Route::post('/users/register','UserController@register')->name('user.register');
+Route::post('/users/recover','UserController@recover')->name('user.recover');
 Route::resource('users','UserController');
 
 

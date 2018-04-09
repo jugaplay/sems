@@ -251,6 +251,9 @@ class UserController extends Controller
           }
           // $request->has('configurationActualPassword') Whatsapp
           if($configurationPassword!=""){ // Si cambio la contraseña, ya cheque arriba que haya ingresado la vieja
+            if(strlen ($configurationPassword)<6){
+              return response()->json(["error"=>"La contraseña debe tener al menos 6 caracteres "],400);
+            }
             Auth::user()->password=bcrypt($configurationPassword);
             if(!Auth::user()->save()){// Lo guarda y lo revisa
               return response()->json(["error"=>"Error actualizando la contraseña del usuario en la base de datos"],422);
@@ -391,6 +394,59 @@ class UserController extends Controller
             echo "Patente = ".$request->input('plate_id'). "<br>" ;
             Auth::user()->vehicles()->detach($request->input('plate_id'));
 
+          }
+          public function register(Request $request){
+            // Creo el registro aca!
+            //return response()->json($request);
+            if (count(User::where('email', $request->input('registerEmail'))->get()) > 0) {
+                return response()->json(["error"=>"El mail ingresado ya se encuentra en uso"],400);
+            }
+            if(strlen ( $request->input('registerPassword'))<6){
+              return response()->json(["error"=>"La contraseña debe tener al menos 6 caracteres "],400);
+            }
+            $user=User::create([
+                'name' => $request->input('registerName'),
+                'email' => $request->input('registerEmail'),
+                'password' => bcrypt($request->input('registerPassword')),
+                'type'=>"driver",
+                'account_status'=>"N",
+            ]);
+            if(strlen($request->input('registerPhone'))>6){
+              $user->phone=$request->input('registerPhone');
+              $user->save();
+            }
+            $userWallet=Wallet::create([
+                'user_id' => $user->id,
+                'balance' => 0,
+                'chips'   => 0,
+                'credit'  => 0,
+                ]);
+           // Genra datos empresa
+           if(!$userWallet->save()){
+             return response()->json(["error"=>"Error creando la billetera"],422);
+           }
+            // tengo que crear la billetera
+            $remember=($request->input('registerRemember')=="on")?true:false;
+            Auth::login($user, $remember);// Remember true/false
+            // Deberia mandar el mail para confirmar el mail
+            return response()->json($user);
+          }
+          public function login(Request $request){
+            // Verifico que la cuenta no este cancelada?
+            $remember=($request->input('loginRemember')=="on")?true:false;
+            if (Auth::attempt(['email' => $request->input('loginEmail'), 'password' => $request->input('loginPassword')], $remember)) {
+                return response()->json(Auth::user());
+            }else{
+              return response()->json(["error"=>"Los datos no corresponden a un usuario registrado"],400);
+            }
+          }
+          public function recover(Request $request){
+            // Creo el registro aca!
+            if (count(User::where('email', $request->input('recoverEmail'))->get()) > 0) {
+              return response()->json(["mail"=>"enviado"]);
+            }else{
+              return response()->json(["error"=>"El mail ingresado no corresponden a un usuario registrado"],400);
+            }
           }
 
 } // function associateVehicle

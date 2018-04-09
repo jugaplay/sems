@@ -56,7 +56,7 @@
   <script src="/scripts/bootbox.js"></script>
   <script src="/scripts/toastr.js"></script>
   <script src="/scripts/sems/general.js"></script>
-
+  @stack('scripts')
 
 
 </body>

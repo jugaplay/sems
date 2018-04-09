@@ -7,6 +7,10 @@ $( document ).on( 'submit', '#configurationForm', function(e){
   $.each( datas, function( i, data ){
     console.log( data.name + ' = ' + data.value );
   });
+  if($("#configurationPassword").val()!="" && $("#configurationPassword").val().length<6){
+    simpleAlert("Al menos 6 caracteres","La contraseña tiene que tener por lo menos 6 caracteres.");
+    return false;
+  }
   if(editSensibleFields()){
     askPassword(datas);
   }else {

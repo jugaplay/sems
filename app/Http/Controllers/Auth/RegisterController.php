@@ -66,6 +66,8 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'type'=>"driver",
+            'account_status'=>"N",
         ]);
     }
 }
