@@ -6,6 +6,7 @@ use App\Block;
 use App\Cost;
 use App\Ticket;
 use App\User;
+use App\Vehicle;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -237,6 +238,7 @@ class TicketController
   public function controlParking(Request $request)
   {
     $data = (object) $request->json()->all();// {"plate":plate,"latlng":latlng}
+    //$data = (object) ["plate"=>"IQW938","latlng"=>[-43.30036707711908,-65.10553647527931]];
     $data->plate=strtoupper($data->plate);
     $generalFunctions = new generalFunctions(); // Instancamos la clase
     if(Auth::check()){
@@ -247,12 +249,17 @@ class TicketController
         }
         $ticket = $generalFunctions->controlTicket($data->plate);
         if(!$ticket){// Ticket solo no se puede
+          // Verifico que no sea un vehiculo exeptuado
+          $vehicle_id = $generalFunctions->registerVehicle($data->plate);// Si no existe el vehiculo lo creo
+          $vehicle=Vehicle::where('id',$vehicle_id)->first();
+          if($vehicle->exeptuatedLatLng($data->latlng)!=false){
+            return response()->json(["exeptuated"=>"Vehículo exceptuado, motivo: ".$vehicle->exeptuatedLatLng($data->latlng)]);
+          }
           if($block->timePriceNow()>0){// Revisa que tenga que cobrar algo
-              registerVehicle($data->plate);// Si no existe el vehiculo lo creo
               $infringement= $generalFunctions->preInfringement($data->plate,$data->latlng);
               return response()->json($infringement);
           }else{
-            return response()->json(["error"=>"El costo actual de esta cuadra es de $0 "]);
+            return response()->json(["cost"=>"El costo actual de esta cuadra es de $0 "]);
           }
         }else {
           $ticket->update(['latlng'=>json_encode($data->latlng),'block_id'=>$block->id,'check'=>Auth::user()->id]);

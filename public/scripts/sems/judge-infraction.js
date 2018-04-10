@@ -37,6 +37,9 @@ $( document ).on( 'submit', '#addCommentForm', function(e){
   $button.button('loading')
   var jqxhr = $.ajax({
                   method: "POST",
+                  headers: {
+                      'X-CSRF-TOKEN': window.ajax_token
+                  },
                   url: window.apiUrl+"infringements/comments",
                   data: datas
                 })
@@ -178,6 +181,9 @@ function chargeInfractionSend(){
   // do server action to save change here ( ajax )
   var jqxhr = $.ajax({
                   method: "POST",
+                  headers: {
+                      'X-CSRF-TOKEN': window.ajax_token
+                  },
                   url: window.apiUrl+"infringements/close",
                   data: datas
                 })

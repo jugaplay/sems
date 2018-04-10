@@ -30,5 +30,9 @@
 function checkTag(tag){
   if(!preVerifiedPlate(tag)){
     $('#domain-input').removeTag(tag);
+  }else{
+    // parse tag
+    var parseTag=parsePlate(tag);
+    if(tag!=parseTag){$('#domain-input').removeTag(tag);$('#domain-input').addTag(parseTag);}
   }
 }

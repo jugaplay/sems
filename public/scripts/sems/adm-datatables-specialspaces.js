@@ -209,6 +209,9 @@
     $button.button('loading')
     var jqxhr = $.ajax({
                     method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': window.ajax_token
+                    },
                     url: window.apiUrl+"spacereservations",
                     data: datas
                   })
@@ -269,6 +272,9 @@
     $button.button('loading')
     var jqxhr = $.ajax({
                     method: "PUT",
+                    headers: {
+                        'X-CSRF-TOKEN': window.ajax_token
+                    },
                     url: window.apiUrl+"spacereservations/"+datas[1].value,
                     data: datas
                   })

@@ -74,3 +74,8 @@
         </ul>
       </div>
     </aside><!-- /.SIDEBAR -->
+    @push('scripts')
+      <script>
+        window.ajax_token = '{{ csrf_token() }}';
+      </script>
+    @endpush

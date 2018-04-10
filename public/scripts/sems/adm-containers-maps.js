@@ -18,6 +18,9 @@
 	//Marco en el mapa los puntos previos
     var jqxhr = $.ajax({
                     method: "GET",
+                    headers: {
+                        'X-CSRF-TOKEN': window.ajax_token
+                    },
                     url: window.apiUrl+"spacereservations/active"
                   })
                   .done(function(xhr) {
@@ -35,7 +38,7 @@
 function markSpecialSpacesInMap(spaces){
   var markerLocation;var latlng;
   for(space in spaces){
-    latlng=JSON.parse(spaces[space].latlng); 
+    latlng=JSON.parse(spaces[space].latlng);
     markerLocation = new L.LatLng(latlng[0],latlng[1]);
     marker = new L.Marker(markerLocation);
     window.map.addLayer(marker);

@@ -15,6 +15,14 @@ class pointLocation {
 
     function pointLocation() {
     }
+        function pointInPolygonLatlng($point, $arrCordenadas){
+          $polygon = array();
+          foreach ($arrCordenadas as $key => $value) {
+              $polygon[] = $value[0]." ".$value[1];
+          }
+          $polygon[] = $arrCordenadas[0][0]." ".$arrCordenadas[0][1]; // La ultima tiene que ser igual a la primera
+          return $this->pointInPolygon($point[0]." ".$point[1],$polygon) > 0;
+        }
 
         function pointInPolygon($point, $polygon, $pointOnVertex = true) {
         $this->pointOnVertex = $pointOnVertex;

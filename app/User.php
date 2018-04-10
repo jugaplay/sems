@@ -66,7 +66,7 @@ class User extends Authenticatable
       $tickets = $this->tickets->transform(function($objet){
         return $objet->operation->bill(); })->reject(function ($item) { return is_null($item); });
       $infringements = $this->infringements()->transform(function($objet){
-        return $objet->operation->bill(); })->reject(function ($item) { return is_null($item); });
+        return ($objet->operation)? $objet->operation->bill():null; })->reject(function ($item) { return is_null($item); });
       $colection=$wallets->merge($infringements)->merge($tickets)->sortByDesc('date');
       return $colection;
     }

@@ -46,6 +46,9 @@ function sendMoneyWithCredit(datas){
   $button.button('loading')
   var jqxhr = $.ajax({
                   method: "POST",
+                  headers: {
+                      'X-CSRF-TOKEN': window.ajax_token
+                  },
                   url: window.apiUrl+"credit",
                   data: datas
                 })

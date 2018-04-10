@@ -5,6 +5,9 @@
 	//Marco en el mapa los puntos previos
     var jqxhr = $.ajax({
                     method: "GET",
+                    headers: {
+                        'X-CSRF-TOKEN': window.ajax_token
+                    },
                     url: window.apiUrl+"infringements/all"
                   })
                   .done(function(xhr) {
@@ -40,19 +43,26 @@ function loadinfringements(infringements){
 
 $( document ).on( 'submit', '#inspectorInfringementForm', function(e){
   e.preventDefault();
+  $("#infringementPlate").val(parsePlate($("#infringementPlate").val()));
   var plate = $("#infringementPlate").val();
   if(!preVerifiedPlate(plate)){
-    
+
     return false;
   }
   // controlPlate
   var  datas = $("#inspectorInfringementForm").serializeArray();
   var latlng=[-43.30036707711908,-65.10553647527931];
   datas.push({name: "latlng", value: JSON.stringify(latlng)});
+  $.each( datas, function( i, data ){
+    console.log( data.name + ' = ' + data.value );
+  });
   var $button = $("#inspectorInfringementForm [type=submit]");
   $button.button('loading')
   var jqxhr = $.ajax({
                   method: "POST",
+                  headers: {
+                      'X-CSRF-TOKEN': window.ajax_token
+                  },
                   url: window.apiUrl+"infringements",
                   data: datas
                 })

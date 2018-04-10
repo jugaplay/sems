@@ -33,9 +33,16 @@ function newInfringement(infringement){
 // Cargar imagenes al servidor
 function uploadInfractionImage(datas,infringementId){
   toastr.info('Cargando imagen <i class="fa fa-spin fa-spin-2x fa-spinner fa-fw"></i>');
+  $.each( datas, function( i, data ){
+    console.log( data.name + ' = ' + data.value );
+  });
+  console.log( "ajax_token" + ' = ' + window.ajax_token );
   var jqxhr = $.ajax({
                   method: "POST",
                   url: window.apiUrl+"infringements/img",
+                  headers: {
+                      'X-CSRF-TOKEN': window.ajax_token
+                  },
                   data: datas
                 })
                 .done(function(xhr) {

@@ -35,7 +35,7 @@
                         <div class="col-sm-4">
                             <div class="input-group input-group-in no-bg no-border">
                                 <div class="input-group-addon no-padding pr-2x"><i class="icon-magnifier"></i></div>
-                                <input class="form-control no-padding" id="infringementText" name="infringementText" value="@if(isset($_GET['infringementText'])) {{$_GET['infringementText']}} @endif" placeholder="Ingresar datos">
+                                <input class="form-control no-padding" id="infringementText" onkeydown="parseSearchInput(this)" name="infringementText" value="@if(isset($_GET['infringementText'])) {{$_GET['infringementText']}} @endif" placeholder="Ingrese patente o DNI">
                             </div>
                         </div>
                         <!-- /.cols -->

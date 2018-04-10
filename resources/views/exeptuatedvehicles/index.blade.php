@@ -61,7 +61,7 @@
                       </div><!-- /.cols -->
                       <div class="col-md-3">
                         <div class="form-group">
-                          <input name="createPlate" id="createPlate" class="form-control input-sm" placeholder="Patente" autocomplete="off" required="">
+                          <input name="createPlate" id="createPlate" onkeydown="parseSearchInput(this)" class="form-control input-sm" placeholder="Patente" autocomplete="off" required="">
                         </div>
                       </div><!-- /.cols -->
                       <div class="col-md-3">
@@ -125,7 +125,7 @@
                       </div><!-- /.cols -->
                       <div class="col-md-3">
                         <div class="form-group">
-                          <input name="editPlate" id="editPlate" class="form-control input-sm" placeholder="Patente" autocomplete="off" required="">
+                          <input name="editPlate" id="editPlate" onkeydown="parseSearchInput(this)" class="form-control input-sm" placeholder="Patente" autocomplete="off" required="">
                         </div>
                       </div><!-- /.cols -->
                       <div class="col-md-3">

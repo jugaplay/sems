@@ -116,6 +116,7 @@
           label: 'Buscar',
           className: 'btn-success',
           callback: function() {
+            $("#searchVoucherPlate").val(parsePlate($("#searchVoucherPlate").val()));
             if(!preVerifiedPlate($("#searchVoucherPlate").val())){
               return false;
             }

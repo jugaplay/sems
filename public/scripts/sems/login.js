@@ -6,6 +6,9 @@ $( document ).on( 'submit', '#signinForm', function(e){
   $button.button('loading')
   var jqxhr = $.ajax({
                   method: "POST",
+                  headers: {
+                      'X-CSRF-TOKEN': window.ajax_token
+                  },
                   url: window.apiUrl+"users/login",
                   data: datas
                 })
@@ -42,6 +45,9 @@ $( document ).on( 'submit', '#signupForm', function(e){
   $button.button('loading')
   var jqxhr = $.ajax({
                   method: "POST",
+                  headers: {
+                      'X-CSRF-TOKEN': window.ajax_token
+                  },
                   url: window.apiUrl+"users/register",
                   data: datas
                 })
@@ -69,6 +75,9 @@ $( document ).on( 'submit', '#recoverForm', function(e){
   $button.button('loading')
   var jqxhr = $.ajax({
                   method: "POST",
+                  headers: {
+                      'X-CSRF-TOKEN': window.ajax_token
+                  },
                   url: window.apiUrl+"users/recover",
                   data: datas
                 })

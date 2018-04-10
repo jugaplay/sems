@@ -2,12 +2,11 @@
 $( document ).on( 'submit', '#ticketFormControl', function(e){
   e.preventDefault();
   // controlPlate
-  var plate = $("#controlPlate").val();
+  var plate = parsePlate($("#controlPlate").val());
   if(!preVerifiedPlate(plate)){
-    
     return false;
   }
-  var latlng=[-43.30036707711908,-65.10553647527931];// va en la cuadra del quiosco
+  var latlng=[-43.29976679330353,-65.1062780839493];// va en la cuadra del quiosco
   var datas = JSON.stringify({"plate":plate,"latlng":latlng});
   var $button = $("#ticketFormControl [type=submit]");
   $button.button('loading')
@@ -26,8 +25,10 @@ $( document ).on( 'submit', '#ticketFormControl', function(e){
                     hasInfringement(xhr.infringement);
                   }else if (xhr.hasOwnProperty('infringement')) {
                     newInfringement(xhr.infringement);
-                  }else if (xhr.hasOwnProperty('error')) {
-                    simpleAlert("Cuadra sin costo",xhr.error);
+                  }else if (xhr.hasOwnProperty('exeptuated')) {
+                    simpleAlert("Vehículo exceptuado",xhr.exeptuated);
+                  }else if (xhr.hasOwnProperty('cost')) {
+                    simpleAlert("Cuadra sin costo",xhr.cost);
                   }else{// tiene ticket
                     hasTicket(xhr.ticket);
                   }

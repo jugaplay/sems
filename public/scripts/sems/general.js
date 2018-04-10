@@ -55,3 +55,11 @@ function upperCaseF(a){
         a.value = a.value.toUpperCase();
     }, 1);
 }
+function parsePlate(plate){
+  return plate.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+}
+function parseSearchInput(a){
+  setTimeout(function(){
+      a.value = a.value.toUpperCase().replace(/[^a-zA-Z0-9]/g, '');
+  }, 1);
+}

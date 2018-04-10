@@ -220,6 +220,9 @@
     $button.button('loading')
     var jqxhr = $.ajax({
                     method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': window.ajax_token
+                    },
                     url: window.apiUrl+"costs",
                     data: datas
                   })
@@ -286,6 +289,9 @@
     $button.button('loading')
     var jqxhr = $.ajax({
                     method: "PUT",
+                    headers: {
+                        'X-CSRF-TOKEN': window.ajax_token
+                    },
                     url: window.apiUrl+"costs/"+datas[1].value,
                     data: datas
                   })

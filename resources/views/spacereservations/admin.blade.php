@@ -61,7 +61,7 @@
                       </div><!-- /.cols -->
                       <div class="col-md-3">
                         <div class="form-group">
-                          <input name="createIdentifier" id="createIdentifier" class="form-control input-sm" placeholder="Identificador" autocomplete="off" required="">
+                          <input name="createIdentifier" id="createIdentifier" onkeydown="parseSearchInput(this)" class="form-control input-sm" placeholder="Identificador" autocomplete="off" required="">
                         </div>
                       </div><!-- /.cols -->
                       <div class="col-md-3">
@@ -136,7 +136,7 @@
                       </div><!-- /.cols -->
                       <div class="col-md-3">
                         <div class="form-group">
-                          <input name="editIdentifier" id="editIdentifier" class="form-control input-sm" placeholder="Identificador" autocomplete="off" required="">
+                          <input name="editIdentifier" id="editIdentifier" onkeydown="parseSearchInput(this)" class="form-control input-sm" placeholder="Identificador" autocomplete="off" required="">
                         </div>
                       </div><!-- /.cols -->
                       <div class="col-md-3">

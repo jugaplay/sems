@@ -21,6 +21,7 @@ $( document ).on( 'submit', '#ticketFormContainer', function(e){
   $.each( datas, function( i, data ){
     console.log( data.name + ' = ' + data.value );
   });
+  $("#ticketPlate").val(parsePlate($("#ticketPlate").val()));
   var plate = $("#ticketPlate").val();
   if(!preVerifiedPlate(plate)){
 
@@ -151,6 +152,9 @@ function buyTicketWithCredit(datas){
   $button.button('loading')
   var jqxhr = $.ajax({
                   method: "POST",
+                  headers: {
+                      'X-CSRF-TOKEN': window.ajax_token
+                  },
                   url: window.apiUrl+"tickets/localticket",
                   data: datas
                 })

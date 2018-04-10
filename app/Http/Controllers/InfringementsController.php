@@ -38,7 +38,7 @@ class InfringementsController extends Controller
         }
       }
         return view('infringements.index');
-    }    
+    }
     public function filter(Request $request)
     {
       $infringementStarts=$request->input('infringementStarts');
@@ -117,11 +117,11 @@ class InfringementsController extends Controller
     {
       if(Auth::check()){
         if(Auth::user()->type=="inspector" && Auth::user()->account_status!="B" ){
-          //return response()->json($request);
+
           $generalFunctions = new generalFunctions(); // Instancamos la clase
           $block = $generalFunctions->returnBlockFromLatLng(json_decode($request->input('latlng')));
           $infringementCause = InfringementCause::where('id',$request->input('infringementCausesId'))->first();
-          registerVehicle(strtoupper($request->input('infringementPlate')));// Si no existe el vehiculo lo creo
+          $generalFunctions->registerVehicle(strtoupper($request->input('infringementPlate')));// Si no existe el vehiculo lo creo
           $now = Carbon::now('America/Argentina/Buenos_Aires');
           $today= $now->format('Y-m-d');
           $endVoluntary = $now->addMonths(3)->format('Y-m-d');
